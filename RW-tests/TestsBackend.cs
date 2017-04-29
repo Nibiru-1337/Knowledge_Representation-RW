@@ -39,7 +39,14 @@ namespace RW_tests
             Actions.Add(SHOOT);
             Actions.Add(LOAD);
 
-            OrderedDictionary[] nodes = WordGenerator.GenerateWorldNodes(fluents, Actions);
+            List<OrderedDictionary> nodes = WorldOperations.GenerateWorldNodes(fluents);
+            Assert.AreEqual(nodes.Count, 4);
+            List<OrderedDictionary> ConnectedStates = WorldOperations.Resolution(LOAD, fluents, nodes);
+            Assert.AreEqual(ConnectedStates[0]["alive"], true);
+            Assert.AreEqual(ConnectedStates[0]["loaded"], true);
+            ConnectedStates = WorldOperations.Resolution(SHOOT, ConnectedStates[0], nodes);
+            Assert.AreEqual(ConnectedStates[0]["alive"], false);
+            Assert.AreEqual(ConnectedStates[0]["loaded"], false);
         }
     }
 }

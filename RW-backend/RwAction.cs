@@ -12,6 +12,17 @@ namespace RW_backend
     {
         private Dictionary<string, bool> _conditions;
         private Dictionary<string, bool> _results;
+
+        public Dictionary<string, bool> Conditions
+        {
+            get { return _conditions; }
+        }
+
+        public Dictionary<string, bool> Results
+        {
+            get { return _results; }
+        }
+
         public RwAction(Dictionary<string, bool> conditions, Dictionary<string, bool> results )
         {
             _conditions = conditions;
