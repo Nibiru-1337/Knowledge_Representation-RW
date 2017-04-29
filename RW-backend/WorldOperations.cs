@@ -16,7 +16,6 @@ namespace RW_backend
         {
             // number of nodes in graph
             int totalNodes = (int)Math.Pow(2, fluents.Count);
-            // graph representation = table of string->bool dictionaries
             List<OrderedDictionary> nodes = new List<OrderedDictionary>();
             //set fluent values in nodes
             for (uint node = 0; node < totalNodes; node++)
@@ -38,8 +37,8 @@ namespace RW_backend
             //check if state satisfies conditions
             foreach (var condition in action.Conditions)
             {
-                if ((bool)StartingState[condition.Key] != condition.Value)
-                    return null;
+                if ((bool) StartingState[condition.Key] != condition.Value)
+                    throw new ArgumentException("Can't execute action in this state!");
             }
             //get all states that have proper result fluents as caused by action
             List<OrderedDictionary> PossibleResults = new List<OrderedDictionary>();
