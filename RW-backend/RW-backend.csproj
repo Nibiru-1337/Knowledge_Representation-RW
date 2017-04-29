@@ -38,7 +38,7 @@
   <ItemGroup>
     <Compile Include="RwAction.cs" />
     <Compile Include="Agent.cs" />
-    <Compile Include="WordGenerator.cs" />
+    <Compile Include="WorldOperations.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
