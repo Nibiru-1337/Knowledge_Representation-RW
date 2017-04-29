@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RW-tests", "RW-tests\RW-tests.csproj", "{888E632D-9BD3-4294-BD6F-937E81CCBDD2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RW-backend", "RW-backend\RW-backend.csproj", "{6FB7134E-949E-4E17-868C-94DA0FF047FE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{888E632D-9BD3-4294-BD6F-937E81CCBDD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{888E632D-9BD3-4294-BD6F-937E81CCBDD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{888E632D-9BD3-4294-BD6F-937E81CCBDD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{888E632D-9BD3-4294-BD6F-937E81CCBDD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FB7134E-949E-4E17-868C-94DA0FF047FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FB7134E-949E-4E17-868C-94DA0FF047FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FB7134E-949E-4E17-868C-94DA0FF047FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FB7134E-949E-4E17-868C-94DA0FF047FE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
