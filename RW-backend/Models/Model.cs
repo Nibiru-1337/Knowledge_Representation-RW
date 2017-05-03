@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using RW_backend.Models.Clauses;
+using RW_backend.Models.Clauses.LogicClauses;
 
 namespace RW_backend.Models
 {
