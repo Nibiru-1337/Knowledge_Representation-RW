@@ -15,11 +15,13 @@ namespace RW_tests
             var model = PrepareModel();
             var logic = new BackendLogic();
             ////dalej jak już będziemy mieć kwerendy, to coś w rodzaju
-            //var world = logic.CalculateWorld();
-            //var query = Query.Create("!alive after SHOOT");
-            //var queryResult = query.Evaluate(world);
-            //Assert.IsTrue(queryResult.IsTrue);
-            //Assert.IsNotNull(queryResult.Function);
+            var world = logic.CalculateWorld(model);
+            var query = Query.Create("!alive after SHOOT by {Bob}");
+            var queryResult = query.Evaluate(world);
+            Assert.IsTrue(queryResult.IsTrue);
+            Assert.IsNotNull(queryResult.Function);
+            Assert.AreEqual(new State(0x3), queryResult.Function[0]);//alive,loaded
+            Assert.AreEqual(new State(0), queryResult.Function[1]);//!alive,!loaded
         }
 
         private static Model PrepareModel()
