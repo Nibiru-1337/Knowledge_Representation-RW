@@ -2,10 +2,15 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using RW_Frontend.Annotations;
 
 [assembly: InternalsVisibleTo("RW-tests")]
+
 namespace RW_Frontend
 {
     class VM : INotifyPropertyChanged
@@ -62,6 +67,107 @@ namespace RW_Frontend
             };
         }
 
+        #region Components Control
+
+        private bool CanDo()
+        {
+            return true;
+        }
+
+        #region Fluents
+
+        #region TextBoxes
+
+        public ICommand AddFluentCommand
+        {
+            get { return new RelayCommand(AddFluent, CanDo); }
+        }
+
+        public ICommand RemoveFluentTextBoxCommand
+        {
+            get { return new RelayCommand(RemoveFluentTextBox, CanDo); }
+        }
+
+        private void AddFluent()
+        {
+            FluentsTextBoxes.Add(new TextBox() {Height = 25, FontSize = 14, Margin = new Thickness(5)});
+            FluentsRemoveButtons.Add(new Button()
+            {
+                Height = 25,
+                Width = 25,
+                FontSize = 14,
+                Content = "X",
+                Margin = new Thickness(5)
+            });
+        }
+
+        private void RemoveFluentTextBox()
+        {
+            if (FluentsTextBoxes.Count > 0)
+            {
+                FluentsTextBoxes.Remove(FluentsTextBoxes.Last());
+            }
+        }
+
+        private ObservableCollection<TextBox> _fluentsTextBoxes;
+
+        public ObservableCollection<TextBox> FluentsTextBoxes
+        {
+            get
+            {
+                if (_fluentsTextBoxes == null)
+                {
+                    _fluentsTextBoxes = new ObservableCollection<TextBox>()
+                    {
+                        new TextBox() {Height = 25, FontSize = 14, Margin = new Thickness(5)}
+                    };
+                }
+                return _fluentsTextBoxes;
+            }
+        }
+
+        #endregion
+
+        #region RemoveButtons
+
+        public ICommand RemoveFluentRemoveButtonCommand
+        {
+            get { return new RelayCommand(RemoveFluentRemoveButton, CanDo); }
+        }
+
+        private void RemoveFluentRemoveButton()
+        {
+            if (FluentsRemoveButtons.Count > 0)
+            {
+                FluentsRemoveButtons.Remove(FluentsRemoveButtons.Last());
+            }
+        }
+
+        private ObservableCollection<Button> _fluentsRemoveButtons;
+
+        public ObservableCollection<Button> FluentsRemoveButtons
+        {
+            get
+            {
+                if (_fluentsRemoveButtons == null)
+                {
+                    _fluentsRemoveButtons = new ObservableCollection<Button>()
+                    {
+                        new Button() {Height = 25, Width = 25, FontSize = 14, Content = "X", Margin = new Thickness(5)}
+                    };
+                }
+                return _fluentsRemoveButtons;
+            }
+        }
+
+        #endregion
+
+        #endregion
+
+        #endregion
+
+        #region Necessary VM snippet
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
@@ -69,5 +175,7 @@ namespace RW_Frontend
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #endregion
     }
 }
