@@ -10,13 +10,36 @@ namespace RW_backend.Models.Clauses.LogicClauses
 	{
 		public override bool CheckForState(int state)
 		{
+			Console.WriteLine("starting...");
+			Console.WriteLine("state, positive, nonegated =");
+			WriteOut(state);
+			WriteOut(PositiveFluents);
 			int nonnegated = state & PositiveFluents;
-			if (nonnegated == 0)
-				return false;
+			WriteOut(nonnegated);
+			if (nonnegated != 0)
+				return true;
+
 			int negated = (~state) & NegatedFluents;
-			if (negated == 0)
-				return false;
-			return true;
+			Console.WriteLine("neg-state, negatedfs, negated =");
+			WriteOut(~state);
+			WriteOut(NegatedFluents);
+			WriteOut(negated);
+			if (negated != 0)
+				return true;
+			return false;
+		}
+
+
+		private void WriteOut(int value)
+		{
+			// TODO: delete after debug
+			BitValueOperator bop = new BitValueOperator();
+			for (int i = 0; i < sizeof(int) * 8; i++)
+			{
+				Console.Write((bop.GetValue(value, i) ? "1" : "0"));
+			}
+			Console.WriteLine(" = " + value);
+
 		}
 	}
 }

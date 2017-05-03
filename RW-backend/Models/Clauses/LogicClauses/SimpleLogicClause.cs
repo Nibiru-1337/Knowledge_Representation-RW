@@ -13,8 +13,7 @@ namespace RW_backend.Models.Clauses.LogicClauses
 		public int NegatedFluents { get; private set; }
 
 
-
-		public SimpleLogicClause()
+		protected SimpleLogicClause()
 		{
 			PositiveFluents = 0;
 			NegatedFluents = 0;
