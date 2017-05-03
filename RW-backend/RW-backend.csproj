@@ -37,7 +37,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Logic\BackendLogic.cs" />
-    <Compile Include="LogicClause.cs" />
+    <Compile Include="Logic\WorldConstructor.cs" />
+    <Compile Include="Models\AgentsSet.cs" />
+    <Compile Include="Models\Clauses\LogicClause.cs" />
     <Compile Include="Models\Queries\AfterQuery.cs" />
     <Compile Include="Models\Clauses\After.cs" />
     <Compile Include="Models\Clauses\Causes.cs" />
@@ -46,8 +48,6 @@
     <Compile Include="Models\Model.cs" />
     <Compile Include="Models\Query.cs" />
     <Compile Include="Models\Clauses\Releases.cs" />
-    <Compile Include="RwAction.cs" />
-    <Compile Include="Models\Agent.cs" />
     <Compile Include="Models\State.cs" />
     <Compile Include="Models\World.cs" />
     <Compile Include="WorldOperations.cs" />
