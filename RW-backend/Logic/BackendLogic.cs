@@ -8,10 +8,15 @@ namespace RW_backend.Logic
     /// </summary>
     public class BackendLogic
     {
+		WorldConstructor WorldConstructor = new WorldConstructor();
+
+
         //TODO budowanie reprezentaji świata i odpowiadanie na kwerendy
         public World CalculateWorld(Model model)
         {
-            throw new NotImplementedException();
+	        return WorldConstructor.CalculateWorld(model);
         }
+
+
     }
 }
