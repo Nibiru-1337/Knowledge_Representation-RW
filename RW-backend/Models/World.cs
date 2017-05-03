@@ -1,4 +1,4 @@
-﻿namespace RW_backend
+﻿namespace RW_backend.Models
 {
     /// <summary>
     /// Reprezentuje modelowany świat za pomocą grafu stanów

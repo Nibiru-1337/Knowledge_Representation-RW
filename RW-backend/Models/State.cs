@@ -1,16 +1,18 @@
-﻿namespace RW_backend
+﻿namespace RW_backend.Models
 {
     /// <summary>
     /// Reprezentuje stan świata - wartości fluentów
     /// </summary>
     internal class State
     {
-        public State(int fluentValues)
+		public int FluentValues { get; }
+
+		public State(int fluentValues)
         {
             FluentValues = fluentValues;
         }
 
-        public int FluentValues { get; }
+        
 
         public bool FluentValue(int fluentNumber)
         {

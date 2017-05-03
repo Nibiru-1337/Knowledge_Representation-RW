@@ -1,6 +1,7 @@
 ﻿using System;
+using RW_backend.Models;
 
-namespace RW_backend
+namespace RW_backend.Logic
 {
     /// <summary>
     /// Logika odpowiedzialna za modelowanie świata i udzielanie odpowiedzi na kwerendy
