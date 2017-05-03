@@ -3,8 +3,8 @@
     /// <summary>
     /// Formuła logiczna fluentów w postaci CNF.
     /// </summary>
-    public class LogicClause
+    public abstract class LogicClause
     {
-        //TODO ocena wartości formuły na podstawie wartości fluentów	
+	    public abstract bool CheckForState(int state);
     }
 }
