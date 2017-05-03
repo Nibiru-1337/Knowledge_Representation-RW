@@ -19,20 +19,22 @@ namespace RW_tests.LogicTests
 		[TestMethod]
 		public void ConjunctionsPassTest()
 		{
+			Utilities utilities = new Utilities();
 			Conjunction conjunction = new Conjunction();
-			SetFluents(new List<int>() { 1, 3, 4, 5, 13 }, false, conjunction);
-			SetFluents(new List<int>() { 2, 11, 18 }, true, conjunction);
-			State state = GetState(new List<int>() {1, 3, 4, 5, 10, 13});
+			utilities.SetFluents(new List<int>() { 1, 3, 4, 5, 13 }, false, conjunction);
+			utilities.SetFluents(new List<int>() { 2, 11, 18 }, true, conjunction);
+			State state = utilities.GetState(new List<int>() {1, 3, 4, 5, 10, 13});
 			Assert.AreEqual(true, conjunction.CheckForState(state.FluentValues), "Wrong value of clause");
 		}
 
 		[TestMethod]
 		public void ConjunctionsWrongPositiveTest()
 		{
+			Utilities utilities = new Utilities();
 			Conjunction conjunction = new Conjunction();
-			SetFluents(new List<int>() { 1, 3, 4, 5, 13 }, false, conjunction);
-			SetFluents(new List<int>() { 2, 11, 18 }, true, conjunction);
-			State state = GetState(new List<int>() { 1, 3, 4, 10, 13 });
+			utilities.SetFluents(new List<int>() { 1, 3, 4, 5, 13 }, false, conjunction);
+			utilities.SetFluents(new List<int>() { 2, 11, 18 }, true, conjunction);
+			State state = utilities.GetState(new List<int>() { 1, 3, 4, 10, 13 });
 			
 			Assert.AreEqual(false, conjunction.CheckForState(state.FluentValues), "Wrong value of clause");
 		}
@@ -41,50 +43,55 @@ namespace RW_tests.LogicTests
 		[TestMethod]
 		public void ConjunctionsWrongNegatedTest()
 		{
+			Utilities utilities = new Utilities();
 			Conjunction conjunction = new Conjunction();
-			SetFluents(new List<int>() { 1, 3, 4, 5, 13 }, false, conjunction);
-			SetFluents(new List<int>() { 2, 11, 18 }, true, conjunction);
-			State state = GetState(new List<int>() { 1, 3, 4, 5, 10, 13, 18 });
+			utilities.SetFluents(new List<int>() { 1, 3, 4, 5, 13 }, false, conjunction);
+			utilities.SetFluents(new List<int>() { 2, 11, 18 }, true, conjunction);
+			State state = utilities.GetState(new List<int>() { 1, 3, 4, 5, 10, 13, 18 });
 			Assert.AreEqual(false, conjunction.CheckForState(state.FluentValues), "Wrong value of clause");
 		}
 
 		[TestMethod]
 		public void AlternativePassPositiveTest()
 		{
+			Utilities utilities = new Utilities();
 			Alternative alternative = new Alternative();
-			SetFluents(new List<int>() {1, 3, 4}, false, alternative);
-			SetFluents(new List<int>() {7, 8}, true, alternative);
-			State state = GetState(new List<int>() {1, 9, 10, 4, 7, 8});
+			utilities.SetFluents(new List<int>() {1, 3, 4}, false, alternative);
+			utilities.SetFluents(new List<int>() {7, 8}, true, alternative);
+			State state = utilities.GetState(new List<int>() {1, 9, 10, 4, 7, 8});
 			Assert.AreEqual(true, alternative.CheckForState(state.FluentValues), "Wrong value of clause");
 		}
 
 		[TestMethod]
 		public void AlternativePassNegativeTest()
 		{
+			Utilities utilities = new Utilities();
 			Alternative alternative = new Alternative();
-			SetFluents(new List<int>() { 1, 3, 4 }, false, alternative);
-			SetFluents(new List<int>() { 7, 8 }, true, alternative);
-			State state = GetState(new List<int>() { 9, 10, });
+			utilities.SetFluents(new List<int>() { 1, 3, 4 }, false, alternative);
+			utilities.SetFluents(new List<int>() { 7, 8 }, true, alternative);
+			State state = utilities.GetState(new List<int>() { 9, 10, });
 			Assert.AreEqual(true, alternative.CheckForState(state.FluentValues), "Wrong value of clause");
 		}
 
 		[TestMethod]
 		public void AlternativePassPositiveAndNegativeTest()
 		{
+			Utilities utilities = new Utilities();
 			Alternative alternative = new Alternative();
-			SetFluents(new List<int>() { 1, 3, 4 }, false, alternative);
-			SetFluents(new List<int>() { 7, 8 }, true, alternative);
-			State state = GetState(new List<int>() { 1, 4, 15});
+			utilities.SetFluents(new List<int>() { 1, 3, 4 }, false, alternative);
+			utilities.SetFluents(new List<int>() { 7, 8 }, true, alternative);
+			State state = utilities.GetState(new List<int>() { 1, 4, 15});
 			Assert.AreEqual(true, alternative.CheckForState(state.FluentValues), "Wrong value of clause");
 		}
 
 		[TestMethod]
 		public void AlternativeFailTest()
 		{
+			Utilities utilities = new Utilities();
 			Alternative alternative = new Alternative();
-			SetFluents(new List<int>() { 1, 3, 4 }, false, alternative);
-			SetFluents(new List<int>() { 7, 8 }, true, alternative);
-			State state = GetState(new List<int>() { 7, 8});
+			utilities.SetFluents(new List<int>() { 1, 3, 4 }, false, alternative);
+			utilities.SetFluents(new List<int>() { 7, 8 }, true, alternative);
+			State state = utilities.GetState(new List<int>() { 7, 8});
 			Assert.AreEqual(false, alternative.CheckForState(state.FluentValues), "Wrong value of clause");
 		}
 

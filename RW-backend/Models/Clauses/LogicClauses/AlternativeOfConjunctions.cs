@@ -12,6 +12,12 @@ namespace RW_backend.Models.Clauses.LogicClauses
 
 		private IReadOnlyList<Conjunction> Conjunctions => _conjunctions.ToList().AsReadOnly();
 
+
+		public AlternativeOfConjunctions()
+		{
+			_conjunctions = new List<Conjunction>();
+		}
+
 		public override bool CheckForState(int state)
 		{
 			return _conjunctions.Any(conjunction => conjunction.CheckForState(state));
