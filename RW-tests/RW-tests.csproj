@@ -52,7 +52,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="LogicTests\LogicClausesTests.cs" />
+    <Compile Include="LogicTests\AlternativeOfConjunctionsTests.cs" />
+    <Compile Include="LogicTests\ConjunctionOfAlternativesTests.cs" />
     <Compile Include="LogicTests\SimpleLogicClausesTests.cs" />
     <Compile Include="LogicTests\Utilities.cs" />
     <Compile Include="SceneriosTests\TestsBackend.cs" />

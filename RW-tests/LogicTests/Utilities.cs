@@ -40,6 +40,57 @@ namespace RW_tests.LogicTests
 		}
 
 
+		private void GetConjunctions(out Conjunction first, out Conjunction second, out Conjunction third)
+		{
+			// (a ^ b) v (~b ^ ~d) v (e ^ f ^ g ^ ~h)
+			//  0   1      1    3     4   5   6    7
+			Utilities utilities = new Utilities();
+			first = new Conjunction();
+			utilities.SetFluents(new List<int>() { 0, 1 }, false, first);
+			second = new Conjunction();
+			utilities.SetFluents(new List<int>() { 1, 3 }, true, second);
+			third = new Conjunction();
+			utilities.SetFluents(new List<int>() { 4, 5, 6 }, false, third);
+			utilities.SetFluents(new List<int>() { 7 }, true, third);
+		}
+
+		public AlternativeOfConjunctions GetAlternativeOfConjunctions()
+		{
+			Conjunction first, second, third;
+			GetConjunctions(out first, out second, out third);
+			AlternativeOfConjunctions aoc = new AlternativeOfConjunctions();
+			aoc.AddConjunction(first);
+			aoc.AddConjunction(second);
+			aoc.AddConjunction(third);
+			return aoc;
+		}
+
+		private void GetAlternatives(out Alternative first, out Alternative second, out Alternative third)
+		{
+			// (a ^ b) v (~b ^ ~d) v (e ^ f ^ g ^ ~h)
+			//  0   1      1    3     4   5   6    7
+			Utilities utilities = new Utilities();
+			first = new Alternative();
+			utilities.SetFluents(new List<int>() { 0, 1 }, false, first);
+			second = new Alternative();
+			utilities.SetFluents(new List<int>() { 1, 3 }, true, second);
+			third = new Alternative();
+			utilities.SetFluents(new List<int>() { 4, 5, 6 }, false, third);
+			utilities.SetFluents(new List<int>() { 7 }, true, third);
+		}
+
+		public ConjunctionOfAlternatives GetConjunctionOfAlternatives()
+		{
+			Alternative first, second, third;
+			GetAlternatives(out first, out second, out third);
+			ConjunctionOfAlternatives aoc = new ConjunctionOfAlternatives();
+			aoc.AddAlternative(first);
+			aoc.AddAlternative(second);
+			aoc.AddAlternative(third);
+			return aoc;
+		}
+
+
 
 		public class Pair
 		{
