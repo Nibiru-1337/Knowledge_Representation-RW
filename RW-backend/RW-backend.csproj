@@ -36,6 +36,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BackendLogic.cs" />
+    <Compile Include="LogicClause.cs" />
+    <Compile Include="Model.cs" />
+    <Compile Include="Query.cs" />
     <Compile Include="RwAction.cs" />
     <Compile Include="Agent.cs" />
     <Compile Include="WorldOperations.cs" />

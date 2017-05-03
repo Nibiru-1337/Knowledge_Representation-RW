@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RW-tests", "RW-tests\RW-tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RW-backend", "RW-backend\RW-backend.csproj", "{6FB7134E-949E-4E17-868C-94DA0FF047FE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RW-Frontend", "RW-Frontend\RW-Frontend.csproj", "{6E0EB586-285B-45C0-AF52-C801036BA09F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{6FB7134E-949E-4E17-868C-94DA0FF047FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FB7134E-949E-4E17-868C-94DA0FF047FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FB7134E-949E-4E17-868C-94DA0FF047FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E0EB586-285B-45C0-AF52-C801036BA09F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E0EB586-285B-45C0-AF52-C801036BA09F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E0EB586-285B-45C0-AF52-C801036BA09F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E0EB586-285B-45C0-AF52-C801036BA09F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
