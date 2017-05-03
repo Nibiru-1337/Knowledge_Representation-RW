@@ -45,18 +45,25 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
   <ItemGroup>
     <Compile Include="TestsBackend.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="GoalFor_10_05_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RW-backend\RW-backend.csproj">
       <Project>{6fb7134e-949e-4e17-868c-94da0ff047fe}</Project>
       <Name>RW-backend</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RW-Frontend\RW-Frontend.csproj">
+      <Project>{6e0eb586-285b-45c0-af52-c801036ba09f}</Project>
+      <Name>RW-Frontend</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
