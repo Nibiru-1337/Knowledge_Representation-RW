@@ -1,4 +1,5 @@
 ﻿using RW_backend;
+using RW_backend.Models;
 
 namespace RW_Frontend
 {

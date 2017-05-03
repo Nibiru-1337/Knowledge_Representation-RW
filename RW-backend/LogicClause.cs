@@ -5,6 +5,6 @@
     /// </summary>
     public class LogicClause
     {
-        //TODO ocena wartości formuły na podstawie wartości fluentów
+        //TODO ocena wartości formuły na podstawie wartości fluentów	
     }
 }
