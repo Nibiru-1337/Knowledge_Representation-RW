@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{6FB7134E-949E-4E17-868C-94DA0FF047FE}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RW_backend</RootNamespace>
     <AssemblyName>RW-backend</AssemblyName>
@@ -32,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
@@ -39,6 +42,7 @@
     <Compile Include="Logic\BackendLogic.cs" />
     <Compile Include="Logic\WorldConstructor.cs" />
     <Compile Include="Models\AgentsSet.cs" />
+    <Compile Include="Models\BitValueOperator.cs" />
     <Compile Include="Models\Clauses\LogicClauses\Alternative.cs" />
     <Compile Include="Models\Clauses\LogicClauses\AlternativeOfConjunctions.cs" />
     <Compile Include="Models\Clauses\LogicClauses\SimpleLogicClause.cs" />

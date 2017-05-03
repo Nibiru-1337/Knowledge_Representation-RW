@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RW_backend;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RW_backend.Logic;
 using RW_backend.Models;
 using RW_Frontend;
 
-namespace RW_tests
+namespace RW_tests.SceneriosTests
 {
     [TestClass]
     public class GoalFor1005Test

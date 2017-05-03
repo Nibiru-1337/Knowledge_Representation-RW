@@ -1,4 +1,8 @@
-﻿namespace RW_backend.Models
+﻿
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("RW-tests")]
+namespace RW_backend.Models
 {
     /// <summary>
     /// Reprezentuje stan świata - wartości fluentów

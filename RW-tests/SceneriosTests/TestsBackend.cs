@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.Specialized;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RW_backend;
 
-namespace RW_tests
+namespace RW_tests.SceneriosTests
 {
     [TestClass]
     public class TestsBackend
@@ -40,8 +38,8 @@ namespace RW_tests
            // Actions.Add(SHOOT);
             //Actions.Add(LOAD);
 
-            List<OrderedDictionary> nodes = WorldOperations.GenerateWorldNodes(fluents);
-            Assert.AreEqual(nodes.Count, 4);
+           // List<OrderedDictionary> nodes = WorldOperations.GenerateWorldNodes(fluents);
+            //Assert.AreEqual(nodes.Count, 4);
             //List<OrderedDictionary> ConnectedStates = WorldOperations.Resolution(LOAD, fluents, nodes);
             //Assert.AreEqual(ConnectedStates[0]["alive"], true);
             //Assert.AreEqual(ConnectedStates[0]["loaded"], true);

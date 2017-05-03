@@ -1,4 +1,4 @@
-﻿namespace RW_backend
+﻿namespace RW_backend.Models.Clauses.LogicClauses
 {
     /// <summary>
     /// Formuła logiczna fluentów w postaci CNF.

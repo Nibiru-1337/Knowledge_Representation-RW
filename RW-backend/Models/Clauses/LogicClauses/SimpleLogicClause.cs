@@ -36,11 +36,11 @@ namespace RW_backend.Models.Clauses.LogicClauses
 		{
 			if (negated)
 			{
-				NegatedFluents = NegatedFluents ^ (~(1 << fluentId));
+				NegatedFluents = NegatedFluents & (~(1 << fluentId));
 			}
 			else
 			{
-				PositiveFluents = PositiveFluents ^ (~(1 << fluentId));
+				PositiveFluents = PositiveFluents & (~(1 << fluentId));
 			}
 		}
 

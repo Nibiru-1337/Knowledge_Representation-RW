@@ -10,10 +10,10 @@ namespace RW_backend.Models.Clauses.LogicClauses
 	{
 		public override bool CheckForState(int state)
 		{
-			int nonnegated = state ^ PositiveFluents;
+			int nonnegated = state & PositiveFluents;
 			if (nonnegated == 0)
 				return false;
-			int negated = (~state) ^ NegatedFluents;
+			int negated = (~state) & NegatedFluents;
 			if (negated == 0)
 				return false;
 			return true;
