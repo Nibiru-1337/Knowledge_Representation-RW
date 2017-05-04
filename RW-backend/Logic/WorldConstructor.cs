@@ -14,8 +14,7 @@ namespace RW_backend.Logic
 			// no więc tak.
 			// najpierw tworzymy graf na podstawie zdań: causes, releases
 			// potem dodajemy dodatkowe warunki: na podstawie after i initally
-
-			throw new NotImplementedException();
+            throw new NotImplementedException();
 		}
 	}
 }
