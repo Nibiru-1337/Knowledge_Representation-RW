@@ -64,14 +64,14 @@ namespace RW_backend.Models.Parser
             {
                 case Tokens.End:
                     if (!string.IsNullOrEmpty(Scanner.Text))
-                        lo = FluentClause();
+                        lo = FluentClause(Scanner.FoundNegation);
                     else
                         lo = null;
                     break;
-                case Tokens.Not:
-                    Match(Tokens.Not);
-                    lo = FluentClause(true);
-                    break;
+                //case Tokens.Not:
+                //    Match(Tokens.Not);
+                //    lo = FluentClause(true);
+                //    break;
                 case Tokens.Or:
                     lo = OrClause();
                     break;
@@ -80,43 +80,6 @@ namespace RW_backend.Models.Parser
                     lo = Start();
                     Match(Tokens.BracketEnd);
                     break;
-                
-                //case Tokens.ArrayStart:
-                //    Match(Tokens.ArrayStart);
-                //    lo = Array0();
-                //    Match(Tokens.ArrayEnd);
-                //    break;
-                //case Tokens.BlockStart:
-                //    Match(Tokens.BlockStart);
-                //    Match(Tokens.Sequence);
-                //    lo = Image0();
-                //    Match(Tokens.BlockEnd);
-                //    break;
-                //case Tokens.Sequence:
-                //    lo = Sequence();
-                //    Match(Tokens.Sequence);
-                //    break;
-                //case Tokens.Number:
-                //    lo = Sequence();
-                //    Match(Tokens.Number);
-                //    break;
-                //case Tokens.QuoteStart:
-                //    Match(Tokens.QuoteStart);
-                //    lo = Sequence();
-                //    Match(Tokens.QuoteEnd);
-                //    break;
-                //case Tokens.Graph:
-                //    Match(Tokens.Graph);
-                //    lo = Graph(false);
-                //    break;
-                //case Tokens.Tree:
-                //    Match(Tokens.Tree);
-                //    lo = Graph(true);
-                //    break;
-                //case Tokens.VectorStart:
-                //    Match(Tokens.VectorStart);
-                //    lo = Vector();
-                //    break;
                 case Tokens.Error:
                     Root = null;
                     throw new ErrorException($"Error: Unexpected symbol: {Scanner.CurrentSymbol}, on position: {Scanner.CurrentPosition}, after text: {Scanner.UntilNowText}");
@@ -140,18 +103,30 @@ namespace RW_backend.Models.Parser
         
         private ParserClause FluentClause(bool isNegation=false)
         {
-            if(!Fluents.ContainsKey(Scanner.Text))
-                throw new ErrorException($"No defined fluent with name {Scanner.Text}.");
+            CheckFluentExists(Scanner.Text);
             ParserClause pc = new FluentParserClause(Fluents[Scanner.Text], isNegation);
-            Scanner.ClearText();
+            Scanner.ClearScanner();
             return pc;
         }
 
         protected ParserClause OrClause()
         {
-            ParserClause pc = new OrParserClause();
+            OrParserClause opc = new OrParserClause();
+            FluentParserClause fpc;
+            while (Token == Tokens.Or)
+            {
+                CheckFluentExists(Scanner.Text);
+                fpc = new FluentParserClause(Fluents[Scanner.Text], Scanner.FoundNegation);
+                opc.Add(fpc);
+                Scanner.ClearScanner();
+                Match(Tokens.Or);
+            }
+            CheckFluentExists(Scanner.Text);
 
-            return pc;
+            fpc = new FluentParserClause(Fluents[Scanner.Text], Scanner.FoundNegation);
+            opc.Add(fpc);
+            Scanner.ClearScanner();
+            return opc;
         }
 
         //protected ParserObject Image0()
@@ -398,6 +373,13 @@ namespace RW_backend.Models.Parser
         //    }
         //    return label.ToString();
         //}
+
+        protected bool CheckFluentExists(string fluentName)
+        {
+            if (!Fluents.ContainsKey(fluentName))
+                throw new ErrorException($"No defined fluent with name {fluentName}.");
+            return true;
+        }
 
         protected void Match(Tokens expected)
         {
