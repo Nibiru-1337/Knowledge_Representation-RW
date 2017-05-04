@@ -64,14 +64,13 @@ namespace RW_backend.Models.Parser
             {
                 case Tokens.End:
                     if (!string.IsNullOrEmpty(Scanner.Text))
-                    {
                         lo = FluentClause();
-                    }
                     else
-                    {
                         lo = null;
-                    }
-                    
+                    break;
+                case Tokens.Not:
+                    Match(Tokens.Not);
+                    lo = FluentClause(true);
                     break;
                 case Tokens.Or:
                     lo = OrClause();
@@ -138,12 +137,13 @@ namespace RW_backend.Models.Parser
             return lo;
         }
 
+        
         private ParserClause FluentClause(bool isNegation=false)
         {
             if(!Fluents.ContainsKey(Scanner.Text))
                 throw new ErrorException($"No defined fluent with name {Scanner.Text}.");
             ParserClause pc = new FluentParserClause(Fluents[Scanner.Text], isNegation);
-            
+            Scanner.ClearText();
             return pc;
         }
 
