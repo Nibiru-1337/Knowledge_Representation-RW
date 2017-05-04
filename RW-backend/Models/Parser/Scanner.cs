@@ -36,13 +36,13 @@ namespace RW_backend.Models.Parser
 
         protected Dictionary<Tokens, Dictionary<char, Action>> ActionTable;
         protected Dictionary<Tokens, Action> DefaultActionTable;
-        
+
         public string Text => CurrentText.ToString();
         public string UntilNowText => SourceText.Substring(0, CurrentPosition);
-        
-        public char CurrentSymbol => SourceText[CurrentPosition];
 
-        
+        public char CurrentSymbol => SourceText[CurrentPosition];
+        public bool FoundNegation;
+
         public Scanner(Stream s)
         {
             ActionTable = new Dictionary<Tokens, Dictionary<char, Action>>();
@@ -64,9 +64,21 @@ namespace RW_backend.Models.Parser
             AddChars(Tokens.Start, Tokens.Start);
             ChangeState('(', Tokens.Start, Tokens.BracketStart);
             ChangeState(')', Tokens.Start, Tokens.BracketEnd);
-            ChangeState('!', Tokens.Start, Tokens.Not);
+            //ChangeState('!', Tokens.Start, Tokens.Not);
             ChangeState('&', Tokens.Start, Tokens.And);
             ChangeState('|', Tokens.Start, Tokens.Or);
+            SetAction("!", Tokens.Start, () =>
+                {
+                    FoundNegation = true;
+                    CurrentPosition++;
+                }
+            );
+
+            SetWhiteChars(Tokens.Start);
+
+            ActionTable[Tokens.Or] = new Dictionary<char, Action>();
+            SetWhiteChars(Tokens.Or);
+
             //AddChars("0123456789", Tokens.Start, Tokens.Number);
             //ChangeState(" \t", Tokens.Start, Tokens.Start);
             //ChangeState('[', Tokens.Start, Tokens.ArrayStart);
@@ -173,8 +185,8 @@ namespace RW_backend.Models.Parser
             sr.Close();
         }
         #region chars
-        
-        
+
+
         /// <summary>
         /// Regular chars
         /// </summary>
@@ -255,7 +267,10 @@ namespace RW_backend.Models.Parser
                 CurrentPosition++;
             };
         }
-
+        protected void SetWhiteChars(Tokens t)
+        {
+            ChangeState(" \n\t", t, t);
+        }
         #endregion
         /// <summary>
         /// Scans text until the next state is met
@@ -278,9 +293,10 @@ namespace RW_backend.Models.Parser
                 }
             }
         }
-        public void ClearText()
+        public void ClearScanner()
         {
             CurrentText = new StringBuilder();
+            FoundNegation = false;
         }
     }
 }

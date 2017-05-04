@@ -21,10 +21,15 @@ namespace RW_backend.Models.Parser
 
     public abstract class ParserLogicClause : ParserClause
     {
-        public List<ParserClause> Clauses;
+        public List<ParserClause> Clauses { get; protected set; }
         public ParserLogicClause()
         {
             Clauses = new List<ParserClause>();
+        }
+
+        public void Add(ParserClause pc)
+        {
+            Clauses.Add(pc);
         }
     }
 }
