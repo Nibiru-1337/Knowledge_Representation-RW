@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace RW_backend.Models.Clauses.LogicClauses
 {
+	/// <summary>
+	/// Klasa reprezentująca formułę logiczną w postaci DNF
+	/// </summary>
 	public class AlternativeOfConjunctions:LogicClause
 	{
 		private readonly IList<Conjunction> _conjunctions;
