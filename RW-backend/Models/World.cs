@@ -18,15 +18,16 @@ namespace RW_backend.Models
         // without any edges in between them (edges are added with AddCauses)
         private readonly State[] _states;
 
-        //connections b/w state are represented with a dictionary of tuples -> lists
-        //tuple(key) gives us which Causes and which starting state
+        //connections b/w states are represented with a dictionary of tuples -> lists
+        //tuple(key) says which Causes and which starting state
         //List<States>(value) gives us resulting states that are connected 
-        private Dictionary<Tuple<Causes,State>, List<State>> _connections; 
+        public  Dictionary<Tuple<Causes,State>, List<State>> Connections { get; private set; } 
         
 
         public World(int fluentsCount)
         {
             int totalNodes = (int)Math.Pow(2, fluentsCount);
+            Connections = new Dictionary<Tuple<Causes, State>, List<State>>();
             _states = new State[totalNodes];
             for (int i = 0; i < totalNodes; i++)
             {
@@ -39,8 +40,8 @@ namespace RW_backend.Models
         {
             foreach (var startingState in _states)
             {
-                //if state satisfies conditions
-                if (a.Condition.CheckForState(startingState.FluentValues))
+                //if there is no conditions or state satisfies conditions
+                if (a.Condition == null || a.Condition.CheckForState(startingState.FluentValues))
                 {
                     //get all states that have proper result fluents as caused by action
                     List <State> possibleResults = new List<State>();
@@ -70,7 +71,7 @@ namespace RW_backend.Models
                         }
                     }
                     //add the results of Causes from starting state
-                    _connections.Add(new Tuple<Causes, State>(a, startingState), result);
+                    Connections.Add(new Tuple<Causes, State>(a, startingState), result);
                 }
             }
         }
