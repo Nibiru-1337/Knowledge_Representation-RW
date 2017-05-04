@@ -13,15 +13,22 @@ namespace RW_backend.Models.Parser
 
     public abstract class ParserClause
     {
+        public ParserClause Next
+        {
+            get; set;
+        }
         public ParserClause()
         {
         }
-    
+
     }
 
     public abstract class ParserLogicClause : ParserClause
     {
-        public List<ParserClause> Clauses { get; protected set; }
+        public List<ParserClause> Clauses
+        {
+            get; protected set;
+        }
         public ParserLogicClause()
         {
             Clauses = new List<ParserClause>();
