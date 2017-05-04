@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace RW_backend.Models.Clauses.LogicClauses
 {
+	/// <summary>
+	/// Klasa reprezentująca formułę logiczną w postaci CNF
+	/// </summary>
 	public class ConjunctionOfAlternatives:LogicClause
 	{
 		private readonly IList<Alternative> _alternatives;
