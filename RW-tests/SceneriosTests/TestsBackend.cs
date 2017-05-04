@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RW_backend.Models;
+using RW_backend.Models.Clauses;
+using RW_backend.Models.Clauses.LogicClauses;
 
 namespace RW_tests.SceneriosTests
 {
@@ -8,44 +12,39 @@ namespace RW_tests.SceneriosTests
     public class TestsBackend
     {
         [TestMethod]
-        public void Simple_Yale_Shooting_Problem_Test()
+        public void ExampleWorldTest()
         {
-			//TODO: adjust
-            OrderedDictionary fluents = new OrderedDictionary();
-            //initial fluents
-            fluents.Add("loaded", false);
-            fluents.Add("alive", true);
+            //world with 2 fluents ex. alive=0, loaded=1
+            World world = new World(2);
+            Alternative effect = new Alternative();
+            //loaded is set after LOAD
+            effect.AddFluent(1,false);
+            Causes LOAD = new Causes(null,effect,0x1,0x0);
+            world.AddCauses(LOAD);
 
-            //create LOAD action
-            //LOAD has no conditions for execution
-            Dictionary<string, bool> conditions = new Dictionary<string, bool>();
-            //LOAD execution causes loaded
-            Dictionary<string, bool> results = new Dictionary<string, bool>();
-            results.Add("loaded", true);
-            //RwAction LOAD = new RwAction(conditions, results);
+            //should have an edge from state alive, -loaded -> alive, loaded
+            List<State> afterLOAD = world.Connections[new Tuple<Causes, State>(LOAD, new State(0x1))];
+            Assert.AreEqual(1, afterLOAD.Count);
+            Assert.AreEqual(new State(0x3), afterLOAD[0]);
 
-            //create SHOOT action
-            //SHOOT has conditions for execution
-            conditions = new Dictionary<string, bool>();
-            conditions.Add("loaded", true);
-            //SHOOT execution causes loaded
-            results = new Dictionary< string, bool> ();
-            results.Add("loaded", false);
-            results.Add("alive", false);
-           // RwAction SHOOT = new RwAction(conditions, results);
+            //should have an edge from state -alive, -loaded -> -alive, loaded
+            afterLOAD = world.Connections[new Tuple<Causes, State>(LOAD, new State(0x0))];
+            Assert.AreEqual(1, afterLOAD.Count);
+            Assert.AreEqual(new State(0x2), afterLOAD[0]);
 
-            //List<RwAction> Actions = new List<RwAction>(2);
-           // Actions.Add(SHOOT);
-            //Actions.Add(LOAD);
+            //-alive after SHOOT with loaded condition by agent with index = 0 (bob or whatever)
+            Alternative conditions = new Alternative();
+            conditions.AddFluent(1, false);
+            effect = new Alternative();
+            effect.AddFluent(1, true);
+            Causes SHOOT = new Causes(conditions, effect, 0x2, 0x1);
+            world.AddCauses(SHOOT);
 
-           // List<OrderedDictionary> nodes = WorldOperations.GenerateWorldNodes(fluents);
-            //Assert.AreEqual(nodes.Count, 4);
-            //List<OrderedDictionary> ConnectedStates = WorldOperations.Resolution(LOAD, fluents, nodes);
-            //Assert.AreEqual(ConnectedStates[0]["alive"], true);
-            //Assert.AreEqual(ConnectedStates[0]["loaded"], true);
-            //ConnectedStates = WorldOperations.Resolution(SHOOT, ConnectedStates[0], nodes);
-            //Assert.AreEqual(ConnectedStates[0]["alive"], false);
-            //Assert.AreEqual(ConnectedStates[0]["loaded"], false);
+            //should have an edge from state alive, loaded -> -alive, -loaded
+            List<State> afterSHOOT = world.Connections[new Tuple<Causes, State>(LOAD, new State(0x1))];
+            Assert.AreEqual(1, afterLOAD.Count);
+            Assert.AreEqual(new State(0x3), afterSHOOT[0]);
+
         }
     }
 }

@@ -45,7 +45,6 @@
     <Compile Include="Models\BitValueOperator.cs" />
     <Compile Include="Models\Clauses\LogicClauses\Alternative.cs" />
     <Compile Include="Models\Clauses\LogicClauses\AlternativeOfConjunctions.cs" />
-    <Compile Include="Models\Clauses\LogicClauses\SimpleLogicClause.cs" />
     <Compile Include="Models\Clauses\LogicClauses\Conjunction.cs" />
     <Compile Include="Models\Clauses\LogicClauses\ConjunctionOfAlternatives.cs" />
     <Compile Include="Models\Clauses\LogicClauses\LogicClause.cs" />

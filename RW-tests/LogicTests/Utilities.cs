@@ -10,7 +10,7 @@ namespace RW_tests.LogicTests
 {
 	class Utilities
 	{
-		public void SetFluents(List<int> fluents, bool negated, SimpleLogicClause clause)
+		public void SetFluents(List<int> fluents, bool negated, LogicClause clause)
 		{
 			foreach (int fluent in fluents)
 			{

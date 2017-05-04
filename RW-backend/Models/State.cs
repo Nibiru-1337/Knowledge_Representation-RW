@@ -7,7 +7,7 @@ namespace RW_backend.Models
     /// <summary>
     /// Reprezentuje stan świata - wartości fluentów
     /// </summary>
-    internal class State
+    public class State
     {
 		public int FluentValues { get; }
 
