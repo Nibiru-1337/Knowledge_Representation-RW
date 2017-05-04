@@ -8,7 +8,7 @@ namespace RW_backend.Models
     /// <summary>
     /// Reprezentacja kwerendy
     /// </summary>
-    abstract class Query
+    public abstract class Query
     {
         public enum QueryType
         {
@@ -18,7 +18,7 @@ namespace RW_backend.Models
         }
         public abstract QueryType Type { get; }
         
-        public abstract QueryResult Evaluate(World world);
+        //public abstract QueryResult Evaluate(World world);
 
         //opcjonalnie tworzenie kwerend na podstawie zdania
         public static Query Create(string queryString)
@@ -27,7 +27,7 @@ namespace RW_backend.Models
         }
     }
 
-    class QueryResult
+	public class QueryResult
     {
         public bool IsTrue;
         public List<State> Function;

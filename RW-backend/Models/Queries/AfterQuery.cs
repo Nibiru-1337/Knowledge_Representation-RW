@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using RW_backend.Models.Clauses.LogicClauses;
+using RW_backend.Models.GraphModels;
 
 namespace RW_backend.Models.Queries
 {
@@ -6,9 +9,17 @@ namespace RW_backend.Models.Queries
 	{
 		public override QueryType Type => QueryType.After;
 
-		public override QueryResult Evaluate(World world)
-		{
-			throw new NotImplementedException();
-		}
+		public LogicClause Effect { get; } // alfa
+		public IReadOnlyList<ActionAgentsPair> ActionAgentsList { get; }
+
+
+
+
+
+
+		//public override QueryResult Evaluate(World world)
+		//{
+		//	throw new NotImplementedException();
+		//}
 	}
 }
