@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RW_backend.Models.Clauses.LogicClauses
 {
-	public class Alternative:SimpleLogicClause
+	public class Alternative:LogicClause
 	{
 		public override bool CheckForState(int state)
 		{
