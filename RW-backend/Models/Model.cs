@@ -29,5 +29,4 @@ namespace RW_backend.Models
         public IList<Causes> CausesStatements { get; set; }
         public IList<Releases> ReleasesStatements { get; set; }
     }
-    //TODO uzupełnić modele zdań
 }

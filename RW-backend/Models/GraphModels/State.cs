@@ -7,7 +7,7 @@ namespace RW_backend.Models
     /// <summary>
     /// Reprezentuje stan świata - wartości fluentów
     /// </summary>
-    internal class State
+    public class State
     {
 		public int FluentValues { get; }
 
@@ -18,12 +18,9 @@ namespace RW_backend.Models
 
         
 
-        public bool FluentValue(int fluentNumber)
-        {
-            return (FluentValues & (1 << fluentNumber)) > 0;
-        }
-        
-        public override bool Equals(object obj)
+        public bool FluentValue(int fluentNumber) => (FluentValues & (1 << fluentNumber)) > 0;
+
+	    public override bool Equals(object obj)
         {
             if (obj == null || GetType() != obj.GetType())
             {
