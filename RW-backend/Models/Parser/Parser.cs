@@ -50,15 +50,7 @@ namespace RW_backend.Models.Parser
             {
                 return GetCNF(text);
             }
-            
-            
-            //Scanner = new Scanner(new MemoryStream(Encoding.UTF8.GetBytes(text)));
-            //Token = (Tokens)Scanner.Scan();
-            //Root = Start();
-            //if (Root == null)
-            //    throw new ErrorException("The text is not a proper logic clause.");
-            //return Root;
-            return null;
+            return GetDNF(text);
         }
         protected LogicClause GetCNF(string text)
         {
@@ -81,6 +73,31 @@ namespace RW_backend.Models.Parser
                     alt.AddFluent(Fluents[alts[j]], isNegation);
                 }
                 lc.AddAlternative(alt);
+            }
+            return lc;
+        }
+
+        protected LogicClause GetDNF(string text)
+        {
+            AlternativeOfConjunctions lc = new AlternativeOfConjunctions();
+            string[] alts = text.Split(OrSymbol);
+            for (int i = 0; i < alts.Length; i++)
+            {
+                string[] conjs = alts[i].Split(AndSymbol);
+                Conjunction conj = new Conjunction();
+                for (int j = 0; j < conjs.Length; j++)
+                {
+                    bool isNegation = false;
+                    if (conjs[j][0] == NotSymbol)
+                    {
+                        isNegation = true;
+                        conjs[j] = conjs[j].Substring(1);
+                    }
+                    if (!Fluents.ContainsKey(conjs[j]))
+                        throw new ArgumentException($"There is no defined fluent: {conjs[j]}");
+                    conj.AddFluent(Fluents[conjs[j]], isNegation);
+                }
+                lc.AddConjunction(conj);
             }
             return lc;
         }
