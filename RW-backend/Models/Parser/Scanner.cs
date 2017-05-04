@@ -79,6 +79,9 @@ namespace RW_backend.Models.Parser
             ActionTable[Tokens.Or] = new Dictionary<char, Action>();
             SetWhiteChars(Tokens.Or);
 
+            ActionTable[Tokens.And] = new Dictionary<char, Action>();
+            SetWhiteChars(Tokens.And);
+
             //AddChars("0123456789", Tokens.Start, Tokens.Number);
             //ChangeState(" \t", Tokens.Start, Tokens.Start);
             //ChangeState('[', Tokens.Start, Tokens.ArrayStart);

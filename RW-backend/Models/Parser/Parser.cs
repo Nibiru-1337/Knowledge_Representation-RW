@@ -22,13 +22,14 @@ namespace RW_backend.Models.Parser
             if (fluents == null)
                 throw new ErrorException("Parser requires dictionary with fluents' names and indexes");
             Fluents = fluents;
+            //LastToken = Tokens.Error;
         }
-        
+
         protected Scanner Scanner
         {
             get; set;
         }
-        
+
         protected Tokens Token
         {
             get; set;
@@ -42,6 +43,11 @@ namespace RW_backend.Models.Parser
         {
             get; set;
         }
+
+        //protected Tokens LastToken
+        //{
+        //    get; set;
+        //}
         public LogicClause ParseToLogicClause(string text)
         {
             throw new NotImplementedException();
@@ -75,6 +81,9 @@ namespace RW_backend.Models.Parser
                 case Tokens.Or:
                     lo = OrClause();
                     break;
+                case Tokens.And:
+                    lo = AndClause();
+                    break;
                 case Tokens.BracketStart:
                     Match(Tokens.BracketStart);
                     lo = Start();
@@ -97,11 +106,13 @@ namespace RW_backend.Models.Parser
             //        lo.Next.Previous = lo;
             //    }
             //}
+            if(lo!=null)
+                lo.Next = Start();
             return lo;
         }
 
-        
-        private ParserClause FluentClause(bool isNegation=false)
+
+        private ParserClause FluentClause(bool isNegation = false)
         {
             CheckFluentExists(Scanner.Text);
             ParserClause pc = new FluentParserClause(Fluents[Scanner.Text], isNegation);
@@ -117,16 +128,36 @@ namespace RW_backend.Models.Parser
             {
                 CheckFluentExists(Scanner.Text);
                 fpc = new FluentParserClause(Fluents[Scanner.Text], Scanner.FoundNegation);
-                opc.Add(fpc);
                 Scanner.ClearScanner();
+                opc.Add(fpc);
                 Match(Tokens.Or);
             }
             CheckFluentExists(Scanner.Text);
 
             fpc = new FluentParserClause(Fluents[Scanner.Text], Scanner.FoundNegation);
-            opc.Add(fpc);
             Scanner.ClearScanner();
+            opc.Add(fpc);
             return opc;
+        }
+
+        protected ParserClause AndClause()
+        {
+            AndParserClause apc = new AndParserClause();
+            FluentParserClause fpc;
+            while (Token == Tokens.And)
+            {
+                CheckFluentExists(Scanner.Text);
+                fpc = new FluentParserClause(Fluents[Scanner.Text], Scanner.FoundNegation);
+                apc.Add(fpc);
+                Scanner.ClearScanner();
+                Match(Tokens.And);
+            }
+            CheckFluentExists(Scanner.Text);
+
+            fpc = new FluentParserClause(Fluents[Scanner.Text], Scanner.FoundNegation);
+            Scanner.ClearScanner();
+            apc.Add(fpc);
+            return apc;
         }
 
         //protected ParserObject Image0()

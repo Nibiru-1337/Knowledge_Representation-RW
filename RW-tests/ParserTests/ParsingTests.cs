@@ -62,7 +62,7 @@ namespace RW_tests.ParserTests
             AssertExeption("!" + fluentName);
         }
         #endregion //Fluents
-        #region Alternatives
+        #region Ory
         [TestMethod]
         public void SimpleOrParsing()
         {
@@ -194,7 +194,141 @@ namespace RW_tests.ParserTests
                 x.GetType() == typeof(FluentParserClause) && ((FluentParserClause)x).IsNegation
                 ));
         }
-        #endregion //Alternatives
+        #endregion //ory
+
+        #region Andy
+        [TestMethod]
+        public void SimpleArdParsing()
+        {
+            List<string> fluentNames = new List<string>() { "a", "b" };
+            List<int> fluentIds = new List<int>() { 1, 2 };
+            string text = "a & b";
+            Fluents = new Dictionary<string, int>();
+            for (int i = 0; i < fluentNames.Count; i++)
+            {
+                Fluents.Add(fluentNames[i], fluentIds[i]);
+            }
+            ParserClause pc = ParseText(text);
+
+            Assert.IsInstanceOfType(pc, typeof(AndParserClause));
+            AndParserClause opc = (AndParserClause)pc;
+            Assert.AreEqual(fluentNames.Count, opc.Clauses.Count);
+            Assert.AreEqual(0, opc.Clauses.Count(
+                x =>
+                x.GetType() == typeof(FluentParserClause) && ((FluentParserClause)x).IsNegation
+                ));
+        }
+
+        [TestMethod]
+        public void SimpleAndParsingWithNegationAtTheBeginning()
+        {
+            List<string> fluentNames = new List<string>() { "a", "b" };
+            List<int> fluentIds = new List<int>() { 1, 2 };
+            string text = "!a & b";
+            Fluents = new Dictionary<string, int>();
+            for (int i = 0; i < fluentNames.Count; i++)
+            {
+                Fluents.Add(fluentNames[i], fluentIds[i]);
+            }
+            ParserClause pc = ParseText(text);
+
+            Assert.IsInstanceOfType(pc, typeof(AndParserClause));
+            AndParserClause opc = (AndParserClause)pc;
+            Assert.AreEqual(fluentNames.Count, opc.Clauses.Count);
+            Assert.AreEqual(1, opc.Clauses.Count(
+                x =>
+                x.GetType() == typeof(FluentParserClause) && ((FluentParserClause)x).IsNegation
+                ));
+        }
+
+        [TestMethod]
+        public void SimpleManyFluentsAndParsing()
+        {
+            List<string> fluentNames = new List<string>() { "a", "b", "c", "d", "e", "f", "g" };
+            List<int> fluentIds = new List<int>() { 1, 2, 3, 4, 5, 6, 7 };
+            string text = " a & b &c&d&e  &f&g  ";
+            Fluents = new Dictionary<string, int>();
+            for (int i = 0; i < fluentNames.Count; i++)
+            {
+                Fluents.Add(fluentNames[i], fluentIds[i]);
+            }
+            ParserClause pc = ParseText(text);
+
+            Assert.IsInstanceOfType(pc, typeof(AndParserClause));
+            AndParserClause opc = (AndParserClause)pc;
+            Assert.AreEqual(fluentNames.Count, opc.Clauses.Count);
+            Assert.AreEqual(0, opc.Clauses.Count(
+                x =>
+                x.GetType() == typeof(FluentParserClause) && ((FluentParserClause)x).IsNegation
+                ));
+        }
+
+        [TestMethod]
+        public void SimpleManyNegatedFluentsAndParsing()
+        {
+            List<string> fluentNames = new List<string>() { "a", "b", "c", "d", "e", "f", "g" };
+            List<int> fluentIds = new List<int>() { 1, 2, 3, 4, 5, 6, 7 };
+            string text = " !a &! b &!c&!d&!e  & !f&!g  ";
+            Fluents = new Dictionary<string, int>();
+            for (int i = 0; i < fluentNames.Count; i++)
+            {
+                Fluents.Add(fluentNames[i], fluentIds[i]);
+            }
+            ParserClause pc = ParseText(text);
+
+            Assert.IsInstanceOfType(pc, typeof(AndParserClause));
+            AndParserClause opc = (AndParserClause)pc;
+            Assert.AreEqual(fluentNames.Count, opc.Clauses.Count);
+            Assert.AreEqual(fluentNames.Count, opc.Clauses.Count(
+                x =>
+                x.GetType() == typeof(FluentParserClause) && ((FluentParserClause)x).IsNegation
+                ));
+        }
+
+        [TestMethod]
+        public void AndParsing()
+        {
+            List<string> fluentNames = new List<string>() { "a", "b", "c", "d", "e", "f", "g" };
+            List<int> fluentIds = new List<int>() { 1, 2, 3, 4, 5, 6, 7 };
+            string text = " !a & b &!c&d&!e  & !f&g  ";
+            Fluents = new Dictionary<string, int>();
+            for (int i = 0; i < fluentNames.Count; i++)
+            {
+                Fluents.Add(fluentNames[i], fluentIds[i]);
+            }
+            ParserClause pc = ParseText(text);
+
+            Assert.IsInstanceOfType(pc, typeof(AndParserClause));
+            AndParserClause opc = (AndParserClause)pc;
+            Assert.AreEqual(fluentNames.Count, opc.Clauses.Count);
+            Assert.AreEqual(4, opc.Clauses.Count(
+                x =>
+                x.GetType() == typeof(FluentParserClause) && ((FluentParserClause)x).IsNegation
+                ));
+        }
+
+        [TestMethod]
+        public void SimpleAndParsingWithNegationAtTheEnd()
+        {
+            List<string> fluentNames = new List<string>() { "a", "b" };
+            List<int> fluentIds = new List<int>() { 1, 2 };
+            string text = "a & !b";
+            Fluents = new Dictionary<string, int>();
+            for (int i = 0; i < fluentNames.Count; i++)
+            {
+                Fluents.Add(fluentNames[i], fluentIds[i]);
+            }
+            ParserClause pc = ParseText(text);
+
+            Assert.IsInstanceOfType(pc, typeof(AndParserClause));
+            AndParserClause opc = (AndParserClause)pc;
+            Assert.AreEqual(fluentNames.Count, opc.Clauses.Count);
+            Assert.AreEqual(1, opc.Clauses.Count(
+                x =>
+                x.GetType() == typeof(FluentParserClause) && ((FluentParserClause)x).IsNegation
+                ));
+        }
+        #endregion //Andy
         protected void AssertExeption(string text)
         {
             try
