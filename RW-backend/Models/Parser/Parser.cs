@@ -118,7 +118,7 @@ namespace RW_backend.Models.Parser
             bracket = text.LastIndexOf(BracketStart);
             if (bracket != 0)
             {
-                string temp = text.Substring(0, bracket + 1);
+                string temp = text.Substring(0, bracket);
                 temp = temp.TrimEnd();
                 //and is between brackets
                 if (temp[temp.Length-1] == AndSymbol)
