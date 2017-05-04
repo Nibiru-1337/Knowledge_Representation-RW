@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RW_backend.Models.Clauses.LogicClauses
 {
-	public abstract class SimpleLogicClause
+	public abstract class SimpleLogicClause : LogicClause
 	{
 
 		public int PositiveFluents { get; private set; }
@@ -43,7 +43,7 @@ namespace RW_backend.Models.Clauses.LogicClauses
 			}
 		}
 
-		public abstract bool CheckForState(int state);
+		//public abstract bool CheckForState(int state);
 
 	}
 }
