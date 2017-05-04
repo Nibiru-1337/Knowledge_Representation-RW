@@ -10,7 +10,7 @@ namespace RW_backend.Models.Clauses.LogicClauses
 	{
 		private readonly IList<Conjunction> _conjunctions;
 
-		private IReadOnlyList<Conjunction> Conjunctions => _conjunctions.ToList().AsReadOnly();
+		public IReadOnlyList<Conjunction> Conjunctions => _conjunctions.ToList().AsReadOnly();
 
 
 		public AlternativeOfConjunctions()

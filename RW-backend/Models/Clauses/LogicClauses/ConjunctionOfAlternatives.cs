@@ -9,7 +9,7 @@ namespace RW_backend.Models.Clauses.LogicClauses
 	public class ConjunctionOfAlternatives:LogicClause
 	{
 		private readonly IList<Alternative> _alternatives;
-		private IReadOnlyList<Alternative> Alternatives => _alternatives.ToList().AsReadOnly();
+		public IReadOnlyList<Alternative> Alternatives => _alternatives.ToList().AsReadOnly();
 
 		public ConjunctionOfAlternatives()
 		{
