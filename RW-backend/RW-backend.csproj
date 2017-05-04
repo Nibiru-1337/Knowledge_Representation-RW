@@ -49,7 +49,11 @@
     <Compile Include="Models\Clauses\LogicClauses\Conjunction.cs" />
     <Compile Include="Models\Clauses\LogicClauses\ConjunctionOfAlternatives.cs" />
     <Compile Include="Models\Clauses\LogicClauses\LogicClause.cs" />
+    <Compile Include="Models\Parser\AndParserClause.cs" />
+    <Compile Include="Models\Parser\FluentParserClause.cs" />
+    <Compile Include="Models\Parser\OrParserClause.cs" />
     <Compile Include="Models\Parser\Parser.cs" />
+    <Compile Include="Models\Parser\ParserClause.cs" />
     <Compile Include="Models\Parser\Scanner.cs" />
     <Compile Include="Models\Queries\AfterQuery.cs" />
     <Compile Include="Models\Clauses\After.cs" />

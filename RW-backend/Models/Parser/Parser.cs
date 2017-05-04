@@ -20,9 +20,8 @@ namespace RW_backend.Models.Parser
         public Parser(Dictionary<string, int> fluents)
         {
             if (fluents == null)
-                Fluents = new Dictionary<string, int>();
-            else
-                Fluents = fluents;
+                throw new ErrorException("Parser requires dictionary with fluents' names and indexes");
+            Fluents = fluents;
         }
         
         protected Scanner Scanner
@@ -34,7 +33,7 @@ namespace RW_backend.Models.Parser
         {
             get; set;
         }
-        protected LogicClause Root
+        protected ParserClause Root
         {
             get; set;
         }
@@ -43,27 +42,46 @@ namespace RW_backend.Models.Parser
         {
             get; set;
         }
-        public LogicClause ParseText(string text)
+        public LogicClause ParseToLogicClause(string text)
         {
+            throw new NotImplementedException();
+        }
 
+        protected ParserClause ParseText(string text)
+        {
             Scanner = new Scanner(new MemoryStream(Encoding.UTF8.GetBytes(text)));
             Token = (Tokens)Scanner.Scan();
             Root = Start();
             if (Root == null)
-                throw new ErrorException("Podany opis struktury jest nieprawidłowy i nie można na jego podstawie wygenerować wizualizacji.");
+                throw new ErrorException("The text is not a proper logic clause.");
             return Root;
-
         }
-        /// <summary>
-        /// Method creating ParserObject
-        /// </summary>
-        /// <param name="isGraph">Whether the object is inside graph definition</param>
-        /// <returns>Parsed ParserObject</returns>
-        private LogicClause Start(bool isGraph = false)
+
+        private ParserClause Start(bool isNegation = false)
         {
-            LogicClause lo;
+            ParserClause lo;
             switch (Token)
             {
+                case Tokens.End:
+                    if (!string.IsNullOrEmpty(Scanner.Text))
+                    {
+                        lo = FluentClause();
+                    }
+                    else
+                    {
+                        lo = null;
+                    }
+                    
+                    break;
+                case Tokens.Or:
+                    lo = OrClause();
+                    break;
+                case Tokens.BracketStart:
+                    Match(Tokens.BracketStart);
+                    lo = Start();
+                    Match(Tokens.BracketEnd);
+                    break;
+                
                 //case Tokens.ArrayStart:
                 //    Match(Tokens.ArrayStart);
                 //    lo = Array0();
@@ -102,7 +120,7 @@ namespace RW_backend.Models.Parser
                 //    break;
                 case Tokens.Error:
                     Root = null;
-                    throw new ErrorException($"Błąd składniowy - nieoczekiwany symbol {Scanner.CurrentSymbol} na pozycji {Scanner.CurrentPosition} po tekście {Scanner.UntilNowText}");
+                    throw new ErrorException($"Error: Unexpected symbol: {Scanner.CurrentSymbol}, on position: {Scanner.CurrentPosition}, after text: {Scanner.UntilNowText}");
                 default:
                     lo = null;
                     break;
@@ -119,6 +137,36 @@ namespace RW_backend.Models.Parser
             //}
             return lo;
         }
+
+        private ParserClause FluentClause(bool isNegation=false)
+        {
+            if(!Fluents.ContainsKey(Scanner.Text))
+                throw new ErrorException($"No defined fluent with name {Scanner.Text}.");
+            ParserClause pc = new FluentParserClause(Fluents[Scanner.Text], isNegation);
+            
+            return pc;
+        }
+
+        protected ParserClause OrClause()
+        {
+            ParserClause pc = new OrParserClause();
+
+            return pc;
+        }
+
+        //protected ParserObject Image0()
+        //{
+        //    ImageObject obj = new ImageObject();
+
+        //    if (!Fluents.ContainsKey(Scanner.Text))
+        //    {
+        //        throw new ErrorException($"Brak obrazka o nazwie: {Scanner.Text}");
+        //    }
+        //    obj.ImageBitmap = Fluents[Scanner.Text];
+        //    Scanner.ClearText();
+        //    return obj;
+        //}
+
         ///// <summary>
         ///// Method checking whether after current token a new object can be started
         ///// </summary>

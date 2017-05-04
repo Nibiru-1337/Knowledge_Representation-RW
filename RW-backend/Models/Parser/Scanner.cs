@@ -9,7 +9,9 @@ namespace RW_backend.Models.Parser
 {
     public enum Tokens
     {
-        Start,
+        Start, BracketStart, BracketEnd,
+        FluentName,
+        Or, And, Not,
         //ArrayStart, ArraySeparator, ArrayEnd, Sequence, Endl, Backslash, BlockStart, BlockEnd, QuoteStart, QuoteEnd, QuoteBackslash,
         //Separator, Tree, Graph, GraphSeparator, Number, Label, Directed, Undirected, NewLine, VectorStart, VectorEnd, VectorDot,
         //HashStart, HashEnd,
@@ -18,27 +20,15 @@ namespace RW_backend.Models.Parser
     }
     public class Scanner
     {
-        /// <summary>
-        /// The source text to scan
-        /// </summary>
         protected string SourceText;
-        /// <summary>
-        /// Current index in the scanned text
-        /// </summary>
         public int CurrentPosition
         {
             get; protected set;
         }
-        /// <summary>
-        /// Current state
-        /// </summary>
         public Tokens CurrentState
         {
             get; protected set;
         }
-        /// <summary>
-        /// The remembered text
-        /// </summary>
         public StringBuilder CurrentText
         {
             get; protected set;
@@ -47,18 +37,9 @@ namespace RW_backend.Models.Parser
         protected Dictionary<Tokens, Dictionary<char, Action>> ActionTable;
         protected Dictionary<Tokens, Action> DefaultActionTable;
         
-        /// <summary>
-        /// Current text as string
-        /// </summary>
         public string Text => CurrentText.ToString();
-        /// <summary>
-        /// The text already scanned
-        /// </summary>
         public string UntilNowText => SourceText.Substring(0, CurrentPosition);
         
-        /// <summary>
-        /// The current symbol in scanning
-        /// </summary>
         public char CurrentSymbol => SourceText[CurrentPosition];
 
         
@@ -80,7 +61,12 @@ namespace RW_backend.Models.Parser
                 CurrentState = Tokens.End;
             };
 
-            //AddChars(Tokens.Start, Tokens.Sequence);
+            AddChars(Tokens.Start, Tokens.Start);
+            ChangeState('(', Tokens.Start, Tokens.BracketStart);
+            ChangeState(')', Tokens.Start, Tokens.BracketEnd);
+            ChangeState('!', Tokens.Start, Tokens.Not);
+            ChangeState('&', Tokens.Start, Tokens.And);
+            ChangeState('|', Tokens.Start, Tokens.Or);
             //AddChars("0123456789", Tokens.Start, Tokens.Number);
             //ChangeState(" \t", Tokens.Start, Tokens.Start);
             //ChangeState('[', Tokens.Start, Tokens.ArrayStart);
@@ -220,7 +206,12 @@ namespace RW_backend.Models.Parser
                 ActionTable[t][chars[i]] = action;
             }
         }
-        
+
+        protected void AddChars(Tokens t, Tokens newToken)
+        {
+            AddChars(GetChars(), t, newToken);
+        }
+
         /// <summary>
         /// Adds chars and changes current state
         /// </summary>
