@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RW_backend.Models.BitSets;
 
 namespace RW_backend.Models.GraphModels
 {
@@ -19,15 +20,15 @@ namespace RW_backend.Models.GraphModels
 		// drugi int/nowa klasa: zbiór agentów, może być obiektem klasy (nowej) AgentsSet
 		// (która będzie tego inta zawierać - int znowu jest "zbiorem bitowym", 
 		// tzn. jeśli jest 1 dla danego indeksu, to znaczy, że dnay obiekt o danym indeksie jest zawarty w zbiorze)
-		private Dictionary<int, Dictionary<int, List<LinkedState>>> OutEdges;
-		private Dictionary<int, Dictionary<int, List<LinkedState>>> InEdges;
+		private Dictionary<int, Dictionary<AgentsSet, List<LinkedState>>> OutEdges;
+		private Dictionary<int, Dictionary<AgentsSet, List<LinkedState>>> InEdges;
 		
 		// w Worldzie: Dictionary<State, LinkedState>
 
 
 
 
-		public List<LinkedState> GetOutStates(int actionId, int agentsSet)
+		public List<LinkedState> GetOutStates(int actionId, AgentsSet agentsSet)
 		{
 			if(OutEdges.ContainsKey(actionId))
 				if (OutEdges[actionId].ContainsKey(agentsSet))
@@ -36,7 +37,7 @@ namespace RW_backend.Models.GraphModels
 		}
 
 
-		public List<LinkedState> GetInStates(int actionId, int agentsSet)
+		public List<LinkedState> GetInStates(int actionId, AgentsSet agentsSet)
 		{
 			if (InEdges.ContainsKey(actionId))
 				if (InEdges[actionId].ContainsKey(agentsSet))

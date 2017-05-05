@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RW_backend.Models.Clauses.LogicClauses;
 using RW_backend.Models;
+using RW_backend.Models.BitSets;
 using RW_backend.Models.GraphModels;
 
 

@@ -7,11 +7,7 @@ using System.Threading.Tasks;
 namespace RW_backend.Models
 {
 	/// <summary>
-	/// Dlaczego to, zamiast klasy abstrakcyjnej "BitValue"?
-	/// Otóż że jak będziemy mieć mnóstwo czegoś
-	/// to lepiej mieć mnóstwo intów niż mnóstwo instancji klas
-	/// skoro chcemy, żeby to było szybkie
-	/// zresztą... 
+	/// operacje na bitach
 	/// </summary>
 	public class BitValueOperator
 	{

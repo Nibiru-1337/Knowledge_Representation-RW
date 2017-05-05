@@ -41,7 +41,9 @@
   <ItemGroup>
     <Compile Include="Logic\BackendLogic.cs" />
     <Compile Include="Logic\WorldConstructor.cs" />
-    <Compile Include="Models\BitValueOperator.cs" />
+    <Compile Include="Models\BitSets\AgentsSet.cs" />
+    <Compile Include="Models\BitSets\BitSet.cs" />
+    <Compile Include="Models\BitSets\BitValueOperator.cs" />
     <Compile Include="Models\Clauses\LogicClauses\UniformAlternative.cs" />
     <Compile Include="Models\Clauses\LogicClauses\AlternativeOfConjunctions.cs" />
     <Compile Include="Models\Clauses\LogicClauses\UniformLogicClause.cs" />
@@ -57,9 +59,9 @@
     <Compile Include="Logic\Queries\EngagedQuery.cs" />
     <Compile Include="Logic\Queries\ExectutableQuery.cs" />
     <Compile Include="Models\Model.cs" />
-    <Compile Include="Models\Query.cs" />
+    <Compile Include="Logic\Queries\Query.cs" />
     <Compile Include="Models\Clauses\Releases.cs" />
-    <Compile Include="Models\GraphModels\State.cs" />
+    <Compile Include="Models\BitSets\State.cs" />
     <Compile Include="Models\World.cs" />
   </ItemGroup>
   <ItemGroup>
