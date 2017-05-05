@@ -33,12 +33,83 @@
 
                     </Grid>
                 </Expander>
+                <Expander FontSize="14" Header="Akcje" BorderBrush="Black" BorderThickness="2" Margin="5" >
+                    <Grid HorizontalAlignment="Stretch">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="50"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Row="0" Grid.Column="1" Content="Dodaj" Command="{Binding AddActionCommand}"/>
+                        <ListView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Actions, Mode=TwoWay}" HorizontalContentAlignment="Stretch">
+                            <ListView.ItemTemplate>
+                                <DataTemplate DataType="local:ActionVM">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="3*" MinWidth="30"/>
+                                            <ColumnDefinition Width="25" MinWidth="25"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBox Grid.Column="0" Text="{Binding ActionName}"/>
+                                        <Button Grid.Column="1" Content="X" Command="{Binding DeleteActionCommand}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+                </Expander>
                 <Expander FontSize="14" Header="Agenci" BorderBrush="Black" BorderThickness="2" Margin="5" />
                 <Expander FontSize="14" Header="Initially" BorderBrush="Black" BorderThickness="1" Margin="5" />
                 <Expander FontSize="14" Header="After" BorderBrush="Black" BorderThickness="1" Margin="5" />
                 <Expander FontSize="14" Header="Observable" BorderBrush="Black" BorderThickness="1" Margin="5" />
                 <Expander FontSize="14" Header="Impossible" BorderBrush="Black" BorderThickness="1" Margin="5" />
-                <Expander FontSize="14" Header="Causes" BorderBrush="Black" BorderThickness="1" Margin="5" />
+                <Expander FontSize="14" Header="Causes" BorderBrush="Black" BorderThickness="1" Margin="5" >
+                    <Grid HorizontalAlignment="Stretch">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="50"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Row="0" Grid.Column="1" Content="Dodaj" Command="{Binding AddCausesCommand}"/>
+                        <ListView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding CausesStatements, Mode=TwoWay}" HorizontalContentAlignment="Stretch">
+                            <ListView.ItemTemplate>
+                                <DataTemplate DataType="local:CausesVM">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="3*" MinWidth="30"/>
+                                            <ColumnDefinition Width="25" MinWidth="25"/>
+                                            <ColumnDefinition Width="3*" MinWidth="30"/>
+                                            <ColumnDefinition Width="60" MinWidth="60"/>
+                                            <ColumnDefinition Width="6*" MinWidth="50"/>
+                                            <ColumnDefinition Width="25" MinWidth="25"/>
+                                            <ColumnDefinition Width="6*" MinWidth="50"/>
+                                            <ColumnDefinition Width="25" MinWidth="25"/>
+                                        </Grid.ColumnDefinitions>
+                                        <ComboBox Grid.Column="0" ItemsSource="{Binding Actions}" SelectedItem="{Binding Action}">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate DataType="local:ActionVM">
+                                                    <TextBlock Text="{Binding ActionName}"/>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                        <Label Grid.Column="1" Content="by"/>
+                                        <ListBox Grid.Column="2" ItemsSource="{Binding Agents}" SelectionMode="Multiple"/>
+                                        <Label Grid.Column="3" Content="causes"/>
+                                        <TextBox Grid.Column="4" Text="{Binding Efects}"/>
+                                        <Label Grid.Column="5" Content="if"/>
+                                        <TextBox Grid.Column="6" Text="{Binding Conditions}"/>
+                                        <Button Grid.Column="7" Content="X" Command="{Binding DeleteStatementCommand}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+                </Expander>
                 <Expander FontSize="14" Header="Releases" BorderBrush="Black" BorderThickness="1" Margin="5" />
                 <Expander FontSize="14" Header="Always" BorderBrush="Black" BorderThickness="1" Margin="5" />
                 <Expander FontSize="14" Header="Nonintertial" BorderBrush="Black" BorderThickness="1" Margin="5" />

@@ -55,6 +55,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ActionVM.cs" />
+    <Compile Include="CausesVM.cs" />
     <Compile Include="FrontendLogic.cs" />
     <Compile Include="ModelConverter.cs" />
     <Compile Include="Properties\Annotations.cs" />

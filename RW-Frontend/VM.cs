@@ -17,7 +17,7 @@ namespace RW_Frontend
     {
         //TODO dopracować reprezentacje zdań - kolekcje string na vm zdań, wprowadzić właściwości z OnPropertyChanged()
         public ObservableCollection<string> Fluents { get; set; }
-        public ObservableCollection<string> Actions { get; set; }
+        public ObservableCollection<ActionVM> Actions { get; set; }
         public ObservableCollection<string> Agents { get; set; }
 
         public ObservableCollection<string> Noninertial { get; set; }
@@ -26,19 +26,19 @@ namespace RW_Frontend
         public ObservableCollection<string> InitiallyStatements { get; set; }
 
         public ObservableCollection<string> AfterStatements { get; set; }
-        public ObservableCollection<string> CausesStatements { get; set; }
+        public ObservableCollection<CausesVM> CausesStatements { get; set; }
         public ObservableCollection<string> ReleasesStatements { get; set; }
 
         public VM()
         {
             Fluents = new ObservableCollection<string>();
-            Actions = new ObservableCollection<string>();
+            Actions = new ObservableCollection<ActionVM>();
             Agents = new ObservableCollection<string>();
             Noninertial = new ObservableCollection<string>();
             AlwaysStatements = new ObservableCollection<string>();
             InitiallyStatements = new ObservableCollection<string>();
             AfterStatements = new ObservableCollection<string>();
-            CausesStatements = new ObservableCollection<string>();
+            CausesStatements = new ObservableCollection<CausesVM>();
             ReleasesStatements = new ObservableCollection<string>();
         }
 
@@ -52,19 +52,23 @@ namespace RW_Frontend
             string[] after, string[] causes, string[] releases)
         {
             //metoda na potrzeby automatyzacji testów
-            return new VM
+            var agentsCollection = new ObservableCollection<string>(agents);
+            var vm = new VM
             {
                 //trzeba zaktualizować przy zmianie reprezentacji zdań 
                 Fluents = new ObservableCollection<string>(fluents),
-                Actions = new ObservableCollection<string>(actions),
-                Agents = new ObservableCollection<string>(agents),
+                Agents = agentsCollection,
                 Noninertial = new ObservableCollection<string>(noninertial),
                 AlwaysStatements = new ObservableCollection<string>(always),
                 InitiallyStatements = new ObservableCollection<string>(initially),
                 AfterStatements = new ObservableCollection<string>(after),
-                CausesStatements = new ObservableCollection<string>(causes),
                 ReleasesStatements = new ObservableCollection<string>(releases)
             };
+            var actionsCollection = new ObservableCollection<ActionVM>(actions.Select(s=>ActionVM.Create(vm, s)));
+            vm.Actions = actionsCollection;
+            var agentVms = new ObservableCollection<CausesVM>(causes.Select(s => CausesVM.Create(s, actionsCollection, agentsCollection, vm)));
+            vm.CausesStatements = agentVms;
+            return vm;
         }
 
         #region Components Control
@@ -78,6 +82,14 @@ namespace RW_Frontend
 
         #region TextBoxes
 
+        public ICommand AddActionCommand
+        {
+            get { return new RelayCommand(AddAction, CanDo); }
+        }
+        public ICommand AddCausesCommand
+        {
+            get { return new RelayCommand(AddCauses, CanDo); }
+        }
         public ICommand AddFluentCommand
         {
             get { return new RelayCommand(AddFluent, CanDo); }
@@ -86,6 +98,16 @@ namespace RW_Frontend
         public ICommand RemoveFluentTextBoxCommand
         {
             get { return new RelayCommand(RemoveFluentTextBox, CanDo); }
+        }
+
+        private void AddAction()
+        {
+            Actions.Add(ActionVM.Create(this));
+        }
+
+        private void AddCauses()
+        {
+            CausesStatements.Add(CausesVM.Create("", Actions, Agents, this));
         }
 
         private void AddFluent()
@@ -160,6 +182,15 @@ namespace RW_Frontend
             }
         }
 
+        public void RemoveAction(ActionVM actionVM)
+        {
+            Actions.Remove(actionVM);
+        }
+
+        public void RemoveCauses(CausesVM causesVM)
+        {
+            CausesStatements.Remove(causesVM);
+        }
         #endregion
 
         #endregion
@@ -177,5 +208,6 @@ namespace RW_Frontend
         }
 
         #endregion
+
     }
 }
