@@ -74,9 +74,9 @@ namespace RW_Frontend
             return new TextBox() {Height = 25, FontSize = 14, Margin = new Thickness(5)};
         }
 
-        private Button CreateRemoveButton()
+        private Button CreateRemoveButton(string inputDataType)
         {
-            var button =  new Button()
+            var button = new Button()
             {
                 Height = 25,
                 Width = 25,
@@ -85,16 +85,19 @@ namespace RW_Frontend
                 Margin = new Thickness(5)
             };
 
-            button.Click += RemoveButtonClick;
+            switch (inputDataType)
+            {
+                case "Fluent":
+                    button.Click += RemoveFluentButtonClick;
+                    break;
+                case "Action":
+                    button.Click += RemoveActionButtonClick;
+                    break;
+                case "Agent":
+                    button.Click += RemoveAgentButtonClick;
+                    break;
+            }
             return button;
-        }
-
-        private void RemoveButtonClick(object sender, RoutedEventArgs e)
-        {
-            Button clickedButton = (Button) sender;
-            int removingItemIdx = FluentsRemoveButtons.IndexOf(clickedButton);
-            FluentsRemoveButtons.RemoveAt(removingItemIdx);
-            FluentsTextBoxes.RemoveAt(removingItemIdx);
         }
 
         private bool CanDo()
@@ -104,31 +107,26 @@ namespace RW_Frontend
 
         #region Fluents
 
-        #region TextBoxes
-
         public ICommand AddFluentCommand
         {
             get { return new RelayCommand(AddFluent, CanDo); }
         }
 
-        public ICommand RemoveFluentTextBoxCommand
-        {
-            get { return new RelayCommand(RemoveFluentTextBox, CanDo); }
-        }
-
         private void AddFluent()
         {
             FluentsTextBoxes.Add(CreateTextBox());
-            FluentsRemoveButtons.Add(CreateRemoveButton());
+            FluentsRemoveButtons.Add(CreateRemoveButton("Fluent"));
         }
 
-        private void RemoveFluentTextBox()
+        private void RemoveFluentButtonClick(object sender, RoutedEventArgs e)
         {
-            if (FluentsTextBoxes.Count > 0)
-            {
-                FluentsTextBoxes.Remove(FluentsTextBoxes.Last());
-            }
+            Button clickedButton = (Button) sender;
+            int removingItemIdx = FluentsRemoveButtons.IndexOf(clickedButton);
+            FluentsRemoveButtons.RemoveAt(removingItemIdx);
+            FluentsTextBoxes.RemoveAt(removingItemIdx);
         }
+
+        #region Fluents -> TextBoxes
 
         private ObservableCollection<TextBox> _fluentsTextBoxes;
 
@@ -149,20 +147,7 @@ namespace RW_Frontend
 
         #endregion
 
-        #region RemoveButtons
-
-        public ICommand RemoveFluentRemoveButtonCommand
-        {
-            get { return new RelayCommand(RemoveFluentRemoveButton, CanDo); }
-        }
-
-        private void RemoveFluentRemoveButton()
-        {
-            if (FluentsRemoveButtons.Count > 0)
-            {
-                FluentsRemoveButtons.Remove(FluentsRemoveButtons.Last());
-            }
-        }
+        #region Fluents -> RemoveButtons
 
         private ObservableCollection<Button> _fluentsRemoveButtons;
 
@@ -174,10 +159,140 @@ namespace RW_Frontend
                 {
                     _fluentsRemoveButtons = new ObservableCollection<Button>()
                     {
-                        CreateRemoveButton()
+                        CreateRemoveButton("Fluent")
                     };
                 }
                 return _fluentsRemoveButtons;
+            }
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Actions
+
+        public ICommand AddActionCommand
+        {
+            get { return new RelayCommand(AddAction, CanDo); }
+        }
+
+        private void AddAction()
+        {
+            ActionsTextBoxes.Add(CreateTextBox());
+            ActionsRemoveButtons.Add(CreateRemoveButton("Action"));
+        }
+
+        private void RemoveActionButtonClick(object sender, RoutedEventArgs e)
+        {
+            Button clickedButton = (Button) sender;
+            int removingItemIdx = ActionsRemoveButtons.IndexOf(clickedButton);
+            ActionsRemoveButtons.RemoveAt(removingItemIdx);
+            ActionsTextBoxes.RemoveAt(removingItemIdx);
+        }
+
+        #region Actions -> TextBoxes
+
+        private ObservableCollection<TextBox> _actionsTextBoxes;
+
+        public ObservableCollection<TextBox> ActionsTextBoxes
+        {
+            get
+            {
+                if (_actionsTextBoxes == null)
+                {
+                    _actionsTextBoxes = new ObservableCollection<TextBox>()
+                    {
+                        CreateTextBox()
+                    };
+                }
+                return _actionsTextBoxes;
+            }
+        }
+
+        #endregion
+
+        #region Actions -> RemoveButtons
+
+        private ObservableCollection<Button> _actionsRemoveButtons;
+
+        public ObservableCollection<Button> ActionsRemoveButtons
+        {
+            get
+            {
+                if (_actionsRemoveButtons == null)
+                {
+                    _actionsRemoveButtons = new ObservableCollection<Button>()
+                    {
+                        CreateRemoveButton("Action")
+                    };
+                }
+                return _actionsRemoveButtons;
+            }
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Agents
+
+        public ICommand AddAgentCommand
+        {
+            get { return new RelayCommand(AddAgent, CanDo); }
+        }
+
+        private void AddAgent()
+        {
+            AgentsTextBoxes.Add(CreateTextBox());
+            AgentsRemoveButtons.Add(CreateRemoveButton("Agent"));
+        }
+
+        private void RemoveAgentButtonClick(object sender, RoutedEventArgs e)
+        {
+            Button clickedButton = (Button) sender;
+            int removingItemIdx = AgentsRemoveButtons.IndexOf(clickedButton);
+            AgentsRemoveButtons.RemoveAt(removingItemIdx);
+            AgentsTextBoxes.RemoveAt(removingItemIdx);
+        }
+
+        #region Actions -> TextBoxes
+
+        private ObservableCollection<TextBox> _agentsTextBoxes;
+
+        public ObservableCollection<TextBox> AgentsTextBoxes
+        {
+            get
+            {
+                if (_agentsTextBoxes == null)
+                {
+                    _agentsTextBoxes = new ObservableCollection<TextBox>()
+                    {
+                        CreateTextBox()
+                    };
+                }
+                return _agentsTextBoxes;
+            }
+        }
+
+        #endregion
+
+        #region Actions -> RemoveButtons
+
+        private ObservableCollection<Button> _agentsRemoveButtons;
+
+        public ObservableCollection<Button> AgentsRemoveButtons
+        {
+            get
+            {
+                if (_agentsRemoveButtons == null)
+                {
+                    _agentsRemoveButtons = new ObservableCollection<Button>()
+                    {
+                        CreateRemoveButton("Agent")
+                    };
+                }
+                return _agentsRemoveButtons;
             }
         }
 
