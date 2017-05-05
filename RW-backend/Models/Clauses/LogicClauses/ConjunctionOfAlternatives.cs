@@ -11,12 +11,12 @@ namespace RW_backend.Models.Clauses.LogicClauses
 	/// </summary>
 	public class ConjunctionOfAlternatives:LogicClause
 	{
-		private readonly IList<Alternative> _alternatives;
-		public IReadOnlyList<Alternative> Alternatives => _alternatives.ToList().AsReadOnly();
+		private readonly IList<UniformAlternative> _alternatives;
+		public IReadOnlyList<UniformAlternative> Alternatives => _alternatives.ToList().AsReadOnly();
 
 		public ConjunctionOfAlternatives()
 		{
-			_alternatives = new List<Alternative>();
+			_alternatives = new List<UniformAlternative>();
 		}
 
 		public override bool CheckForState(int state)
@@ -25,7 +25,7 @@ namespace RW_backend.Models.Clauses.LogicClauses
 		}
 
 
-		public void AddAlternative(Alternative alternative)
+		public void AddAlternative(UniformAlternative alternative)
 		{
 			_alternatives.Add(alternative);
 		}

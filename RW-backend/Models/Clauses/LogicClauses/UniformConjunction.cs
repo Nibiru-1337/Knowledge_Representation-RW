@@ -10,7 +10,7 @@ namespace RW_backend.Models.Clauses.LogicClauses
 	/// <summary>
 	/// Klasa reprezentująca formułę logiczną zawierającą wyłącznie koniunkcje
 	/// </summary>
-	public class Conjunction:UniformLogicClause
+	public class UniformConjunction:UniformLogicClause
 	{
 		public override bool CheckForState(int state)
 		{

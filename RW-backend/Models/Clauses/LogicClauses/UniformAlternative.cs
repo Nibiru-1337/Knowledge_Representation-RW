@@ -9,7 +9,7 @@ namespace RW_backend.Models.Clauses.LogicClauses
 	/// <summary>
 	/// Klasa reprezentująca alternatywę
 	/// </summary>
-	public class Alternative:UniformLogicClause
+	public class UniformAlternative:UniformLogicClause
 	{
 		public override bool CheckForState(int state)
 		{

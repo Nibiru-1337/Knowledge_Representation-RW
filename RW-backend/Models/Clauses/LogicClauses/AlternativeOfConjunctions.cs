@@ -11,14 +11,14 @@ namespace RW_backend.Models.Clauses.LogicClauses
 	/// </summary>
 	public class AlternativeOfConjunctions:LogicClause
 	{
-		private readonly IList<Conjunction> _conjunctions;
+		private readonly IList<UniformConjunction> _conjunctions;
 
-		public IReadOnlyList<Conjunction> Conjunctions => _conjunctions.ToList().AsReadOnly();
+		public IReadOnlyList<UniformConjunction> Conjunctions => _conjunctions.ToList().AsReadOnly();
 
 
 		public AlternativeOfConjunctions()
 		{
-			_conjunctions = new List<Conjunction>();
+			_conjunctions = new List<UniformConjunction>();
 		}
 
 		public override bool CheckForState(int state)
@@ -26,9 +26,9 @@ namespace RW_backend.Models.Clauses.LogicClauses
 			return _conjunctions.Any(conjunction => conjunction.CheckForState(state));
 		}
 
-		public void AddConjunction(Conjunction conjunction)
+		public void AddConjunction(UniformConjunction uniformConjunction)
 		{
-			_conjunctions.Add(conjunction);
+			_conjunctions.Add(uniformConjunction);
 		}
 	}
 }
