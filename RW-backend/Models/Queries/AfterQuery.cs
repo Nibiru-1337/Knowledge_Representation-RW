@@ -17,9 +17,9 @@ namespace RW_backend.Models.Queries
 
 
 
-		//public override QueryResult Evaluate(World world)
-		//{
-		//	throw new NotImplementedException();
-		//}
+		public override QueryResult Evaluate(World world)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

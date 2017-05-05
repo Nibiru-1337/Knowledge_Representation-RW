@@ -6,18 +6,23 @@ using System.Threading.Tasks;
 
 namespace RW_backend.Models.Clauses.LogicClauses
 {
-	public abstract class SimpleLogicClause
+	/// <summary>
+	/// Formuła logiczna "jednorodna" - w postaci wielu alternatyw LUB wielu koniunkcji
+	/// (poniżej podstawowa funkcjonalność)
+	/// dawne "SimpleLogicClause" lub "BasicLogicClause"
+	/// pomyślałam, że to nazewnictwo pomoże lepiej zrozumieć, o co chodzi
+	/// </summary>
+	public abstract class UniformLogicClause:LogicClause
 	{
-
 		public int PositiveFluents { get; private set; }
 		public int NegatedFluents { get; private set; }
 
-
-		protected SimpleLogicClause()
+		protected UniformLogicClause()
 		{
 			PositiveFluents = 0;
 			NegatedFluents = 0;
 		}
+		
 
 		public void AddFluent(int fluentId, bool negated)
 		{
@@ -42,8 +47,5 @@ namespace RW_backend.Models.Clauses.LogicClauses
 				PositiveFluents = PositiveFluents & (~(1 << fluentId));
 			}
 		}
-
-		public abstract bool CheckForState(int state);
-
 	}
 }
