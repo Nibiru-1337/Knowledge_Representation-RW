@@ -45,12 +45,13 @@
     <Compile Include="Models\BitValueOperator.cs" />
     <Compile Include="Models\Clauses\LogicClauses\Alternative.cs" />
     <Compile Include="Models\Clauses\LogicClauses\AlternativeOfConjunctions.cs" />
-    <Compile Include="Models\Clauses\LogicClauses\SimpleLogicClause.cs" />
+    <Compile Include="Models\Clauses\LogicClauses\UniformLogicClause.cs" />
     <Compile Include="Models\Clauses\LogicClauses\Conjunction.cs" />
     <Compile Include="Models\Clauses\LogicClauses\ConjunctionOfAlternatives.cs" />
     <Compile Include="Models\Clauses\LogicClauses\LogicClause.cs" />
     <Compile Include="Models\GraphModels\ActionAgentsPair.cs" />
     <Compile Include="Models\GraphModels\LinkedState.cs" />
+    <Compile Include="Models\Parser\Parser.cs" />
     <Compile Include="Models\Queries\AfterQuery.cs" />
     <Compile Include="Models\Clauses\After.cs" />
     <Compile Include="Models\Clauses\Causes.cs" />
@@ -60,7 +61,7 @@
     <Compile Include="Models\Query.cs" />
     <Compile Include="Models\Clauses\Releases.cs" />
     <Compile Include="Models\GraphModels\State.cs" />
-    <Compile Include="Models\GraphModels\World.cs" />
+    <Compile Include="Models\World.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

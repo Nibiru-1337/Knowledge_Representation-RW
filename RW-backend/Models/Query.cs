@@ -18,7 +18,7 @@ namespace RW_backend.Models
         }
         public abstract QueryType Type { get; }
         
-        //public abstract QueryResult Evaluate(World world);
+        public abstract QueryResult Evaluate(World world);
 
         //opcjonalnie tworzenie kwerend na podstawie zdania
         public static Query Create(string queryString)
