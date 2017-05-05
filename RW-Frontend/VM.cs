@@ -69,6 +69,34 @@ namespace RW_Frontend
 
         #region Components Control
 
+        private TextBox CreateTextBox()
+        {
+            return new TextBox() {Height = 25, FontSize = 14, Margin = new Thickness(5)};
+        }
+
+        private Button CreateRemoveButton()
+        {
+            var button =  new Button()
+            {
+                Height = 25,
+                Width = 25,
+                FontSize = 14,
+                Content = "X",
+                Margin = new Thickness(5)
+            };
+
+            button.Click += RemoveButtonClick;
+            return button;
+        }
+
+        private void RemoveButtonClick(object sender, RoutedEventArgs e)
+        {
+            Button clickedButton = (Button) sender;
+            int removingItemIdx = FluentsRemoveButtons.IndexOf(clickedButton);
+            FluentsRemoveButtons.RemoveAt(removingItemIdx);
+            FluentsTextBoxes.RemoveAt(removingItemIdx);
+        }
+
         private bool CanDo()
         {
             return true;
@@ -90,15 +118,8 @@ namespace RW_Frontend
 
         private void AddFluent()
         {
-            FluentsTextBoxes.Add(new TextBox() {Height = 25, FontSize = 14, Margin = new Thickness(5)});
-            FluentsRemoveButtons.Add(new Button()
-            {
-                Height = 25,
-                Width = 25,
-                FontSize = 14,
-                Content = "X",
-                Margin = new Thickness(5)
-            });
+            FluentsTextBoxes.Add(CreateTextBox());
+            FluentsRemoveButtons.Add(CreateRemoveButton());
         }
 
         private void RemoveFluentTextBox()
@@ -119,7 +140,7 @@ namespace RW_Frontend
                 {
                     _fluentsTextBoxes = new ObservableCollection<TextBox>()
                     {
-                        new TextBox() {Height = 25, FontSize = 14, Margin = new Thickness(5)}
+                        CreateTextBox()
                     };
                 }
                 return _fluentsTextBoxes;
@@ -153,7 +174,7 @@ namespace RW_Frontend
                 {
                     _fluentsRemoveButtons = new ObservableCollection<Button>()
                     {
-                        new Button() {Height = 25, Width = 25, FontSize = 14, Content = "X", Margin = new Thickness(5)}
+                        CreateRemoveButton()
                     };
                 }
                 return _fluentsRemoveButtons;
