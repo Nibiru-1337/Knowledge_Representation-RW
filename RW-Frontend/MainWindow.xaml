@@ -33,6 +33,7 @@
 
                     </Grid>
                 </Expander>
+                <Expander FontSize="14" Header="Akcje" BorderBrush="Black" BorderThickness="2" Margin="5" />
                 <Expander FontSize="14" Header="Agenci" BorderBrush="Black" BorderThickness="2" Margin="5" />
                 <Expander FontSize="14" Header="Initially" BorderBrush="Black" BorderThickness="1" Margin="5" />
                 <Expander FontSize="14" Header="After" BorderBrush="Black" BorderThickness="1" Margin="5" />
