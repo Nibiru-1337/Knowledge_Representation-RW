@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using RW_backend.Models.BitSets;
 using RW_backend.Models.Clauses;
 using RW_backend.Models.GraphModels;
 

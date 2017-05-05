@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RW_backend.Logic;
 using RW_backend.Models;
+using RW_backend.Models.BitSets;
 using RW_backend.Models.GraphModels;
 using RW_Frontend;
 

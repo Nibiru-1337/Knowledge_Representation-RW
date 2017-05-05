@@ -1,3 +1,4 @@
+using RW_backend.Models.BitSets;
 using RW_backend.Models.Clauses.LogicClauses;
 
 namespace RW_backend.Models.Clauses
@@ -10,9 +11,9 @@ namespace RW_backend.Models.Clauses
 		public LogicClause Condition { get; }
 		public LogicClause Effect { get; }
 		public int Action { get; }
-		public int AgentsSet { get; }
+		public AgentsSet AgentsSet { get; }
 
-		public Causes(LogicClause condition, LogicClause effect, int action, int agentsSet)
+		public Causes(LogicClause condition, LogicClause effect, int action, AgentsSet agentsSet)
 		{
 			Condition = condition;
 			Effect = effect;

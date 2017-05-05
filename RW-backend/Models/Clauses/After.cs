@@ -12,15 +12,15 @@ namespace RW_backend.Models.Clauses
 	{
 
 		public LogicClause Effect { get; } // alfa
-		public IReadOnlyList<ActionAgentsPair> ActionAgentsList { get; } 
+		public IReadOnlyList<ActionAgentsPair> Program { get; } 
 		// key - akcja, value - zbiór agentów
 		// mo¿e zrobiæ osobn¹ klasê do tego? bêdzie pewnie ³atwiej u¿ywaæ, a pewnie siê przyda w kilku miejscach
 
 
-		public After(LogicClause effect, IReadOnlyList<ActionAgentsPair> actionAgentsList)
+		public After(LogicClause effect, IReadOnlyList<ActionAgentsPair> program)
 		{
 			Effect = effect;
-			ActionAgentsList = actionAgentsList;
+			Program = program;
 		}
 
 	}

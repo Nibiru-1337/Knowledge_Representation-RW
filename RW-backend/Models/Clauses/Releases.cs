@@ -1,3 +1,4 @@
+using RW_backend.Models.BitSets;
 using RW_backend.Models.Clauses.LogicClauses;
 
 namespace RW_backend.Models.Clauses
@@ -10,9 +11,9 @@ namespace RW_backend.Models.Clauses
 		public LogicClause Condition { get; }
 		public int FluentReleased { get; }
 		public int Action { get; }
-		public int AgentsSet { get; }
+		public AgentsSet AgentsSet { get; }
 
-		public Releases(LogicClause condition, int fluentReleased, int action, int agentsSet)
+		public Releases(LogicClause condition, int fluentReleased, int action, AgentsSet agentsSet)
 		{
 			Condition = condition;
 			FluentReleased = fluentReleased;

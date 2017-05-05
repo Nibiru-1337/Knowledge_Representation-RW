@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using RW_backend.Models.BitSets;
 using RW_backend.Models.GraphModels;
 
 [assembly: InternalsVisibleTo("RW-tests")]

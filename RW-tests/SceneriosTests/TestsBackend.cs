@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RW_backend.Models;
+using RW_backend.Models.BitSets;
 using RW_backend.Models.Clauses;
 using RW_backend.Models.Clauses.LogicClauses;
 using RW_backend.Models.GraphModels;
@@ -21,7 +22,7 @@ namespace RW_tests.SceneriosTests
             //loaded is set after LOAD
             UniformAlternative effect = new UniformAlternative();
             effect.AddFluent(1, false);
-            Causes LOAD = new Causes(null, effect, 0x1, 0x0);
+            Causes LOAD = new Causes(null, effect, 0x1, new AgentsSet(0x0));
             world.AddCauses(LOAD);
 
             //should have an edge from state alive, -loaded -> alive, loaded
@@ -47,7 +48,7 @@ namespace RW_tests.SceneriosTests
             UniformConjunction effect2 = new UniformConjunction();
             effect2.AddFluent(0, true);
             effect2.AddFluent(1, true);
-            Causes SHOOT = new Causes(conditions, effect2, 0x2, 0x1);
+            Causes SHOOT = new Causes(conditions, effect2, 0x2, new AgentsSet(0x1));
             world.AddCauses(SHOOT);
 
             //should have an edge from state alive, loaded -> -alive, -loaded
