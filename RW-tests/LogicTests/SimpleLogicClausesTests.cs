@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RW_backend.Models.Clauses.LogicClauses;
 using RW_backend.Models;
+using RW_backend.Models.GraphModels;
 
 
 namespace RW_tests.LogicTests
@@ -20,7 +21,7 @@ namespace RW_tests.LogicTests
 		public void ConjunctionsPassTest()
 		{
 			Utilities utilities = new Utilities();
-			Conjunction conjunction = new Conjunction();
+			UniformConjunction conjunction = new UniformConjunction();
 			utilities.SetFluents(new List<int>() { 1, 3, 4, 5, 13 }, false, conjunction);
 			utilities.SetFluents(new List<int>() { 2, 11, 18 }, true, conjunction);
 			State state = utilities.GetState(new List<int>() {1, 3, 4, 5, 10, 13});
@@ -31,7 +32,7 @@ namespace RW_tests.LogicTests
 		public void ConjunctionsWrongPositiveTest()
 		{
 			Utilities utilities = new Utilities();
-			Conjunction conjunction = new Conjunction();
+			UniformConjunction conjunction = new UniformConjunction();
 			utilities.SetFluents(new List<int>() { 1, 3, 4, 5, 13 }, false, conjunction);
 			utilities.SetFluents(new List<int>() { 2, 11, 18 }, true, conjunction);
 			State state = utilities.GetState(new List<int>() { 1, 3, 4, 10, 13 });
@@ -44,7 +45,7 @@ namespace RW_tests.LogicTests
 		public void ConjunctionsWrongNegatedTest()
 		{
 			Utilities utilities = new Utilities();
-			Conjunction conjunction = new Conjunction();
+			UniformConjunction conjunction = new UniformConjunction();
 			utilities.SetFluents(new List<int>() { 1, 3, 4, 5, 13 }, false, conjunction);
 			utilities.SetFluents(new List<int>() { 2, 11, 18 }, true, conjunction);
 			State state = utilities.GetState(new List<int>() { 1, 3, 4, 5, 10, 13, 18 });
@@ -55,7 +56,7 @@ namespace RW_tests.LogicTests
 		public void AlternativePassPositiveTest()
 		{
 			Utilities utilities = new Utilities();
-			Alternative alternative = new Alternative();
+			UniformAlternative alternative = new UniformAlternative();
 			utilities.SetFluents(new List<int>() {1, 3, 4}, false, alternative);
 			utilities.SetFluents(new List<int>() {7, 8}, true, alternative);
 			State state = utilities.GetState(new List<int>() {1, 9, 10, 4, 7, 8});
@@ -66,7 +67,7 @@ namespace RW_tests.LogicTests
 		public void AlternativePassNegativeTest()
 		{
 			Utilities utilities = new Utilities();
-			Alternative alternative = new Alternative();
+			UniformAlternative alternative = new UniformAlternative();
 			utilities.SetFluents(new List<int>() { 1, 3, 4 }, false, alternative);
 			utilities.SetFluents(new List<int>() { 7, 8 }, true, alternative);
 			State state = utilities.GetState(new List<int>() { 9, 10, });
@@ -77,7 +78,7 @@ namespace RW_tests.LogicTests
 		public void AlternativePassPositiveAndNegativeTest()
 		{
 			Utilities utilities = new Utilities();
-			Alternative alternative = new Alternative();
+			UniformAlternative alternative = new UniformAlternative();
 			utilities.SetFluents(new List<int>() { 1, 3, 4 }, false, alternative);
 			utilities.SetFluents(new List<int>() { 7, 8 }, true, alternative);
 			State state = utilities.GetState(new List<int>() { 1, 4, 15});
@@ -88,7 +89,7 @@ namespace RW_tests.LogicTests
 		public void AlternativeFailTest()
 		{
 			Utilities utilities = new Utilities();
-			Alternative alternative = new Alternative();
+			UniformAlternative alternative = new UniformAlternative();
 			utilities.SetFluents(new List<int>() { 1, 3, 4 }, false, alternative);
 			utilities.SetFluents(new List<int>() { 7, 8 }, true, alternative);
 			State state = utilities.GetState(new List<int>() { 7, 8});

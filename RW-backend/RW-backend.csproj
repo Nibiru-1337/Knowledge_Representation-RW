@@ -40,23 +40,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Logic\BackendLogic.cs" />
-    <Compile Include="Logic\QueryEvaluator.cs" />
     <Compile Include="Logic\WorldConstructor.cs" />
     <Compile Include="Models\BitValueOperator.cs" />
-    <Compile Include="Models\Clauses\LogicClauses\Alternative.cs" />
+    <Compile Include="Models\Clauses\LogicClauses\UniformAlternative.cs" />
     <Compile Include="Models\Clauses\LogicClauses\AlternativeOfConjunctions.cs" />
     <Compile Include="Models\Clauses\LogicClauses\UniformLogicClause.cs" />
-    <Compile Include="Models\Clauses\LogicClauses\Conjunction.cs" />
+    <Compile Include="Models\Clauses\LogicClauses\UniformConjunction.cs" />
     <Compile Include="Models\Clauses\LogicClauses\ConjunctionOfAlternatives.cs" />
     <Compile Include="Models\Clauses\LogicClauses\LogicClause.cs" />
     <Compile Include="Models\GraphModels\ActionAgentsPair.cs" />
     <Compile Include="Models\GraphModels\LinkedState.cs" />
-    <Compile Include="Models\Parser\Parser.cs" />
-    <Compile Include="Models\Queries\AfterQuery.cs" />
+    <Compile Include="Logic\Parser\Parser.cs" />
+    <Compile Include="Logic\Queries\AfterQuery.cs" />
     <Compile Include="Models\Clauses\After.cs" />
     <Compile Include="Models\Clauses\Causes.cs" />
-    <Compile Include="Models\Queries\EngagedQuery.cs" />
-    <Compile Include="Models\Queries\ExectutableQuery.cs" />
+    <Compile Include="Logic\Queries\EngagedQuery.cs" />
+    <Compile Include="Logic\Queries\ExectutableQuery.cs" />
     <Compile Include="Models\Model.cs" />
     <Compile Include="Models\Query.cs" />
     <Compile Include="Models\Clauses\Releases.cs" />

@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("RW-tests")]
-namespace RW_backend.Models
+namespace RW_backend.Models.GraphModels
 {
     /// <summary>
     /// Reprezentuje stan świata - wartości fluentów

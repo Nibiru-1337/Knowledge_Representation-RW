@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using RW_backend.Models.Clauses;
+using RW_backend.Models.GraphModels;
 
 namespace RW_backend.Models
 {
@@ -78,6 +79,7 @@ namespace RW_backend.Models
 
         private static int _StateDifference(State x, State y)
         {
+			// TODO: uwzględnić fluenty nieinertne
             int diff = x.FluentValues ^ y.FluentValues;
             //return the amount of set bits in diff
             diff = diff - ((diff >> 1) & 0x55555555);

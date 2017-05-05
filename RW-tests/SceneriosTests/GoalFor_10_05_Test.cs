@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RW_backend.Logic;
 using RW_backend.Models;
+using RW_backend.Models.GraphModels;
 using RW_Frontend;
 
 namespace RW_tests.SceneriosTests

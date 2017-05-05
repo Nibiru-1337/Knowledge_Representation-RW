@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using RW_backend.Models.Clauses.LogicClauses;
 
-namespace RW_backend.Models.Parser
+namespace RW_backend.Logic.Parser
 {
     
     public class Parser
@@ -59,7 +56,7 @@ namespace RW_backend.Models.Parser
             for (int i = 0; i < conjs.Length; i++)
             {
                 string[] alts = conjs[i].Split(OrSymbol);
-                Alternative alt = new Alternative();
+                UniformAlternative alt = new UniformAlternative();
                 for (int j = 0; j < alts.Length; j++)
                 {
                     bool isNegation = false;
@@ -84,7 +81,7 @@ namespace RW_backend.Models.Parser
             for (int i = 0; i < alts.Length; i++)
             {
                 string[] conjs = alts[i].Split(AndSymbol);
-                Conjunction conj = new Conjunction();
+                UniformConjunction conj = new UniformConjunction();
                 for (int j = 0; j < conjs.Length; j++)
                 {
                     bool isNegation = false;

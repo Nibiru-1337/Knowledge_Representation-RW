@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RW_backend.Logic.Parser;
 using RW_backend.Models.Clauses.LogicClauses;
-using RW_backend.Models.Parser;
 
 namespace RW_tests.ParserTests
 {
@@ -68,7 +68,7 @@ namespace RW_tests.ParserTests
             Assert.IsInstanceOfType(lc, typeof(ConjunctionOfAlternatives));
             ConjunctionOfAlternatives coa = (ConjunctionOfAlternatives)lc;
             Assert.AreEqual(4, coa.Alternatives.Count);
-            Alternative alt = coa.Alternatives[0];
+            UniformAlternative alt = coa.Alternatives[0];
             Assert.AreEqual(0x8, alt.NegatedFluents);
             Assert.AreEqual(0x6, alt.PositiveFluents);
 
@@ -89,7 +89,7 @@ namespace RW_tests.ParserTests
             Assert.IsInstanceOfType(lc, typeof(ConjunctionOfAlternatives));
             ConjunctionOfAlternatives coa = (ConjunctionOfAlternatives)lc;
             Assert.AreEqual(4, coa.Alternatives.Count);
-            Alternative alt = coa.Alternatives[0];
+            UniformAlternative alt = coa.Alternatives[0];
             Assert.AreEqual(0x8, alt.NegatedFluents);
             Assert.AreEqual(0x6, alt.PositiveFluents);
 
@@ -110,7 +110,7 @@ namespace RW_tests.ParserTests
             Assert.IsInstanceOfType(lc, typeof(AlternativeOfConjunctions));
             AlternativeOfConjunctions aoc = (AlternativeOfConjunctions)lc;
             Assert.AreEqual(3, aoc.Conjunctions.Count);
-            Conjunction conj = aoc.Conjunctions[0];
+            UniformConjunction conj = aoc.Conjunctions[0];
             Assert.AreEqual(0x8, conj.NegatedFluents);
             Assert.AreEqual(0x6, conj.PositiveFluents);
         }

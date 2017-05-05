@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RW_backend.Models;
 using RW_backend.Models.Clauses;
 using RW_backend.Models.Clauses.LogicClauses;
+using RW_backend.Models.GraphModels;
 
 namespace RW_tests.SceneriosTests
 {
@@ -18,7 +19,7 @@ namespace RW_tests.SceneriosTests
             World world = new World(2);
             
             //loaded is set after LOAD
-            Alternative effect = new Alternative();
+            UniformAlternative effect = new UniformAlternative();
             effect.AddFluent(1, false);
             Causes LOAD = new Causes(null, effect, 0x1, 0x0);
             world.AddCauses(LOAD);
@@ -41,9 +42,9 @@ namespace RW_tests.SceneriosTests
             Assert.AreEqual(new State(0x2), afterLOAD[0]);
 
             //-alive after SHOOT with loaded condition by agent with index = 0 (bob or whatever)
-            Alternative conditions = new Alternative();
+            UniformAlternative conditions = new UniformAlternative();
             conditions.AddFluent(1, false);
-            Conjunction effect2 = new Conjunction();
+            UniformConjunction effect2 = new UniformConjunction();
             effect2.AddFluent(0, true);
             effect2.AddFluent(1, true);
             Causes SHOOT = new Causes(conditions, effect2, 0x2, 0x1);
