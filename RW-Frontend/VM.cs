@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -71,17 +72,26 @@ namespace RW_Frontend
 
         #region Components Control
 
-        private TextBox CreateTextBox()
+        private TextBox CreateFluentAgentActionTextBox()
         {
-            var textBox = new TextBox() { Height = 25, FontSize = 14, Margin = new Thickness(5) };
+            var textBox = new TextBox() {Height = 25, FontSize = 14, Margin = new Thickness(5)};
             textBox.BorderBrush = System.Windows.Media.Brushes.Red;
-            textBox.LostFocus += ValidateTextBox;            
+            textBox.LostFocus += ValidateTextBox;
             return textBox;
         }
+
         private void ValidateTextBox(object sender, RoutedEventArgs e)
         {
             var textBox = (TextBox) sender;
-            if (string.IsNullOrEmpty(textBox.Text))
+            if (string.IsNullOrEmpty(textBox.Text) ||
+                (FluentsTextBoxes.Contains(textBox) &&
+                 FluentsTextBoxes.Select(_ => _.Text).Count(_ => _.Equals(textBox.Text)) > 1)
+                ||
+                (AgentsTextBoxes.Contains(textBox) &&
+                 AgentsTextBoxes.Select(_ => _.Text).Count(_ => _.Equals(textBox.Text)) > 1)
+                ||
+                (ActionsTextBoxes.Contains(textBox) &&
+                 ActionsTextBoxes.Select(_ => _.Text).Count(_ => _.Equals(textBox.Text)) > 1))
             {
                 textBox.BorderBrush = System.Windows.Media.Brushes.Red;
             }
@@ -99,7 +109,8 @@ namespace RW_Frontend
                 Width = 25,
                 FontSize = 14,
                 Content = "X",
-                Margin = new Thickness(5)
+                Margin = new Thickness(5),
+                VerticalAlignment = VerticalAlignment.Center
             };
 
             switch (inputDataType)
@@ -122,45 +133,59 @@ namespace RW_Frontend
 
         private ComboBox CreateActionsComboBox()
         {
-            var comboBox = new ComboBox() { Name = "ActionsComboBox", Margin = new Thickness(5) };
+            var comboBox = new ComboBox() {Name = "ActionsComboBox", Margin = new Thickness(5), Height = 25, Width = 150, VerticalAlignment = VerticalAlignment.Center};
             comboBox.SelectedItem = String.Empty;
-            comboBox.DropDownOpened += (s, e) =>
+            comboBox.MouseEnter += (s, e) =>
             {
-                var actions = ActionsTextBoxes.Select(_ => _.Text).Where(_=>_ != String.Empty);
+                var actions = ActionsTextBoxes.Select(_ => _.Text).Where(_ => _ != String.Empty);
                 actions = actions.Concat(new List<string>() {String.Empty});
-                comboBox.ItemsSource = actions; 
-            };
-            return comboBox;
-        }
-
-        private ComboBox CreateAgentsComboBox()
-        {
-            var comboBox = new ComboBox() {Name="AgentsComboBox", Margin = new Thickness(5)};
-            comboBox.SelectedItem = String.Empty;
-            comboBox.DropDownOpened += (s, e) =>
-            {
-                var actions = AgentsTextBoxes.Select(_ => _.Text).Where(_ => _ != String.Empty);
-                actions = actions.Concat(new List<string>() { String.Empty });
                 comboBox.ItemsSource = actions;
             };
             return comboBox;
         }
 
+        private Expander CreateAgentsExpanderListBox()
+        {
+            var ep = new Expander() {Name = "AgentsExpanderListBox", Header = "Agenci", VerticalAlignment = VerticalAlignment.Center};
+            var listBox = new ListBox()
+            {
+                Name = "AgentsListBox",
+                Margin = new Thickness(5),
+                SelectionMode = SelectionMode.Multiple
+            };
+            ep.Content = listBox;
+            ep.MouseEnter += (s, e) =>
+            {
+                var actions = AgentsTextBoxes.Select(_ => _.Text).Where(_ => _ != String.Empty);
+                actions = actions.Concat(new List<string>() { String.Empty });
+                listBox.ItemsSource = actions;
+            };
+            return ep;
+        }
+
         private Label CreateByLabel()
         {
-            var label = new Label() {Margin = new Thickness(5), Content = "by"};
+            var label = new Label() {Margin = new Thickness(5), Content = "by", VerticalAlignment = VerticalAlignment.Center};
             return label;
         }
 
         private Label CreateIfLabel()
         {
-            var label = new Label() { Margin = new Thickness(5), Content = "if" };
+            var label = new Label() {Margin = new Thickness(5), Content = "if", VerticalAlignment = VerticalAlignment.Center};
             return label;
         }
 
         private TextBox CreateLogicExpTextBox(string name)
         {
-            var textBox = new TextBox() { Height = 25, Width = 130, FontSize = 14, Margin = new Thickness(5), Name = name};
+            var textBox = new TextBox()
+            {
+                Height = 25,
+                Width = 250,
+                FontSize = 14,
+                Margin = new Thickness(5),
+                Name = name,
+                VerticalAlignment = VerticalAlignment.Center
+            };
             return textBox;
         }
 
@@ -178,7 +203,7 @@ namespace RW_Frontend
 
         private void AddFluent()
         {
-            FluentsTextBoxes.Add(CreateTextBox());
+            FluentsTextBoxes.Add(CreateFluentAgentActionTextBox());
             FluentsRemoveButtons.Add(CreateRemoveButton("Fluent"));
         }
 
@@ -202,7 +227,7 @@ namespace RW_Frontend
                 {
                     _fluentsTextBoxes = new ObservableCollection<TextBox>()
                     {
-                        CreateTextBox()
+                        CreateFluentAgentActionTextBox()
                     };
                 }
                 return _fluentsTextBoxes;
@@ -243,7 +268,7 @@ namespace RW_Frontend
 
         private void AddAction()
         {
-            ActionsTextBoxes.Add(CreateTextBox());
+            ActionsTextBoxes.Add(CreateFluentAgentActionTextBox());
             ActionsRemoveButtons.Add(CreateRemoveButton("Action"));
         }
 
@@ -252,8 +277,26 @@ namespace RW_Frontend
             Button clickedButton = (Button) sender;
             int removingItemIdx = ActionsRemoveButtons.IndexOf(clickedButton);
             ActionsRemoveButtons.RemoveAt(removingItemIdx);
+            string removedValue = ActionsTextBoxes.ElementAt(removingItemIdx).Text;
             ActionsTextBoxes.RemoveAt(removingItemIdx);
+            //ValidateActionComboBoxes(removedValue);
         }
+
+        //private void ValidateActionComboBoxes(string removedValue)
+        //{
+        //    foreach (var stackPanel in CausesClausesStackPanels)
+        //    {
+        //        foreach (var child in stackPanel.Children)
+        //        {
+        //            if (child is ComboBox)
+        //            {
+        //                var cb = child as ComboBox;
+        //                if (cb.Name == "ActionsComboBox" && (string) (cb.SelectedItem) == removedValue)
+        //                    cb.SelectedItem = String.Empty;
+        //            }
+        //        }
+        //    }
+        //}
 
         #region Actions -> TextBoxes
 
@@ -267,7 +310,7 @@ namespace RW_Frontend
                 {
                     _actionsTextBoxes = new ObservableCollection<TextBox>()
                     {
-                        CreateTextBox()
+                        CreateFluentAgentActionTextBox()
                     };
                 }
                 return _actionsTextBoxes;
@@ -308,7 +351,7 @@ namespace RW_Frontend
 
         private void AddAgent()
         {
-            AgentsTextBoxes.Add(CreateTextBox());
+            AgentsTextBoxes.Add(CreateFluentAgentActionTextBox());
             AgentsRemoveButtons.Add(CreateRemoveButton("Agent"));
         }
 
@@ -332,7 +375,7 @@ namespace RW_Frontend
                 {
                     _agentsTextBoxes = new ObservableCollection<TextBox>()
                     {
-                        CreateTextBox()
+                        CreateFluentAgentActionTextBox()
                     };
                 }
                 return _agentsTextBoxes;
@@ -364,7 +407,8 @@ namespace RW_Frontend
 
         #endregion
 
-        #region Causes clause
+        #region Causes clauses
+
         public ICommand AddCausesClauseCommand
         {
             get { return new RelayCommand(AddCausesClause, CanDo); }
@@ -373,31 +417,27 @@ namespace RW_Frontend
         private void AddCausesClause()
         {
             CausesClausesStackPanels.Add(CreateCausesClauseStackPanel());
-            CausesClausesRemoveButtons.Add(CreateRemoveButton("Causes"));
         }
 
         private StackPanel CreateCausesClauseStackPanel()
         {
-            //var textBox = new TextBox() { Height = 25, FontSize = 14, Margin = new Thickness(5) };
-            //textBox.BorderBrush = System.Windows.Media.Brushes.Red;
-            //textBox.LostFocus += ValidateTextBox;
-            //return textBox;
             var stackPanel = new StackPanel() {Orientation = Orientation.Horizontal};
             stackPanel.Children.Add(CreateActionsComboBox());
             stackPanel.Children.Add(CreateByLabel());
-            stackPanel.Children.Add(CreateAgentsComboBox());
-            stackPanel.Children.Add(new Label() { Margin = new Thickness(5), Content = "causes" });
+            stackPanel.Children.Add(CreateAgentsExpanderListBox());
+            stackPanel.Children.Add(new Label() {Margin = new Thickness(5), Content = "causes", VerticalAlignment = VerticalAlignment.Center});
             stackPanel.Children.Add(CreateLogicExpTextBox("alfaExp"));
             stackPanel.Children.Add(CreateIfLabel());
             stackPanel.Children.Add(CreateLogicExpTextBox("piExp"));
+            stackPanel.Children.Add(CreateRemoveButton("Causes"));
             return stackPanel;
         }
 
         private void RemoveCausesClauseButtonClick(object sender, RoutedEventArgs e)
         {
-            Button clickedButton = (Button)sender;
-            int removingItemIdx = CausesClausesRemoveButtons.IndexOf(clickedButton);
-            CausesClausesRemoveButtons.RemoveAt(removingItemIdx);
+            Button clickedButton = (Button) sender;
+            var removingStackPanel = CausesClausesStackPanels.First(_ => _.Children.Contains(clickedButton));
+            int removingItemIdx = CausesClausesStackPanels.IndexOf(removingStackPanel);
             CausesClausesStackPanels.RemoveAt(removingItemIdx);
         }
 
@@ -413,39 +453,16 @@ namespace RW_Frontend
                 {
                     _causesClausesStackPanels = new ObservableCollection<StackPanel>()
                     {
-                        CreateCausesClauseStackPanel() 
+                        CreateCausesClauseStackPanel()
                     };
                 }
                 return _causesClausesStackPanels;
             }
         }
 
-
-        #endregion
-
-        #region CausesClauses -> RemoveButtons
-
-        private ObservableCollection<Button> _causesClausesRemoveButtons;
-
-        public ObservableCollection<Button> CausesClausesRemoveButtons
-        {
-            get
-            {
-                if (_causesClausesRemoveButtons == null)
-                {
-                    _causesClausesRemoveButtons = new ObservableCollection<Button>()
-                    {
-                        CreateRemoveButton("Causes")
-                    };
-                }
-                return _causesClausesRemoveButtons;
-            }
-        }
-
         #endregion
 
         #endregion
-
 
         #endregion
 

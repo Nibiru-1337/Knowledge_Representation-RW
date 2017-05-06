@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:RW_Frontend"
         mc:Ignorable="d"
         Initialized="MainWindow_OnInitialized"
-        Title="Realizacja programów działań w środowisku wieloagentowym" Height="900" Width="800">
+        Title="Realizacja programów działań w środowisku wieloagentowym" Height="900" Width="1500">
     <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel>
@@ -88,7 +88,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="15*" />
                             <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="4*" />
+                            <ColumnDefinition Width="2*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="2*" />
@@ -98,7 +98,7 @@
                                 Command="{Binding AddCausesClauseCommand}">
                             Dodaj
                         </Button>
-                        <StackPanel Grid.ColumnSpan="3" Grid.Row="1">
+                        <StackPanel Grid.ColumnSpan="2" Grid.Row="1">
                             <ItemsControl ItemsSource="{Binding CausesClausesStackPanels}" />
                         </StackPanel>
                         <StackPanel Grid.Column="2" Grid.Row="1">
