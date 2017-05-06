@@ -20,17 +20,22 @@ namespace RW_backend.Models
         // without any edges in between them (edges are added with AddCauses)
         private readonly State[] _states;
 
-        //connections b/w states are represented with a dictionary of tuples -> lists
-        //tuple(key) says which Causes and which starting state
-        //List<States>(value) gives us resulting states that are connected 
-        public  Dictionary<Tuple<Causes,State>, List<State>> Connections { get; private set; } 
-        
+        // information about the actions in this world
+        public List<int> ActionIds { get; private set; }
+
+        //connections b/w states are represented with a dictionary of tuples -> AgentSetChecker
+        //tuple(key) says which action(ActionID) and which starting state
+        //AgentSetChecker(value) is used to check if agents can execute action and it contains graph edges
+        public Dictionary<Tuple<int, State>, AgentSetChecker> Connections { get; private set; }
+
 
         public World(int fluentsCount)
         {
-            int totalNodes = (int)Math.Pow(2, fluentsCount);
-            Connections = new Dictionary<Tuple<Causes, State>, List<State>>();
+            if (fluentsCount > 31) throw new ArgumentException("max fluent count = 31");
+            int totalNodes = (int)1<<fluentsCount;
+            Connections = new Dictionary<Tuple<int, State>, AgentSetChecker>();
             _states = new State[totalNodes];
+            ActionIds = new List<int>();
             for (int i = 0; i < totalNodes; i++)
             {
                 _states[i] = new State(i);
@@ -72,10 +77,13 @@ namespace RW_backend.Models
                             result.Add(endingState);
                         }
                     }
-                    //add the results of Causes from starting state
-                    Connections.Add(new Tuple<Causes, State>(a, startingState), result);
+                    //add the results of action from starting state
+                    var agentSetChecker = new AgentSetChecker(a.AgentsSet.AgentSet, result);
+                    Connections.Add(new Tuple<int, State>(a.Action, startingState), agentSetChecker);
                 }
             }
+            //Add action Id to world
+            ActionIds.Add(a.Action);
         }
 
         private static int _StateDifference(State x, State y)
