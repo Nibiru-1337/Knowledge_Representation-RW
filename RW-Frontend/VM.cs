@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -112,8 +113,55 @@ namespace RW_Frontend
                 case "Agent":
                     button.Click += RemoveAgentButtonClick;
                     break;
+                case "Causes":
+                    button.Click += RemoveCausesClauseButtonClick;
+                    break;
             }
             return button;
+        }
+
+        private ComboBox CreateActionsComboBox()
+        {
+            var comboBox = new ComboBox() { Name = "ActionsComboBox", Margin = new Thickness(5) };
+            comboBox.SelectedItem = String.Empty;
+            comboBox.DropDownOpened += (s, e) =>
+            {
+                var actions = ActionsTextBoxes.Select(_ => _.Text).Where(_=>_ != String.Empty);
+                actions = actions.Concat(new List<string>() {String.Empty});
+                comboBox.ItemsSource = actions; 
+            };
+            return comboBox;
+        }
+
+        private ComboBox CreateAgentsComboBox()
+        {
+            var comboBox = new ComboBox() {Name="AgentsComboBox", Margin = new Thickness(5)};
+            comboBox.SelectedItem = String.Empty;
+            comboBox.DropDownOpened += (s, e) =>
+            {
+                var actions = AgentsTextBoxes.Select(_ => _.Text).Where(_ => _ != String.Empty);
+                actions = actions.Concat(new List<string>() { String.Empty });
+                comboBox.ItemsSource = actions;
+            };
+            return comboBox;
+        }
+
+        private Label CreateByLabel()
+        {
+            var label = new Label() {Margin = new Thickness(5), Content = "by"};
+            return label;
+        }
+
+        private Label CreateIfLabel()
+        {
+            var label = new Label() { Margin = new Thickness(5), Content = "if" };
+            return label;
+        }
+
+        private TextBox CreateLogicExpTextBox(string name)
+        {
+            var textBox = new TextBox() { Height = 25, Width = 130, FontSize = 14, Margin = new Thickness(5), Name = name};
+            return textBox;
         }
 
         private bool CanDo()
@@ -315,6 +363,89 @@ namespace RW_Frontend
         #endregion
 
         #endregion
+
+        #region Causes clause
+        public ICommand AddCausesClauseCommand
+        {
+            get { return new RelayCommand(AddCausesClause, CanDo); }
+        }
+
+        private void AddCausesClause()
+        {
+            CausesClausesStackPanels.Add(CreateCausesClauseStackPanel());
+            CausesClausesRemoveButtons.Add(CreateRemoveButton("Causes"));
+        }
+
+        private StackPanel CreateCausesClauseStackPanel()
+        {
+            //var textBox = new TextBox() { Height = 25, FontSize = 14, Margin = new Thickness(5) };
+            //textBox.BorderBrush = System.Windows.Media.Brushes.Red;
+            //textBox.LostFocus += ValidateTextBox;
+            //return textBox;
+            var stackPanel = new StackPanel() {Orientation = Orientation.Horizontal};
+            stackPanel.Children.Add(CreateActionsComboBox());
+            stackPanel.Children.Add(CreateByLabel());
+            stackPanel.Children.Add(CreateAgentsComboBox());
+            stackPanel.Children.Add(new Label() { Margin = new Thickness(5), Content = "causes" });
+            stackPanel.Children.Add(CreateLogicExpTextBox("alfaExp"));
+            stackPanel.Children.Add(CreateIfLabel());
+            stackPanel.Children.Add(CreateLogicExpTextBox("piExp"));
+            return stackPanel;
+        }
+
+        private void RemoveCausesClauseButtonClick(object sender, RoutedEventArgs e)
+        {
+            Button clickedButton = (Button)sender;
+            int removingItemIdx = CausesClausesRemoveButtons.IndexOf(clickedButton);
+            CausesClausesRemoveButtons.RemoveAt(removingItemIdx);
+            CausesClausesStackPanels.RemoveAt(removingItemIdx);
+        }
+
+        #region CausesClauses -> StackPanels
+
+        private ObservableCollection<StackPanel> _causesClausesStackPanels;
+
+        public ObservableCollection<StackPanel> CausesClausesStackPanels
+        {
+            get
+            {
+                if (_causesClausesStackPanels == null)
+                {
+                    _causesClausesStackPanels = new ObservableCollection<StackPanel>()
+                    {
+                        CreateCausesClauseStackPanel() 
+                    };
+                }
+                return _causesClausesStackPanels;
+            }
+        }
+
+
+        #endregion
+
+        #region CausesClauses -> RemoveButtons
+
+        private ObservableCollection<Button> _causesClausesRemoveButtons;
+
+        public ObservableCollection<Button> CausesClausesRemoveButtons
+        {
+            get
+            {
+                if (_causesClausesRemoveButtons == null)
+                {
+                    _causesClausesRemoveButtons = new ObservableCollection<Button>()
+                    {
+                        CreateRemoveButton("Causes")
+                    };
+                }
+                return _causesClausesRemoveButtons;
+            }
+        }
+
+        #endregion
+
+        #endregion
+
 
         #endregion
 
