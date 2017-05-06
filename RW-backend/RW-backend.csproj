@@ -58,6 +58,7 @@
     <Compile Include="Models\Clauses\Causes.cs" />
     <Compile Include="Logic\Queries\EngagedQuery.cs" />
     <Compile Include="Logic\Queries\ExectutableQuery.cs" />
+    <Compile Include="Models\AgentSetChecker.cs" />
     <Compile Include="Models\Model.cs" />
     <Compile Include="Logic\Queries\Query.cs" />
     <Compile Include="Models\Clauses\Releases.cs" />
