@@ -40,7 +40,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Logic\BackendLogic.cs" />
-    <Compile Include="Logic\WorldConstructor.cs" />
     <Compile Include="Models\BitSets\AgentsSet.cs" />
     <Compile Include="Models\BitSets\BitSet.cs" />
     <Compile Include="Models\BitSets\BitValueOperator.cs" />
@@ -58,12 +57,12 @@
     <Compile Include="Models\Clauses\Causes.cs" />
     <Compile Include="Logic\Queries\EngagedQuery.cs" />
     <Compile Include="Logic\Queries\ExectutableQuery.cs" />
-    <Compile Include="Models\AgentSetChecker.cs" />
+    <Compile Include="Models\World\AgentSetChecker.cs" />
     <Compile Include="Models\Model.cs" />
     <Compile Include="Logic\Queries\Query.cs" />
     <Compile Include="Models\Clauses\Releases.cs" />
     <Compile Include="Models\BitSets\State.cs" />
-    <Compile Include="Models\World.cs" />
+    <Compile Include="Models\World\World.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
