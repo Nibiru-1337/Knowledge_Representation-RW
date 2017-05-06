@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using RW_Frontend.Annotations;
 
 [assembly: InternalsVisibleTo("RW-tests")]
@@ -71,7 +72,22 @@ namespace RW_Frontend
 
         private TextBox CreateTextBox()
         {
-            return new TextBox() {Height = 25, FontSize = 14, Margin = new Thickness(5)};
+            var textBox = new TextBox() { Height = 25, FontSize = 14, Margin = new Thickness(5) };
+            textBox.BorderBrush = System.Windows.Media.Brushes.Red;
+            textBox.LostFocus += ValidateTextBox;            
+            return textBox;
+        }
+        private void ValidateTextBox(object sender, RoutedEventArgs e)
+        {
+            var textBox = (TextBox) sender;
+            if (string.IsNullOrEmpty(textBox.Text))
+            {
+                textBox.BorderBrush = System.Windows.Media.Brushes.Red;
+            }
+            else
+            {
+                textBox.BorderBrush = System.Windows.Media.Brushes.Black;
+            }
         }
 
         private Button CreateRemoveButton(string inputDataType)
