@@ -20,8 +20,8 @@ namespace RW_backend.Logic.Queries
 		public LogicClause Effect { get; } // alfa
 
 
-		public AfterQuery(bool always, LogicClause initialState, IReadOnlyList<ActionAgentsPair> program, LogicClause effect)
-			: base(program, always, initialState)
+		public AfterQuery(IReadOnlyList<ActionAgentsPair> program, LogicClause initialState, bool always, LogicClause effect)
+			: base(program, initialState, always)
 		{
 			Effect = effect;
 		}
@@ -37,7 +37,7 @@ namespace RW_backend.Logic.Queries
 
 			if (result.Executable == Executable.Never)
 				return new QueryResult() {IsTrue = false};
-
+			Logger.Log("reachable states = " + String.Join(", ", result.ReachableStates));
 			foreach (State reachableState in result.ReachableStates)
 			{
 				if (Effect.CheckForState(reachableState.FluentValues))
@@ -49,6 +49,7 @@ namespace RW_backend.Logic.Queries
 					allOk = false;
 				}
 			}
+			Logger.Log("result = all ok ? " + allOk + ", one ok? " + oneOk);
 			return new QueryResult()
 			{
 				IsTrue = Always ? allOk : oneOk,

@@ -26,6 +26,10 @@ namespace RW_backend.Models.Factories
 		}
 
 
+		public LogicClause CreateContradictingClause(int fluent = 0)
+		{
+			return UniformConjunction.CreateFrom(new List<int>() {fluent}, new List<int>() {fluent});
+		}
 
 	}
 }

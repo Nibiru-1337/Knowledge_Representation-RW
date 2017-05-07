@@ -16,7 +16,7 @@ namespace RW_backend.Logic.Queries
 		public AgentsSet AgentsSet { get; }
 
 		public EngagedQuery(IReadOnlyList<ActionAgentsPair> program, LogicClause initialState, bool always, AgentsSet agentsSet) 
-			: base(program, always, initialState)
+			: base(program, initialState, always)
 		{
 			AgentsSet = agentsSet;
 		}

@@ -25,7 +25,7 @@ namespace RW_backend.Logic.Queries
 		public LogicClause InitialStateCondition { get; } // alfa
 
 
-		protected Query(IReadOnlyList<ActionAgentsPair> program, bool always, LogicClause initialStateCondition)
+		protected Query(IReadOnlyList<ActionAgentsPair> program, LogicClause initialStateCondition, bool always)
 		{
 			Program = program;
 			Always = always;
@@ -58,7 +58,7 @@ namespace RW_backend.Logic.Queries
 		    {
 			    // wykonujemy program
 			    newStates.Clear();
-
+				Logger.Log("~~~~");
 				Logger.Log("states available for i = " + i);
 				Logger.Log("=> " + string.Join(", ", states));
 
@@ -76,7 +76,7 @@ namespace RW_backend.Logic.Queries
 					intersectedStatesSet.Clear();
 				    int howManyStateAvailable = 0;
 
-					Logger.Log("state = " + state);
+					Logger.Log("~* state = " + state);
 				    
 				    foreach (AgentSetChecker setChecker in world.Connections[Program[i].ActionId][state])
 				    {
@@ -87,7 +87,7 @@ namespace RW_backend.Logic.Queries
 					    if (setChecker.CanBeExecutedByAgentsSet(Program[i].AgentsSet.AgentSet)
 							&& !setChecker.UsesAgentFromSet(notEngagedAgents)) //
 					    {
-							Logger.Log("pass");
+							Logger.Log("pass, states here = " + string.Join(", ", setChecker.Edges));
 						    howManyStateAvailable++;
 						    if (setChecker.Edges.Count == 0)
 						    {
@@ -108,12 +108,13 @@ namespace RW_backend.Logic.Queries
 									    intersectedStatesSet.Add(edge, 1);
 								    }
 							    }
-
-
 						    }
 					    }
 				    }
 
+				    Logger.Log("intersecting here = "
+								+ string.Join(", ",
+									intersectedStatesSet.Select(p => "(" + p.Value + ", " + p.Key + ")")));
 				    newStatesForThatState =
 					    intersectedStatesSet.Where(pair => pair.Value == howManyStateAvailable)
 						    .Select(pair => pair.Key)
@@ -139,6 +140,7 @@ namespace RW_backend.Logic.Queries
 		    result.Executable = states.Count == 0
 			    ? Executable.Never
 			    : (executableAlways ? Executable.Always : Executable.Sometimes);
+			Logger.Log("executable = " + result.Executable);
 		    return result;
 
 	    }

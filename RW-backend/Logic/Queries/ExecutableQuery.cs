@@ -12,8 +12,8 @@ namespace RW_backend.Logic.Queries
 	{
 		public override QueryType Type => QueryType.Executable;
 
-		public ExecutableQuery(IReadOnlyList<ActionAgentsPair> program, bool always, LogicClause initialState)
-			: base(program, always, initialState)
+		public ExecutableQuery(IReadOnlyList<ActionAgentsPair> program, LogicClause initialState, bool always)
+			: base(program, initialState, always)
 		{
 		}
 
@@ -22,12 +22,13 @@ namespace RW_backend.Logic.Queries
 			MinimiserOfChanges minimiser = new MinimiserOfChanges();
 			var initial = GetInitialStates(world.InitialStates);
 			ProgramExecutionResult result = this.ExecuteProgram(world, minimiser, initial);
+
 			return new QueryResult()
 			{
 				IsTrue =
 					Always
 						? result.Executable == Executable.Always
-						: result.Executable == Executable.Sometimes
+						: (result.Executable == Executable.Always || result.Executable == Executable.Sometimes)
 			};
 		}
 

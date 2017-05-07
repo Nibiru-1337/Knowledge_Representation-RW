@@ -51,19 +51,78 @@ namespace RW_tests.BuildingOfWorldTests
 		}
 
 		[TestMethod]
-		public void YaleScenerioTest()
+		public void YaleScenerioBobShootExecutableTest()
 		{
 			World world = GenerateYaleWorld();
 			LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
 			ExecutableQuery query = new ExecutableQuery(new ActionAgentsPair[]
 			{
 				new ActionAgentsPair(Shoot, BobSet),
-			}, false, logicClausesFactory.CreateSingleFluentClause(Alive, false));
-			Assert.AreEqual(true, query.Evaluate(world).IsTrue, "query should pass");
-
+			}, logicClausesFactory.CreateSingleFluentClause(Alive, false), false);
+			Assert.AreEqual(true, query.Evaluate(world).IsTrue, "Bob should be able to shoot");
 		}
 
-		World GenerateYaleWorld(bool initialStates = false)
+		[TestMethod]
+		public void YaleScenerioBobShootAfterTest()
+		{
+			World world = GenerateYaleWorld();
+			LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
+			AfterQuery query = new AfterQuery(new ActionAgentsPair[]
+			{
+				new ActionAgentsPair(Shoot, BobSet),
+			}, logicClausesFactory.CreateSingleFluentClause(Alive, false), false,
+				logicClausesFactory.CreateSingleFluentClause(Alive, true));
+			Assert.AreEqual(true, query.Evaluate(world).IsTrue, "Bob should be able to kill Fredek if loaded");
+		}
+
+		[TestMethod]
+		public void YaleScenerioBobShootExecutableAlwaysTest()
+		{
+			World world = GenerateYaleWorld();
+			LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
+			ExecutableQuery query = new ExecutableQuery(new ActionAgentsPair[]
+			{
+				new ActionAgentsPair(Shoot, BobSet),
+			}, logicClausesFactory.CreateSingleFluentClause(Alive, false), true);
+			Assert.AreEqual(true, query.Evaluate(world).IsTrue, "Bob should be able to shoot");
+		}
+
+		[TestMethod]
+		public void YaleScenerioBobShootAfterAlwaysTest()
+		{
+			World world = GenerateYaleWorld();
+			LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
+			AfterQuery query = new AfterQuery(new ActionAgentsPair[]
+			{
+				new ActionAgentsPair(Shoot, BobSet),
+			}, logicClausesFactory.CreateSingleFluentClause(Alive, false), true,
+				logicClausesFactory.CreateSingleFluentClause(Alive, true));
+			Assert.AreEqual(false, query.Evaluate(world).IsTrue, "Bob should not be able to kill Fredek if ~loaded");
+		}
+
+		[TestMethod]
+		public void YaleScenerioBobShootImpossibleTest()
+		{
+			Model model = GenerateModel();
+			LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
+			// dodaj impossible
+
+			model.CausesStatements.Add(new Causes(logicClausesFactory.CreateSingleFluentClause(Loaded, false),
+				logicClausesFactory.CreateContradictingClause(0), Shoot, SingleAgent(Bob)));
+
+			World world = new BackendLogic().CalculateWorld(model);
+			
+			AfterQuery query = new AfterQuery(new ActionAgentsPair[]
+			{
+				new ActionAgentsPair(Shoot, BobSet),
+			}, logicClausesFactory.CreateSingleFluentClause(Alive, false), false,
+				logicClausesFactory.CreateSingleFluentClause(Alive, true));
+
+			Assert.AreEqual(false, query.Evaluate(world).IsTrue, "Bob should not be able to kill Fredek anytime");
+		}
+
+
+		Model GenerateModel(bool initialStates = false)
 		{
 			// 1. shoot by bob causes !alive if loaded
 			// 2. shoot by bob causes !loaded
@@ -81,14 +140,17 @@ namespace RW_tests.BuildingOfWorldTests
 				logicClausesFactory.CreateSingleFluentClause(Loaded, false),
 				Load, SingleAgent(Bob));
 			model.CausesStatements = new List<Causes>() { causes1, causes2, causes3 };
-			if(initialStates)
+			if (initialStates)
 				model.InitiallyStatements = new List<LogicClause>()
 			{
 				logicClausesFactory.CreateSingleFluentClause(Alive, false),
 				logicClausesFactory.CreateSingleFluentClause(Loaded, false)
 			};
-
-			var world = new BackendLogic().CalculateWorld(model);
+			return model;
+		}
+		World GenerateYaleWorld(bool initialStates = false)
+		{
+			var world = new BackendLogic().CalculateWorld(GenerateModel(initialStates));
 			return world;
 		}
 
