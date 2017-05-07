@@ -1,20 +1,19 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
 using RW_backend.Models.BitSets;
 using RW_backend.Models.Clauses;
 using RW_backend.Models.Clauses.LogicClauses;
-using RW_backend.Models.GraphModels;
 
-namespace RW_backend.Models
+namespace RW_backend.Models.World
 {
     /// <summary>
     /// Reprezentuje modelowany świat za pomocą grafu stanów
     /// </summary>
     public class World
     {
+	    public const int MaxFluentCount = 31; // TODO: czemu nie 32?
+
         //TODO implementacja grafu stanów świata, stanów początkowych itd
         //TODO WORK IN PROGESS!
 
@@ -29,11 +28,12 @@ namespace RW_backend.Models
         //connections b/w states are represented with a chain of dictonaries
         // [int(ActionId)] [State(starting state)] -> List<AgentSetChecker>
         public Dictionary<int, Dictionary<State, IList<AgentSetChecker>>> Connections { get; private set; }
+		public IList<State> InitialStates { get; private set; } 
 
-
-        public World(int fluentsCount, IList<LogicClause> alwaysList)
+        public World(int fluentsCount, IList<LogicClause> alwaysList, IList<LogicClause> initiallyList)
         {
-            if (fluentsCount > 31) throw new ArgumentException("max fluent count = 31");
+	        if (fluentsCount > MaxFluentCount)
+				throw new ArgumentException("max fluent count = " + MaxFluentCount);
             int totalNodes = (int)1<<fluentsCount;
             Connections = new Dictionary<int, Dictionary<State, IList<AgentSetChecker>>>();
             States = new List<State>(totalNodes);
@@ -58,20 +58,26 @@ namespace RW_backend.Models
                     States.Add(new State(i));
                 }
             }
+
+	        InitialStates =
+		        States.Where(
+			        state =>
+				        initiallyList.All(initially => initially.CheckForState(state.FluentValues)))
+			        .ToList();
         }
 
         //add the edges concerning a particular causes action
-        public void AddCauses(IList<Causes>causesList, int ActionCount)
+        public void AddCauses(IList<Causes>causesList, int actionCount)
         {
             //for every unique ActionID
-            for (int i = 0; i < ActionCount; i++)
+            for (int i = 0; i < actionCount; i++)
             {
                 var stateToAgentSetCheckers = new Dictionary<State, IList<AgentSetChecker>>();
                 //for every starting state
                 foreach (var startingState in States)
                 {
                 
-                    //TODO check assumption that ActionCount is numer of unique ActionIDs, and that they are always sequential
+                    //TODO check assumption that actionCount is numer of unique ActionIDs, and that they are always sequential
                     List<Causes> sameID = causesList.Where(a => a.Action == i).ToList();
                     var ascList = new List<AgentSetChecker>(sameID.Count);
                     //for each action with the same ActionID

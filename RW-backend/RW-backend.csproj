@@ -40,6 +40,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Logic\BackendLogic.cs" />
+    <Compile Include="Logic\Queries\Results\ProgramExecutionResult.cs" />
+    <Compile Include="Logic\Queries\Results\QueryResult.cs" />
     <Compile Include="Models\BitSets\AgentsSet.cs" />
     <Compile Include="Models\BitSets\BitSet.cs" />
     <Compile Include="Models\BitSets\BitValueOperator.cs" />

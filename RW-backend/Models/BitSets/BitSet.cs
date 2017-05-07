@@ -27,6 +27,20 @@ namespace RW_backend.Models.BitSets
 			return Set == other?.Set;
 		}
 
+		public bool IsSubsetOf(int superset)
+		{
+			return (Set & superset) == Set;
+		}
+		public bool IsSupersetOf(int subset)
+		{
+			return (Set & subset) == subset;
+		}
+
+		public bool HasNoneCommonElementsWith(int otherSet)
+		{
+			return (otherSet ^ Set) == 0;
+		}
+
 		public override int GetHashCode()
 		{
 			return Set.GetHashCode();

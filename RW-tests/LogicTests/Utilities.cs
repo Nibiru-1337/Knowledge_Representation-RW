@@ -41,6 +41,18 @@ namespace RW_tests.LogicTests
 			Console.WriteLine(" = " + value);
 		}
 
+		public string BitValueToString(int value)
+		{
+			BitValueOperator bop = new BitValueOperator();
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < sizeof(int) * 8; i++)
+			{
+				sb.Append((bop.GetValue(value, i) ? "1" : "0"));
+			}
+			sb.AppendLine(" = " + value);
+			return sb.ToString();
+		}
+
 
 		private void GetConjunctions(out UniformConjunction first, out UniformConjunction second, out UniformConjunction third)
 		{
