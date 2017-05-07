@@ -76,18 +76,5 @@ namespace RW_Frontend.InputsViewModels
             }
             return afterQueries;
         }
-
-        public static void DisplayCc(List<CausesClauseViewModel> c)
-        {
-            foreach (var vm in c)
-            {
-                var sba = new StringBuilder();
-                foreach (var ag in vm.Agents)
-                {
-                    sba.AppendFormat("{0} ", ag);
-                }
-                MessageBox.Show(vm.Action + " agents:" + sba.ToString() + " " + vm.AlfaLogicExp + " " + vm.PiLogicExp);
-            }
-        }
     }
 }
