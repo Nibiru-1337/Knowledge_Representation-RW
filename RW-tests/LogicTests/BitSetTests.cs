@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RW_backend.Models.BitSets;
@@ -66,7 +67,92 @@ namespace RW_tests.LogicTests
 			}
 		}
 
-		
+		[TestMethod]
+		public void SetOfDifferenceTests()
+		{
+			BitSet first = CreateBitsetFrom(new int[] {1, 2, 3});
+			BitSet second = CreateBitsetFrom(new int[] {3, 4, 5});
+			BitSet expected = CreateBitsetFrom(new int[] {1, 2, 4, 5});
+			BitSet result = new BitSet(first.SetOfDifferentValuesThan(second.Set));
+			Assert.AreEqual(expected.Set, result.Set, "wrong result: "+ result.Set);
+		}
+
+		[TestMethod]
+		public void SetOfDifferenceLeftSideTests()
+		{
+			BitSet first = CreateBitsetFrom(new int[] { 1, 2, 3 });
+			BitSet second = CreateBitsetFrom(new int[] { 3,  });
+			BitSet expected = CreateBitsetFrom(new int[] { 1, 2, });
+			BitSet result = new BitSet(first.SetOfDifferentValuesThan(second.Set));
+			Assert.AreEqual(expected.Set, result.Set, "wrong result: " + result.Set);
+		}
+
+		[TestMethod]
+		public void SetOfDifferenceRightSideTests()
+		{
+			BitSet first = CreateBitsetFrom(new int[] { 3 });
+			BitSet second = CreateBitsetFrom(new int[] { 3, 4, 5});
+			BitSet expected = CreateBitsetFrom(new int[] { 4, 5});
+			BitSet result = new BitSet(first.SetOfDifferentValuesThan(second.Set));
+			Assert.AreEqual(expected.Set, result.Set, "wrong result: " + result.Set);
+		}
+
+		[TestMethod]
+		public void SetOfDifferenceNoDifferenceTests()
+		{
+			BitSet first = CreateBitsetFrom(new int[] { 3, 4, 5 });
+			BitSet second = CreateBitsetFrom(new int[] { 3, 4, 5 });
+			BitSet expected = CreateBitsetFrom(new int[] {  });
+			BitSet result = new BitSet(first.SetOfDifferentValuesThan(second.Set));
+			Assert.AreEqual(expected.Set, result.Set, "wrong result: " + result.Set);
+		}
+
+		[TestMethod]
+		public void NoCommonElementsTests()
+		{
+			BitSet first = CreateBitsetFrom(new int[] { 3, 4, 5 });
+			BitSet second = CreateBitsetFrom(new int[] { 3, 4, 5 });
+			Assert.AreEqual(false, first.HasNoneCommonElementsWith(second.Set), "wrong result");
+		}
+
+		[TestMethod]
+		public void NoCommonElementsSecondTests()
+		{
+			BitSet first = CreateBitsetFrom(new int[] { 3, 4, 5 });
+			BitSet second = CreateBitsetFrom(new int[] {  4, 7, 8 });
+			Assert.AreEqual(false, first.HasNoneCommonElementsWith(second.Set), "wrong result");
+		}
+
+		[TestMethod]
+		public void NoCommonElementsThirdTests()
+		{
+			BitSet first = CreateBitsetFrom(new int[] { 3, 4, 5 });
+			BitSet second = CreateBitsetFrom(new int[] { 6, 7, 8 });
+			Assert.AreEqual(true, first.HasNoneCommonElementsWith(second.Set), "wrong result");
+		}
+
+		[TestMethod]
+		public void NoCommonElementsFourthTests()
+		{
+			BitSet first = CreateBitsetFrom(new int[] { 3, 4, 5 });
+			BitSet second = CreateBitsetFrom(new int[] { 4, });
+			Assert.AreEqual(false, first.HasNoneCommonElementsWith(second.Set), "wrong result");
+		}
+
+		[TestMethod]
+		public void NoCommonElementsEmptySetTests()
+		{
+			BitSet first = CreateBitsetFrom(new int[] {  });
+			BitSet second = CreateBitsetFrom(new int[] { });
+			Assert.AreEqual(true, first.HasNoneCommonElementsWith(second.Set), "wrong result");
+		}
+
+		private BitSet CreateBitsetFrom(int[] elements)
+		{
+			BitValueOperator bop = new BitValueOperator();
+			int set = elements.Aggregate(0, (current, element) => bop.SetFluent(current, element));
+			return new BitSet(set);
+		}
 
 
 		private string GetMessage(BitSet first, BitSet second)
