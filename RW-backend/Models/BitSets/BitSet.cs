@@ -37,12 +37,12 @@ namespace RW_backend.Models.BitSets
 			return (Set & subset) == subset;
 		}
 
-		public bool HasNoneCommonElementsWith(int otherSet)
+		public bool HasNoneCommonElementsWith(int otherSet) // tested and ok (i think...)
 		{
 			return (otherSet & Set) == 0;
 		}
 
-		public int SetOfDifferentValuesThan(int otherSet)
+		public int SetOfDifferentValuesThan(int otherSet) // tested and ok (i think)
 		{
 			return otherSet ^ Set;
 		}

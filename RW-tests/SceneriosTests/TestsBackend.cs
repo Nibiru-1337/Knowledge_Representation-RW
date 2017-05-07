@@ -20,7 +20,7 @@ namespace RW_tests.SceneriosTests
         private World _SetUpSimpleWorld()
         {
             //world with 2 fluents ex. alive=0, loaded=1 sand 1 agent Bob=0
-            World world = new World(2, new List<LogicClause>(), new List<LogicClause>());
+            World world = new World(2, new List<LogicClause>(), new List<LogicClause>(), null, null);
 
             //add 2 actions, LOAD and SHOOT executed by Bob
             //LOADID=0, SHOOTID=1
@@ -54,7 +54,7 @@ namespace RW_tests.SceneriosTests
             x.AddFluent(3, false);
             alwaysList.Add(x);
             // always idx=3
-            World world = new World(4, alwaysList, new List<LogicClause>());
+            World world = new World(4, alwaysList, new List<LogicClause>(), null, null);
 
             Assert.AreEqual(8, world.States.Count());
 
@@ -64,12 +64,12 @@ namespace RW_tests.SceneriosTests
             y.AddFluent(1, true);
             alwaysList.Add(y);
             // always -idx=0 ^ -idx=1
-            world = new World(4, alwaysList, new List<LogicClause>());
+            world = new World(4, alwaysList, new List<LogicClause>(), null, null);
 
             Assert.AreEqual(4, world.States.Count());
 
             alwaysList.Add(x);
-            world = new World(4, alwaysList, new List<LogicClause>());
+            world = new World(4, alwaysList, new List<LogicClause>(), null, null);
 
             Assert.AreEqual(2, world.States.Count());
         }
