@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -127,6 +128,15 @@ namespace RW_Frontend
                 case "Causes":
                     button.Click += RemoveCausesClauseButtonClick;
                     break;
+                case "AfterQuery":
+                    button.Click += RemoveAfterQueryButtonClick;
+                    break;
+                case "ExecutableQuery":
+                    button.Click += RemoveExecutableQueryButtonClick;
+                    break;
+                case "EngagedQuery":
+                    button.Click += RemoveEngagedQueryButtonClick;
+                    break;
             }
             return button;
         }
@@ -146,7 +156,7 @@ namespace RW_Frontend
 
         private Expander CreateAgentsExpanderListBox()
         {
-            var ep = new Expander() {Name = "AgentsExpanderListBox", Header = "Agenci", VerticalAlignment = VerticalAlignment.Center};
+            var ep = new Expander() {Name = "AgentsExpanderListBox", Header = "Agenci", VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(10)};
             var listBox = new ListBox()
             {
                 Name = "AgentsListBox",
@@ -175,6 +185,12 @@ namespace RW_Frontend
             return label;
         }
 
+        private Label CreateFromLabel()
+        {
+            var label = new Label() { Margin = new Thickness(5), Content = "from", VerticalAlignment = VerticalAlignment.Center };
+            return label;
+        }
+
         private TextBox CreateLogicExpTextBox(string name)
         {
             var textBox = new TextBox()
@@ -188,6 +204,66 @@ namespace RW_Frontend
             };
             return textBox;
         }
+
+        #region ActionByAgents control
+        private StackPanel CreateActionByAgentsControlButtons(Expander expander)
+        {
+            var stackPanel = new StackPanel() {Orientation = Orientation.Horizontal};
+
+            var addingButton = new Button() {Content = "+", Height = 20, Width = 20, Margin = new Thickness(5), FontSize = 12};
+            addingButton.Click += (s, e) =>
+            {
+                var expanderContent = expander.Content as StackPanel;
+                if(expanderContent == null)
+                    return;
+                expanderContent.Children.Add(CreateActionByAgentsStackPanel());
+            };
+
+            var removingButton = new Button() {Content = "x", Height = 20, Width = 20, Margin = new Thickness(5), FontSize = 12};
+            removingButton.Click += (s, e) =>
+            {
+                var expanderContent = expander.Content as StackPanel;
+                if (expanderContent == null)
+                    return;
+                if(expanderContent.Children.Count > 1)
+                    expanderContent.Children.RemoveAt(expanderContent.Children.Count - 1);
+            };
+
+            stackPanel.Children.Add(addingButton);
+            stackPanel.Children.Add(removingButton);
+            return stackPanel;
+        }
+
+        private void AddActionByAgentsStackPanel(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void RemoveActionByAgentsStackPanel(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private StackPanel CreateActionByAgentsStackPanel()
+        {
+            var stackPanel = new StackPanel() {Orientation = Orientation.Horizontal};
+            stackPanel.Children.Add(CreateActionsComboBox());
+            stackPanel.Children.Add(CreateByLabel());
+            stackPanel.Children.Add(CreateAgentsExpanderListBox());
+            return stackPanel;
+        }
+
+        private Expander CreateActionsByAgentsExpander()
+        {
+            var expander = new Expander() { Name = "ActionsByAgentsExpander", Header = "A by G", VerticalAlignment = VerticalAlignment.Center};
+            var stackPanel = new StackPanel();
+            stackPanel.Children.Add(CreateActionByAgentsControlButtons(expander));
+            stackPanel.Children.Add(CreateActionByAgentsStackPanel());
+            expander.Content = stackPanel;
+            return expander;
+        }
+
+        #endregion
 
         private bool CanDo()
         {
@@ -426,9 +502,9 @@ namespace RW_Frontend
             stackPanel.Children.Add(CreateByLabel());
             stackPanel.Children.Add(CreateAgentsExpanderListBox());
             stackPanel.Children.Add(new Label() {Margin = new Thickness(5), Content = "causes", VerticalAlignment = VerticalAlignment.Center});
-            stackPanel.Children.Add(CreateLogicExpTextBox("alfaExp"));
+            stackPanel.Children.Add(CreateLogicExpTextBox("alfaCausesExp"));
             stackPanel.Children.Add(CreateIfLabel());
-            stackPanel.Children.Add(CreateLogicExpTextBox("piExp"));
+            stackPanel.Children.Add(CreateLogicExpTextBox("piCausesExp"));
             stackPanel.Children.Add(CreateRemoveButton("Causes"));
             return stackPanel;
         }
@@ -460,6 +536,176 @@ namespace RW_Frontend
             }
         }
 
+        #endregion
+
+        #endregion
+
+        #region ExecutableQuery
+        public ICommand AddExecutableQueryCommand
+        {
+            get { return new RelayCommand(AddExecutableQuery, CanDo); }
+        }
+
+        private void AddExecutableQuery()
+        {
+            ExecutableQueryStackPanels.Add(CreateExecutableQueryStackPanel());
+        }
+
+        private StackPanel CreateExecutableQueryStackPanel()
+        {
+            var stackPanel = new StackPanel() { Orientation = Orientation.Horizontal };
+            stackPanel.Children.Add(new ComboBox() { Margin = new Thickness(10), Height = 25, Width = 150, VerticalAlignment = VerticalAlignment.Center, ItemsSource = new List<string>() { "always", String.Empty }, SelectedItem = "always" });
+            stackPanel.Children.Add(new Label() { Margin = new Thickness(5), Content = "executable", VerticalAlignment = VerticalAlignment.Center });
+            stackPanel.Children.Add(CreateActionsByAgentsExpander());
+            stackPanel.Children.Add(CreateFromLabel());
+            stackPanel.Children.Add(CreateLogicExpTextBox("piExecutableQueryExp"));
+            stackPanel.Children.Add(CreateRemoveButton("ExecutableQuery"));
+
+            return stackPanel;
+        }
+
+        private void RemoveExecutableQueryButtonClick(object sender, RoutedEventArgs e)
+        {
+            Button clickedButton = (Button)sender;
+            var removingStackPanel = AfterQueryStackPanels.First(_ => _.Children.Contains(clickedButton));
+            int removingItemIdx = AfterQueryStackPanels.IndexOf(removingStackPanel);
+            AfterQueryStackPanels.RemoveAt(removingItemIdx);
+        }
+
+        #region ExecutableQuery -> StackPanels
+
+        private ObservableCollection<StackPanel> _executableQueryStackPanels;
+
+        public ObservableCollection<StackPanel> ExecutableQueryStackPanels
+        {
+            get
+            {
+                if (_executableQueryStackPanels == null)
+                {
+                    _executableQueryStackPanels = new ObservableCollection<StackPanel>()
+                    {
+                        CreateExecutableQueryStackPanel()
+                    };
+                }
+                return _executableQueryStackPanels;
+            }
+        }
+        #endregion
+
+        #endregion
+
+        #region AfterQuery
+        public ICommand AddAfterQueryCommand
+        {
+            get { return new RelayCommand(AddAfterQuery, CanDo); }
+        }
+
+        private void AddAfterQuery()
+        {
+            AfterQueryStackPanels.Add(CreateAfterQueryStackPanel());
+        }
+
+        private StackPanel CreateAfterQueryStackPanel()
+        {
+            var stackPanel = new StackPanel() { Orientation = Orientation.Horizontal };
+            stackPanel.Children.Add(new ComboBox() { Margin = new Thickness(10), Height = 25, Width = 150, VerticalAlignment = VerticalAlignment.Center, ItemsSource = new List<string>() {"possibly", "necessary"}, SelectedItem = "possibly"});
+            stackPanel.Children.Add(CreateLogicExpTextBox("alfaAfterQueryExp"));
+            stackPanel.Children.Add(new Label() { Margin = new Thickness(5), Content = "after", VerticalAlignment = VerticalAlignment.Center });
+            stackPanel.Children.Add(CreateActionsByAgentsExpander());
+            stackPanel.Children.Add(CreateFromLabel());
+            stackPanel.Children.Add(CreateLogicExpTextBox("piAfterQueryExp"));
+            stackPanel.Children.Add(CreateRemoveButton("AfterQuery"));
+            return stackPanel;
+        }
+
+        private void RemoveAfterQueryButtonClick(object sender, RoutedEventArgs e)
+        {
+            Button clickedButton = (Button)sender;
+            var removingStackPanel = AfterQueryStackPanels.First(_ => _.Children.Contains(clickedButton));
+            int removingItemIdx = AfterQueryStackPanels.IndexOf(removingStackPanel);
+            AfterQueryStackPanels.RemoveAt(removingItemIdx);
+        }
+
+        #region AfterQuery -> StackPanels
+
+        private ObservableCollection<StackPanel> _afterQueryStackPanels;
+
+        public ObservableCollection<StackPanel> AfterQueryStackPanels
+        {
+            get
+            {
+                if (_afterQueryStackPanels == null)
+                {
+                    _afterQueryStackPanels = new ObservableCollection<StackPanel>()
+                    {
+                        CreateAfterQueryStackPanel()
+                    };
+                }
+                return _afterQueryStackPanels;
+            }
+        }
+        #endregion
+
+        #endregion
+
+        #region EngagedQuery
+        public ICommand AddEngagedQueryCommand
+        {
+            get { return new RelayCommand(AddEngagedQuery, CanDo); }
+        }
+
+        private void AddEngagedQuery()
+        {
+            EngagedQueryStackPanels.Add(CreateEngagedQueryStackPanel());
+        }
+
+        private StackPanel CreateEngagedQueryStackPanel()
+        {
+            var stackPanel = new StackPanel() { Orientation = Orientation.Horizontal };
+            stackPanel.Children.Add(CreateAgentsExpanderListBox());
+            stackPanel.Children.Add(new ComboBox()
+            {
+                Margin = new Thickness(10),
+                Height = 25,
+                Width = 150,
+                VerticalAlignment = VerticalAlignment.Center,
+                ItemsSource = new List<string>() {"always", String.Empty},
+                SelectedItem = "always"
+            });
+            stackPanel.Children.Add(new Label() { Margin = new Thickness(5), Content = "engaged in", VerticalAlignment = VerticalAlignment.Center });
+            stackPanel.Children.Add(CreateActionsByAgentsExpander());
+            stackPanel.Children.Add(CreateFromLabel());
+            stackPanel.Children.Add(CreateLogicExpTextBox("piEngagedQueryExp"));
+            stackPanel.Children.Add(CreateRemoveButton("EngagedQuery"));
+            return stackPanel;
+        }
+
+        private void RemoveEngagedQueryButtonClick(object sender, RoutedEventArgs e)
+        {
+            Button clickedButton = (Button)sender;
+            var removingStackPanel = EngagedQueryStackPanels.First(_ => _.Children.Contains(clickedButton));
+            int removingItemIdx = EngagedQueryStackPanels.IndexOf(removingStackPanel);
+            EngagedQueryStackPanels.RemoveAt(removingItemIdx);
+        }
+
+        #region AfterQuery -> StackPanels
+
+        private ObservableCollection<StackPanel> _engagedQueryStackPanels;
+
+        public ObservableCollection<StackPanel> EngagedQueryStackPanels
+        {
+            get
+            {
+                if (_engagedQueryStackPanels == null)
+                {
+                    _engagedQueryStackPanels = new ObservableCollection<StackPanel>()
+                    {
+                        CreateEngagedQueryStackPanel()
+                    };
+                }
+                return _engagedQueryStackPanels;
+            }
+        }
         #endregion
 
         #endregion
