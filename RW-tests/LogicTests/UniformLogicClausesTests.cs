@@ -110,7 +110,20 @@ namespace RW_tests.LogicTests
 				Assert.IsTrue(emptyClause.CheckForState(i), "failed for state = " + i);
 			}
 		}
-		
+
+
+		[TestMethod]
+		public void LogicClauseFactoryContradictingTests()
+		{
+			LogicClausesFactory factory = new LogicClausesFactory();
+			int fluentsNumber = 10;
+			int lastState = (1 << fluentsNumber);
+			var contrClause = factory.CreateContradictingClause();
+			for (int i = 0; i < lastState; i++)
+			{
+				Assert.IsFalse(contrClause.CheckForState(i), "failed for state = " + i);
+			}
+		}
 
 	}
 }
