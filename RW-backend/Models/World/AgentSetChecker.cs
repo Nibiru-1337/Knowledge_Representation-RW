@@ -1,17 +1,20 @@
 ﻿using System.Collections.Generic;
+using System.Net.Configuration;
 using RW_backend.Models.BitSets;
-using RW_backend.Models.Clauses;
 
-namespace RW_backend.Models
+namespace RW_backend.Models.World
 {
     public class AgentSetChecker
     {
-        private int _agentSet;
-        public List<State> edges { get; private set; }
+	    public AgentsSet AgentsSet { get; }
+
+		public List<State> Edges { get; private set; }
+
+
         public AgentSetChecker(int agentSet, List<State> x)
         {
-            _agentSet = agentSet;
-            edges = x;
+            AgentsSet = new AgentsSet(agentSet);
+            Edges = x;
         }
 
         /// <summary>
@@ -19,13 +22,15 @@ namespace RW_backend.Models
         /// </summary>
         /// <param name="agentSet">The set executing the action</param>
         /// <returns>true if input is subset of action agent set, false otherwise</returns>
-        public bool Check(int agentSet)
+        public bool CanBeExecutedByAgentsSet(int agentSet)
         {
-            if ((_agentSet & agentSet) != 0)
-                return true;
-            else
-                return false;
+	        return AgentsSet.IsSubsetOf(agentSet);
         }
+
+	    public bool UsesAgentFromSet(int agentsSet)
+	    {
+		    return !AgentsSet.HasNoneCommonElementsWith(agentsSet);
+	    }
 
     }
 }

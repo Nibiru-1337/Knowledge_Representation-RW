@@ -55,6 +55,7 @@
     <Compile Include="LogicTests\AlternativeOfConjunctionsTests.cs" />
     <Compile Include="LogicTests\ConjunctionOfAlternativesTests.cs" />
     <Compile Include="LogicTests\SimpleLogicClausesTests.cs" />
+    <Compile Include="LogicTests\BitSetTests.cs" />
     <Compile Include="LogicTests\Utilities.cs" />
     <Compile Include="ParserTests\ParsingTests.cs" />
     <Compile Include="SceneriosTests\TestsBackend.cs" />

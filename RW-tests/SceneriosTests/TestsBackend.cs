@@ -9,6 +9,7 @@ using RW_backend.Models.BitSets;
 using RW_backend.Models.Clauses;
 using RW_backend.Models.Clauses.LogicClauses;
 using RW_backend.Models.GraphModels;
+using RW_backend.Models.World;
 
 namespace RW_tests.SceneriosTests
 {
@@ -19,7 +20,7 @@ namespace RW_tests.SceneriosTests
         private World _SetUpSimpleWorld()
         {
             //world with 2 fluents ex. alive=0, loaded=1 sand 1 agent Bob=0
-            World world = new World(2, null);
+            World world = new World(2, new List<LogicClause>(), new List<LogicClause>());
 
             //add 2 actions, LOAD and SHOOT executed by Bob
             //LOADID=0, SHOOTID=1
@@ -53,7 +54,7 @@ namespace RW_tests.SceneriosTests
             x.AddFluent(3, false);
             alwaysList.Add(x);
             // always idx=3
-            World world = new World(4, alwaysList);
+            World world = new World(4, alwaysList, new List<LogicClause>());
 
             Assert.AreEqual(8, world.States.Count());
 
@@ -63,12 +64,12 @@ namespace RW_tests.SceneriosTests
             y.AddFluent(1, true);
             alwaysList.Add(y);
             // always -idx=0 ^ -idx=1
-            world = new World(4, alwaysList);
+            world = new World(4, alwaysList, new List<LogicClause>());
 
             Assert.AreEqual(4, world.States.Count());
 
             alwaysList.Add(x);
-            world = new World(4, alwaysList);
+            world = new World(4, alwaysList, new List<LogicClause>());
 
             Assert.AreEqual(2, world.States.Count());
         }
@@ -83,27 +84,29 @@ namespace RW_tests.SceneriosTests
 
             //(LOAD) should have an edge from state alive, -loaded -> alive, loaded
             AgentSetChecker asc = world.Connections[world.ActionIds[0]][new State(0x1)][0];
-            if (asc.Check(0x0)) Assert.Fail(); //empty agent set should not execute LOAD
-            if (asc.Check(0x1))
+            if (asc.CanBeExecutedByAgentsSet(0x0))
+				Assert.Fail("empty agent set should not execute LOAD"); //empty agent set should not execute LOAD
+            if (asc.CanBeExecutedByAgentsSet(0x1))
             {
-                List<State> afterLOAD = asc.edges;
-                Assert.AreEqual(1, afterLOAD.Count);
-                Assert.AreEqual(new State(0x3), afterLOAD[0]);
+                List<State> afterLOAD = asc.Edges;
+                Assert.AreEqual(1, afterLOAD.Count, "wrong number of states after LOAD");
+                Assert.AreEqual(new State(0x3), afterLOAD[0], "wrong state after LOAD");
             }
             //(LOAD) should have an edge from state alive, loaded -> alive, loaded
             asc = world.Connections[world.ActionIds[0]][new State(0x3)][0];
-            if (asc.Check(0x2)) Assert.Fail(); //Bob is not present, not executable
-            if (asc.Check(0x1))
+            if (asc.CanBeExecutedByAgentsSet(0x2))
+				Assert.Fail("Bob is not present, not executable"); //Bob is not present, not executable
+            if (asc.CanBeExecutedByAgentsSet(0x1))
             {
-                List<State> afterLOAD = asc.edges;
+                List<State> afterLOAD = asc.Edges;
                 Assert.AreEqual(1, afterLOAD.Count);
                 Assert.AreEqual(new State(0x3), afterLOAD[0]);
             }
             //(LOAD) should have an edge from state -alive, loaded -> -alive, loaded
             asc = world.Connections[world.ActionIds[0]][new State(0x2)][0];
-            if (asc.Check(0x3)) //Bob is present, executable
+            if (asc.CanBeExecutedByAgentsSet(0x3)) //Bob is present, executable
             {
-                List<State> afterLOAD = asc.edges;
+                List<State> afterLOAD = asc.Edges;
                 Assert.AreEqual(1, afterLOAD.Count);
                 Assert.AreEqual(new State(0x2), afterLOAD[0]);
             }
@@ -113,24 +116,24 @@ namespace RW_tests.SceneriosTests
             }
             //(LOAD) should have an edge from state -alive, -loaded -> -alive, loaded
             asc = world.Connections[world.ActionIds[0]][new State(0x0)][0];
-            if (asc.Check(0x1)) {
-                List<State> afterLOAD = asc.edges;
+            if (asc.CanBeExecutedByAgentsSet(0x1)) {
+                List<State> afterLOAD = asc.Edges;
                 Assert.AreEqual(1, afterLOAD.Count);
                 Assert.AreEqual(new State(0x2), afterLOAD[0]);
             }
             //(SHOOT) should have an edge from state alive, loaded -> -alive, -loaded
             asc = world.Connections[world.ActionIds[1]][new State(0x3)][0];
-            if (asc.Check(0x1))
+            if (asc.CanBeExecutedByAgentsSet(0x1))
             {
-                List<State> afterSHOOT = asc.edges;
+                List<State> afterSHOOT = asc.Edges;
                 Assert.AreEqual(1, afterSHOOT.Count);
                 Assert.AreEqual(new State(0x0), afterSHOOT[0]);
             }
             //(SHOOT) should have an edge from state -alive, loaded -> -alive, -loaded
             asc = world.Connections[world.ActionIds[1]][new State(0x2)][0];
-            if (asc.Check(0x1))
+            if (asc.CanBeExecutedByAgentsSet(0x1))
             {
-                List<State> afterSHOOT = asc.edges;
+                List<State> afterSHOOT = asc.Edges;
                 Assert.AreEqual(1, afterSHOOT.Count);
                 Assert.AreEqual(new State(0x0), afterSHOOT[0]);
             }

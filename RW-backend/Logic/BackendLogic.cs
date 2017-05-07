@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using RW_backend.Models;
 using RW_backend.Models.BitSets;
 using RW_backend.Models.Clauses;
 using RW_backend.Models.Clauses.LogicClauses;
+using RW_backend.Models.World;
 
 namespace RW_backend.Logic
 {
@@ -25,7 +27,7 @@ namespace RW_backend.Logic
             //		(UWAGA: podczas rezolucji chyba też będziemy musieli minimalizować? nie wiem...)
             //	3. zapisujemy gdzieś After	
 
-            World world = new World(model.FluentsCount, model.AlwaysStatements);
+            World world = new World(model.FluentsCount, model.AlwaysStatements, new List<LogicClause>());
 
             world.AddCauses(model.CausesStatements, model.ActionsCount);
 
