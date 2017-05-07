@@ -12,18 +12,17 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using RW_Frontend.Annotations;
+using RW_Frontend.InputsViewModels;
 
 [assembly: InternalsVisibleTo("RW-tests")]
 
 namespace RW_Frontend
 {
-    class VM : INotifyPropertyChanged
+    public class VM : INotifyPropertyChanged
     {
-        //TODO dopracować reprezentacje zdań - kolekcje string na vm zdań, wprowadzić właściwości z OnPropertyChanged()
         public ObservableCollection<string> Fluents { get; set; }
         public ObservableCollection<string> Actions { get; set; }
         public ObservableCollection<string> Agents { get; set; }
-
         public ObservableCollection<string> Noninertial { get; set; }
 
         public ObservableCollection<string> AlwaysStatements { get; set; }
@@ -52,8 +51,8 @@ namespace RW_Frontend
         }
 
         internal static VM Create(string[] fluents, string[] actions, string[] agents,
-            string[] noninertial, string[] always, string[] initially,
-            string[] after, string[] causes, string[] releases)
+         string[] noninertial, string[] always, string[] initially,
+         string[] after, string[] causes, string[] releases)
         {
             //metoda na potrzeby automatyzacji testów
             return new VM
@@ -70,6 +69,7 @@ namespace RW_Frontend
                 ReleasesStatements = new ObservableCollection<string>(releases)
             };
         }
+
 
         #region Components Control
 
@@ -137,6 +137,31 @@ namespace RW_Frontend
                 case "EngagedQuery":
                     button.Click += RemoveEngagedQueryButtonClick;
                     break;
+            }
+            return button;
+        }
+
+        private Button CreateCalculateQueryButton(string queryType)
+        {
+            var button = new Button()
+            {
+                Height = 25,
+                FontSize = 14,
+                Content = "Oblicz",
+                Margin = new Thickness(5),
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            switch (queryType)
+            {
+                case "Executable":
+                    button.Click += CalculateExecutableQuery;
+                    break;
+                case "After":
+                    button.Click += CalculateAfterQuery;
+                    break;
+                case "Engaged":
+                    button.Click += CalculateEngagedQuery;
+                    break;             
             }
             return button;
         }
@@ -232,16 +257,6 @@ namespace RW_Frontend
             stackPanel.Children.Add(addingButton);
             stackPanel.Children.Add(removingButton);
             return stackPanel;
-        }
-
-        private void AddActionByAgentsStackPanel(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
-        private void RemoveActionByAgentsStackPanel(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private StackPanel CreateActionByAgentsStackPanel()
@@ -615,6 +630,7 @@ namespace RW_Frontend
             stackPanel.Children.Add(CreateFromLabel());
             stackPanel.Children.Add(CreateLogicExpTextBox("piAfterQueryExp"));
             stackPanel.Children.Add(CreateRemoveButton("AfterQuery"));
+            stackPanel.Children.Add(CreateCalculateQueryButton("After"));
             return stackPanel;
         }
 
@@ -722,6 +738,30 @@ namespace RW_Frontend
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        #endregion
+
+
+        #region Queries control
+
+        private void CalculateExecutableQuery(object sender, RoutedEventArgs e)
+        {
+        }
+
+        //TODO: Add evaluation of query here
+        private void CalculateAfterQuery(object sender, RoutedEventArgs e)
+        {
+            InputAggregator.PopulateViewModels(this);
+            //Dostęp do pobranych z widoku danych:
+            //var fluents = InputAggregator.FluentsViewModels;
+            //var actions = InputAggregator.ActionsViewModels;
+            //var agents = InputAggregator.AgentsViewModels;
+            //var causes = InputAggregator.CausesClauseViewModels;
+            //var afterQuery = InputAggregator.AfterQueriesViewModels;
+        }
+
+        private void CalculateEngagedQuery(object sender, RoutedEventArgs e)
+        {
+        }
         #endregion
     }
 }
