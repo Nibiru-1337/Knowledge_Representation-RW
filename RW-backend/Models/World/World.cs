@@ -2,8 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using RW_backend.Models.BitSets;
 using RW_backend.Models.Clauses;
+using RW_backend.Models.Clauses.LogicClauses;
 using RW_backend.Models.GraphModels;
 
 namespace RW_backend.Models
@@ -18,72 +20,103 @@ namespace RW_backend.Models
 
         // so far the constructor creates an array of all possible states
         // without any edges in between them (edges are added with AddCauses)
-        private readonly State[] _states;
+        public  IList<State> States { get; private set; }
 
+        //TODO delete if ActionIds not needed in World class
         // information about the actions in this world
-        public List<int> ActionIds { get; private set; }
+        public IList<int> ActionIds { get; private set; }
 
-        //connections b/w states are represented with a dictionary of tuples -> AgentSetChecker
-        //tuple(key) says which action(ActionID) and which starting state
-        //AgentSetChecker(value) is used to check if agents can execute action and it contains graph edges
-        public Dictionary<Tuple<int, State>, AgentSetChecker> Connections { get; private set; }
+        //connections b/w states are represented with a chain of dictonaries
+        // [int(ActionId)] [State(starting state)] -> List<AgentSetChecker>
+        public Dictionary<int, Dictionary<State, IList<AgentSetChecker>>> Connections { get; private set; }
 
 
-        public World(int fluentsCount)
+        public World(int fluentsCount, IList<LogicClause> alwaysList)
         {
             if (fluentsCount > 31) throw new ArgumentException("max fluent count = 31");
             int totalNodes = (int)1<<fluentsCount;
-            Connections = new Dictionary<Tuple<int, State>, AgentSetChecker>();
-            _states = new State[totalNodes];
+            Connections = new Dictionary<int, Dictionary<State, IList<AgentSetChecker>>>();
+            States = new List<State>(totalNodes);
             ActionIds = new List<int>();
             for (int i = 0; i < totalNodes; i++)
             {
-                _states[i] = new State(i);
+                if (alwaysList != null && alwaysList.Count > 0)
+                {
+                    bool goodToGo = true;
+                    foreach (var always in alwaysList)
+                    {
+                        if (!always.CheckForState(i))
+                        {
+                            goodToGo = false;
+                            break;
+                        }
+                    }
+                    if (goodToGo) States.Add(new State(i));
+                }
+                else
+                {
+                    States.Add(new State(i));
+                }
             }
         }
 
         //add the edges concerning a particular causes action
-        public void AddCauses(Causes a)
+        public void AddCauses(IList<Causes>causesList, int ActionCount)
         {
-            foreach (var startingState in _states)
+            //for every unique ActionID
+            for (int i = 0; i < ActionCount; i++)
             {
-                //if there is no conditions or state satisfies conditions
-                if (a.Condition == null || a.Condition.CheckForState(startingState.FluentValues))
+                var stateToAgentSetCheckers = new Dictionary<State, IList<AgentSetChecker>>();
+                //for every starting state
+                foreach (var startingState in States)
                 {
-                    //get all states that have proper result fluents as caused by action
-                    List <State> possibleResults = new List<State>();
-                    foreach (var endingState in _states)
+                
+                    //TODO check assumption that ActionCount is numer of unique ActionIDs, and that they are always sequential
+                    List<Causes> sameID = causesList.Where(a => a.Action == i).ToList();
+                    var ascList = new List<AgentSetChecker>(sameID.Count);
+                    //for each action with the same ActionID
+                    foreach (var a in sameID)
                     {
-                        if (a.Effect.CheckForState(endingState.FluentValues))
+                        //if there is no conditions or state satisfies conditions
+                        if (a.Condition == null || a.Condition.CheckForState(startingState.FluentValues))
                         {
-                            possibleResults.Add(endingState);
-                        }
-                    }
+                            //get all states that have proper result fluents as caused by action
+                            List<State> possibleResults = new List<State>();
+                            foreach (var endingState in States)
+                            {
+                                if (a.Effect.CheckForState(endingState.FluentValues))
+                                {
+                                    possibleResults.Add(endingState);
+                                }
+                            }
 
-                    //find state(s) that have the least amount of changed fluents
-                    List<State> result = new List<State>();
-                    int min = Int32.MaxValue;
-                    foreach (var endingState in possibleResults)
-                    {
-                        int diff = _StateDifference(startingState, endingState);
-                        if (min > diff)
-                        {
-                            min = diff;
-                            result.Clear();
-                            result.Add(endingState);
-                        }
-                        else if (min == diff)
-                        {
-                            result.Add(endingState);
+                            //find state(s) that have the least amount of changed fluents
+                            List<State> result = new List<State>();
+                            int min = Int32.MaxValue;
+                            foreach (var endingState in possibleResults)
+                            {
+                                int diff = _StateDifference(startingState, endingState);
+                                if (min > diff)
+                                {
+                                    min = diff;
+                                    result.Clear();
+                                    result.Add(endingState);
+                                }
+                                else if (min == diff)
+                                {
+                                    result.Add(endingState);
+                                }
+                            }
+                            //add the results of action from starting state into ActionSetChecker
+                            ascList.Add(new AgentSetChecker(a.AgentsSet.AgentSet, result));
                         }
                     }
-                    //add the results of action from starting state
-                    var agentSetChecker = new AgentSetChecker(a.AgentsSet.AgentSet, result);
-                    Connections.Add(new Tuple<int, State>(a.Action, startingState), agentSetChecker);
+                    stateToAgentSetCheckers.Add(startingState, ascList);
                 }
-            }
-            //Add action Id to world
-            ActionIds.Add(a.Action);
+                Connections.Add(i, stateToAgentSetCheckers);
+                //TODO delete if ActionIds not needed in World class
+                ActionIds.Add(i);
+            } 
         }
 
         private static int _StateDifference(State x, State y)
