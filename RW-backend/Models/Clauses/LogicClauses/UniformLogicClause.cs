@@ -22,7 +22,6 @@ namespace RW_backend.Models.Clauses.LogicClauses
 			PositiveFluents = 0;
 			NegatedFluents = 0;
 		}
-		
 
 		public void AddFluent(int fluentId, bool negated)
 		{
@@ -45,6 +44,18 @@ namespace RW_backend.Models.Clauses.LogicClauses
 			else
 			{
 				PositiveFluents = PositiveFluents & (~(1 << fluentId));
+			}
+		}
+
+		public void SetFluents(List<int> positive, List<int> negated)
+		{
+			foreach (int i in positive)
+			{
+				AddFluent(i, false);
+			}
+			foreach (int i in negated)
+			{
+				AddFluent(i, true);
 			}
 		}
 	}

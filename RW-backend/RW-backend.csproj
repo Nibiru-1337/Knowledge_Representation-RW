@@ -39,7 +39,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Logger.cs" />
     <Compile Include="Logic\BackendLogic.cs" />
+    <Compile Include="Logic\MinimiserOfChanges.cs" />
     <Compile Include="Logic\Queries\Results\ProgramExecutionResult.cs" />
     <Compile Include="Logic\Queries\Results\QueryResult.cs" />
     <Compile Include="Models\BitSets\AgentsSet.cs" />
@@ -51,14 +53,15 @@
     <Compile Include="Models\Clauses\LogicClauses\UniformConjunction.cs" />
     <Compile Include="Models\Clauses\LogicClauses\ConjunctionOfAlternatives.cs" />
     <Compile Include="Models\Clauses\LogicClauses\LogicClause.cs" />
-    <Compile Include="Models\GraphModels\ActionAgentsPair.cs" />
-    <Compile Include="Models\GraphModels\LinkedState.cs" />
+    <Compile Include="Models\Factories\BitSetFactory.cs" />
+    <Compile Include="Models\Factories\LogicClausesFactory.cs" />
+    <Compile Include="Models\World\ActionAgentsPair.cs" />
     <Compile Include="Logic\Parser\Parser.cs" />
     <Compile Include="Logic\Queries\AfterQuery.cs" />
     <Compile Include="Models\Clauses\After.cs" />
     <Compile Include="Models\Clauses\Causes.cs" />
     <Compile Include="Logic\Queries\EngagedQuery.cs" />
-    <Compile Include="Logic\Queries\ExectutableQuery.cs" />
+    <Compile Include="Logic\Queries\ExecutableQuery.cs" />
     <Compile Include="Models\World\AgentSetChecker.cs" />
     <Compile Include="Models\Model.cs" />
     <Compile Include="Logic\Queries\Query.cs" />

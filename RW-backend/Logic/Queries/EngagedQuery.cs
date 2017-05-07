@@ -10,7 +10,7 @@ using RW_backend.Models.World;
 
 namespace RW_backend.Logic.Queries
 {
-	class EngagedQuery : Query
+	public class EngagedQuery : Query
 	{
 		public override QueryType Type => QueryType.Engaged;
 		public AgentsSet AgentsSet { get; }
@@ -25,8 +25,9 @@ namespace RW_backend.Logic.Queries
 		{
 			// no wiêc robimy dwie wersje: z i bez agentów
 			var initialStates = GetInitialStates(world.InitialStates);
-			var resultWith = ExecuteProgram(world, initialStates.ToList(), 0);
-			var resultWithout = ExecuteProgram(world, initialStates, AgentsSet.AgentSet);
+			MinimiserOfChanges minimiser = new MinimiserOfChanges();
+			var resultWith = ExecuteProgram(world, minimiser, initialStates.ToList(), 0);
+			var resultWithout = ExecuteProgram(world, minimiser, initialStates, AgentsSet.AgentSet);
 			// TODO: coœ trzeba zrobiæ z ró¿nic¹
 			return new QueryResult()
 			{

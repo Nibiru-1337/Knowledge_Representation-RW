@@ -7,13 +7,14 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RW_backend.Models.Clauses.LogicClauses;
 using RW_backend.Models;
 using RW_backend.Models.BitSets;
+using RW_backend.Models.Factories;
 using RW_backend.Models.GraphModels;
 
 
 namespace RW_tests.LogicTests
 {
 	[TestClass]
-	public class SimpleLogicClausesTests
+	public class UniformLogicClausesTests
 	{
 
 
@@ -97,7 +98,18 @@ namespace RW_tests.LogicTests
 			Assert.AreEqual(false, alternative.CheckForState(state.FluentValues), "Wrong value of clause");
 		}
 
-		
+		[TestMethod]
+		public void LogicClauseFactoryTests()
+		{
+			LogicClausesFactory factory = new LogicClausesFactory();
+			int fluentsNumber = 10;
+			int lastState = (1 << fluentsNumber);
+			var emptyClause = factory.CreateEmptyLogicClause();
+			for (int i = 0; i < lastState; i++)
+			{
+				Assert.IsTrue(emptyClause.CheckForState(i), "failed for state = " + i);
+			}
+		}
 		
 
 	}

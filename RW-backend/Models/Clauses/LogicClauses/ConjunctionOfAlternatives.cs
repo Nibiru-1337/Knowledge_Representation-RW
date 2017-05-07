@@ -11,7 +11,7 @@ namespace RW_backend.Models.Clauses.LogicClauses
 	/// </summary>
 	public class ConjunctionOfAlternatives:LogicClause
 	{
-		private readonly IList<UniformAlternative> _alternatives;
+		private readonly List<UniformAlternative> _alternatives;
 		public IReadOnlyList<UniformAlternative> Alternatives => _alternatives.ToList().AsReadOnly();
 
 		public ConjunctionOfAlternatives()
@@ -30,5 +30,25 @@ namespace RW_backend.Models.Clauses.LogicClauses
 			_alternatives.Add(alternative);
 		}
 
+		public void AddRange(List<UniformAlternative> alternatives)
+		{
+			_alternatives.AddRange(alternatives);
+		}
+
+		public static ConjunctionOfAlternatives CreateFrom(List<UniformAlternative> alternatives)
+		{
+			var response = new ConjunctionOfAlternatives();
+			response.AddRange(alternatives);
+			return response;
+		}
+
+		public override string ToString()
+		{
+			if (Alternatives.Count > 0)
+			{
+				return "(" + string.Join(") ^ (", Alternatives) + ")";
+			}
+			return "[no alts]";
+		}
 	}
 }

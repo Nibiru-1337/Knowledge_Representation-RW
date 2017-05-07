@@ -39,7 +39,8 @@ namespace RW_backend.Logic.Queries
 			return states;
 	    }
 
-		protected internal ProgramExecutionResult ExecuteProgram(World world, List<State> initialStates, int notEngagedAgents = 0)
+		protected internal ProgramExecutionResult ExecuteProgram(World world, MinimiserOfChanges minimiser, 
+			List<State> initialStates, int notEngagedAgents = 0)
 	    {
 			// tylko patrzymy na program, który juz tutaj jest zapisany
 			// TODO: pewnie coś załatwić, żeby nie używać tylu list
@@ -58,8 +59,12 @@ namespace RW_backend.Logic.Queries
 			    // wykonujemy program
 			    newStates.Clear();
 
+				Logger.Log("states available for i = " + i);
+				Logger.Log("=> " + string.Join(", ", states));
+
 				if (!world.Connections.ContainsKey(Program[i].ActionId))
 				{
+					//TODO: wrong actionID? exception?
 					result.Executable = Executable.Never;
 					return result;
 				}
@@ -71,12 +76,18 @@ namespace RW_backend.Logic.Queries
 					intersectedStatesSet.Clear();
 				    int howManyStateAvailable = 0;
 
+					Logger.Log("state = " + state);
 				    
 				    foreach (AgentSetChecker setChecker in world.Connections[Program[i].ActionId][state])
 				    {
+						Logger.Log("checking for " + setChecker.AgentsSet);
+						Logger.Log("can be executed = "+ setChecker.CanBeExecutedByAgentsSet(Program[i].AgentsSet.AgentSet));
+						Logger.Log("eng = " + !setChecker.UsesAgentFromSet(notEngagedAgents));
+
 					    if (setChecker.CanBeExecutedByAgentsSet(Program[i].AgentsSet.AgentSet)
 							&& !setChecker.UsesAgentFromSet(notEngagedAgents)) //
 					    {
+							Logger.Log("pass");
 						    howManyStateAvailable++;
 						    if (setChecker.Edges.Count == 0)
 						    {
@@ -97,6 +108,8 @@ namespace RW_backend.Logic.Queries
 									    intersectedStatesSet.Add(edge, 1);
 								    }
 							    }
+
+
 						    }
 					    }
 				    }
@@ -105,21 +118,23 @@ namespace RW_backend.Logic.Queries
 					    intersectedStatesSet.Where(pair => pair.Value == howManyStateAvailable)
 						    .Select(pair => pair.Key)
 						    .ToList();
-
-					// TODO: minimalizacja zmian na newStatesForThatState
-					// dopiero potem dodajemy do listy wszystkich stanów
-					newStates.AddRange(newStatesForThatState);
+					
+					
+					newStates.AddRange(minimiser.MinimaliseChanges(state, newStatesForThatState));
 
 			    }
 
 			    if (newStates.Count == 0)
 			    {
+					Logger.Log("new states count = 0, so never executable");
 					result.Executable = Executable.Never;
 				    return result;
 			    }
 			    states = newStates.Distinct().ToList(); // żeby nie powtarzać
 
 		    }
+
+			Logger.Log("last states = " + string.Join(", ", states));
 		    result.ReachableStates = states;
 		    result.Executable = states.Count == 0
 			    ? Executable.Never

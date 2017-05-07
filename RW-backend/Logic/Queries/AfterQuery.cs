@@ -10,7 +10,7 @@ using RW_backend.Models.World;
 
 namespace RW_backend.Logic.Queries
 {
-	class AfterQuery : Query
+	public class AfterQuery : Query
 	{
 
 		public override QueryType Type => QueryType.After;
@@ -29,7 +29,8 @@ namespace RW_backend.Logic.Queries
 
 		public override QueryResult Evaluate(World world)
 		{
-			ProgramExecutionResult result = this.ExecuteProgram(world, GetInitialStates(world.InitialStates));
+			MinimiserOfChanges minimiser = new MinimiserOfChanges();
+			ProgramExecutionResult result = this.ExecuteProgram(world, minimiser, GetInitialStates(world.InitialStates));
 
 			bool allOk = true;
 			bool oneOk = false;
