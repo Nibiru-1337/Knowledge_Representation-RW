@@ -20,10 +20,7 @@ namespace RW_tests.SceneriosTests
             var logic = new BackendLogic();
             ////dalej jak już będziemy mieć kwerendy, to coś w rodzaju
             var world = logic.CalculateWorld(model);
-			//var query = Query.Create("!alive after SHOOT by {Bob}");
-			var notalive = new UniformAlternative();
-			notalive.AddFluent(0, true);
-			var query = new AfterQuery(true, notalive, new [] {new ActionAgentsPair(1, 1), }, null);
+			var query = Query.Create("!alive after SHOOT by {Bob}");
             var queryResult = query.Evaluate(world);
             Assert.IsTrue(queryResult.IsTrue, "query should be true");
             Assert.IsNotNull(queryResult.Function, "function should not be null");
