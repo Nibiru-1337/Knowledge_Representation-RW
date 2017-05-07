@@ -52,9 +52,11 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="BuildingOfWorldTests\GeneratingWorldTests.cs" />
+    <Compile Include="BuildingOfWorldTests\MinimiserTests.cs" />
     <Compile Include="LogicTests\AlternativeOfConjunctionsTests.cs" />
     <Compile Include="LogicTests\ConjunctionOfAlternativesTests.cs" />
-    <Compile Include="LogicTests\SimpleLogicClausesTests.cs" />
+    <Compile Include="LogicTests\UniformLogicClausesTests.cs" />
     <Compile Include="LogicTests\BitSetTests.cs" />
     <Compile Include="LogicTests\Utilities.cs" />
     <Compile Include="ParserTests\ParsingTests.cs" />

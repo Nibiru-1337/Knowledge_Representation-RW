@@ -27,7 +27,21 @@ namespace RW_backend.Logic
             //		(UWAGA: podczas rezolucji chyba też będziemy musieli minimalizować? nie wiem...)
             //	3. zapisujemy gdzieś After	
 
-            World world = new World(model.FluentsCount, model.AlwaysStatements, new List<LogicClause>());
+
+			// TODO: prepare releases and initially info for world
+
+			//BitValueOperator bop = new BitValueOperator();
+			//Dictionary<KeyValuePair<int, AgentsSet>, BitSet> reldict 
+			//	= new Dictionary<KeyValuePair<int, AgentsSet>, BitSet>(model.ReleasesStatements?.Count ?? 0);
+	  //      if ((model.ReleasesStatements?.Count ?? 0) > 0)
+	  //      {
+		 //       foreach (Releases releases in model.ReleasesStatements)
+		 //       {
+			//        if(reldict.ContainsKey())
+		 //       }
+	  //      }
+
+	        World world = new World(model.FluentsCount, model.AlwaysStatements, model.InitiallyStatements, null, null);
 
             world.AddCauses(model.CausesStatements, model.ActionsCount);
 

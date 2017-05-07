@@ -66,6 +66,9 @@ namespace RW_tests.LogicTests
 			}
 		}
 
+		
+
+
 		private string GetMessage(BitSet first, BitSet second)
 		{
 			StringBuilder sb = new StringBuilder();

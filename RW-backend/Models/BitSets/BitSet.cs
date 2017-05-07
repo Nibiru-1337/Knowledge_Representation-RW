@@ -9,9 +9,10 @@ namespace RW_backend.Models.BitSets
 {
 	public class BitSet
 	{
-
+		private int MaxElementsCount = 32;
 		public int Set { get; }
 
+		//TODO: w tej chwili, abu uzyskać tę liczbę, można skorzystać z BitValueOperator
 		public BitSet(int fluentValues)
 		{
 			Set = fluentValues;
@@ -38,12 +39,33 @@ namespace RW_backend.Models.BitSets
 
 		public bool HasNoneCommonElementsWith(int otherSet)
 		{
-			return (otherSet ^ Set) == 0;
+			return (otherSet & Set) == 0;
+		}
+
+		public int SetOfDifferentValuesThan(int otherSet)
+		{
+			return otherSet ^ Set;
+		}
+
+		public List<int> GetAllFromSet()
+		{
+			List<int> response = new List<int>(MaxElementsCount);
+			for (int i = 0; i < MaxElementsCount; i++)
+			{
+				if(this.ElementValue(i))
+					response.Add(i);
+			}
+			return response;
 		}
 
 		public override int GetHashCode()
 		{
 			return Set.GetHashCode();
+		}
+
+		public override string ToString()
+		{
+			return Set.ToString();
 		}
 	}
 }

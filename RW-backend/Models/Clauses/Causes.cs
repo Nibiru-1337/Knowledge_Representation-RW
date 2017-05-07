@@ -8,21 +8,23 @@ namespace RW_backend.Models.Clauses
 	/// </summary>
 	public class Causes
 	{
-		public LogicClause Condition { get; }
+		public LogicClause InitialCondition { get; }
 		public LogicClause Effect { get; }
 		public int Action { get; }
 		public AgentsSet AgentsSet { get; }
 
-		public Causes(LogicClause condition, LogicClause effect, int action, AgentsSet agentsSet)
+		public Causes(LogicClause initialCondition, LogicClause effect, int action, AgentsSet agentsSet)
 		{
-			Condition = condition;
+			InitialCondition = initialCondition;
 			Effect = effect;
 			Action = action;
 			AgentsSet = agentsSet;
 		}
 
-		
-
-
+		public override string ToString()
+		{
+			return "condition = " + InitialCondition + ", effect = " + Effect + ", Action = "
+					+ Action + ", Agents = " + AgentsSet;
+		}
 	}
 }

@@ -8,13 +8,20 @@ using RW_backend.Models.World;
 
 namespace RW_backend.Logic.Queries
 {
-	class ExectutableQuery : Query
+	public class ExecutableQuery : Query
 	{
 		public override QueryType Type => QueryType.Executable;
 
+		public ExecutableQuery(IReadOnlyList<ActionAgentsPair> program, bool always, LogicClause initialState)
+			: base(program, always, initialState)
+		{
+		}
+
 		public override QueryResult Evaluate(World world)
 		{
-			ProgramExecutionResult result = this.ExecuteProgram(world, GetInitialStates(world.InitialStates));
+			MinimiserOfChanges minimiser = new MinimiserOfChanges();
+			var initial = GetInitialStates(world.InitialStates);
+			ProgramExecutionResult result = this.ExecuteProgram(world, minimiser, initial);
 			return new QueryResult()
 			{
 				IsTrue =
@@ -24,9 +31,6 @@ namespace RW_backend.Logic.Queries
 			};
 		}
 
-		public ExectutableQuery(IReadOnlyList<ActionAgentsPair> program, bool always, LogicClause initialState)
-			: base(program, always, initialState)
-		{
-		}
+		
 	}
 }
