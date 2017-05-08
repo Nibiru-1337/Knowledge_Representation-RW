@@ -50,6 +50,7 @@ namespace RW_Frontend
             var causesList = new List<Causes>();
             foreach (var t in causesVms)
             {
+                //TODO handle "" agent
                 List<int> agentIds = t.Agents.Select(a => revAgentDict[a]).ToList();
                 BitSetFactory bitSetFactory = new BitSetFactory();
                 int set = bitSetFactory.CreateBitSetValueFrom(agentIds);

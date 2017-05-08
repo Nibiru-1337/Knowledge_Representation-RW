@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using RW_backend.Models;
-using RW_backend.Models.BitSets;
-using RW_backend.Models.Clauses;
-using RW_backend.Models.Clauses.LogicClauses;
+﻿using RW_backend.Models;
 using RW_backend.Models.World;
 
 namespace RW_backend.Logic
@@ -13,10 +8,6 @@ namespace RW_backend.Logic
     /// </summary>
     public class BackendLogic
     {
-		
-
-
-        //TODO budowanie reprezentaji świata i odpowiadanie na kwerendy
         public World CalculateWorld(Model model)
         {
             // 1. tworzenie listy wszystkich możliwych stanów (uwzględniając wszystkie always)

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RW_backend.Models.GraphModels;
+﻿using System.Collections.Generic;
 
 namespace RW_backend.Models.BitSets
 {
@@ -12,7 +7,6 @@ namespace RW_backend.Models.BitSets
 		private int MaxElementsCount = 32;
 		public int Set { get; }
 
-		//TODO: w tej chwili, abu uzyskać tę liczbę, można skorzystać z BitValueOperator
 		public BitSet(int fluentValues)
 		{
 			Set = fluentValues;
