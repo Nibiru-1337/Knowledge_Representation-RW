@@ -125,6 +125,27 @@ namespace RW_tests.BuildingOfWorldTests
 			Assert.AreEqual(false, query.Evaluate(world).IsTrue, "Bob should not be able to kill Fredek anytime");
 		}
 
+		[TestMethod]
+		public void PiotrCaseTest()
+		{
+			Model model = GenerateModel();
+			LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
+			
+			var causes1 = new Causes(logicClausesFactory.CreateSingleFluentClause(Loaded, false),
+				logicClausesFactory.CreateSingleFluentClause(Alive, true), Shoot, SingleAgent(Bob));
+			model.CausesStatements= new List<Causes>()
+			{
+				causes1,
+			};
+			World world = new BackendLogic().CalculateWorld(model);
+
+			Query query =
+				new AfterQuery(new ActionAgentsPair[] {new ActionAgentsPair(Shoot, BobSet)},
+					logicClausesFactory.CreateSingleFluentClause(Alive, false), true,
+					logicClausesFactory.CreateSingleFluentClause(Alive, true));
+			Assert.AreEqual(false, query.Evaluate(world).IsTrue, "wrong result of query");
+		}
+
 
 		Model GenerateModel(bool initialStates = false)
 		{
