@@ -1,5 +1,6 @@
 using RW_backend.Models.BitSets;
 using RW_backend.Models.Clauses.LogicClauses;
+using RW_backend.Models.Factories;
 
 namespace RW_backend.Models.Clauses
 {
@@ -19,6 +20,12 @@ namespace RW_backend.Models.Clauses
 			Effect = effect;
 			Action = action;
 			AgentsSet = agentsSet;
+		}
+
+		public static Causes CreateImpossible(LogicClause initialCondition, 
+			int action, AgentsSet agentsSet)
+		{
+			return new Causes(initialCondition, new LogicClausesFactory().CreateContradictingClause(), action, agentsSet);
 		}
 
 		public override string ToString()

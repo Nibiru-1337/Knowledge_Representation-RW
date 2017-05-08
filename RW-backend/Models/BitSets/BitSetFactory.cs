@@ -21,6 +21,11 @@ namespace RW_backend.Models.Factories
 			return set;
 		}
 
+		public int CreateFromOneElement(int element)
+		{
+			return _bitValueOperator.SetFluent(0, element);
+		}
 
+		
 	}
 }
