@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using RW_backend.Logic.Queries.Results;
-using RW_backend.Models;
 using RW_backend.Models.BitSets;
 using RW_backend.Models.Clauses.LogicClauses;
 using RW_backend.Models.GraphModels;

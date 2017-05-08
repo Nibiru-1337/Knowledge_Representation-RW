@@ -14,9 +14,6 @@ namespace RW_backend.Models.World
     {
 	    public const int MaxFluentCount = 31; // TODO: czemu nie 32?
 
-        //TODO implementacja grafu stanów świata, stanów początkowych itd
-        //TODO WORK IN PROGESS!
-
         // so far the constructor creates an array of all possible states
         // without any edges in between them (edges are added with AddCauses)
         public  IList<State> States { get; private set; }
@@ -153,16 +150,5 @@ namespace RW_backend.Models.World
                 ActionIds.Add(i);
             } 
         }
-
-        private static int _StateDifference(State x, State y)
-        {
-			// TODO: uwzględnić fluenty nieinertne
-            int diff = x.FluentValues ^ y.FluentValues;
-            //return the amount of set bits in diff
-            diff = diff - ((diff >> 1) & 0x55555555);
-            diff = (diff & 0x33333333) + ((diff >> 2) & 0x33333333);
-            return  ((diff + (diff >> 4) & 0xF0F0F0F) * 0x1010101) >> 24;
-        }
-
     }
 }

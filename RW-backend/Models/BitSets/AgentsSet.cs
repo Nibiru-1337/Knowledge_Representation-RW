@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RW_backend.Models.BitSets
+﻿namespace RW_backend.Models.BitSets
 {
 	public class AgentsSet:BitSet
 	{

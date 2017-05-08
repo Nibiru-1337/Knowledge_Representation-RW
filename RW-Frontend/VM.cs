@@ -752,7 +752,6 @@ namespace RW_Frontend
         {
         }
 
-        //TODO: Add evaluation of query here
         private void CalculateAfterQuery(object sender, RoutedEventArgs e)
         {
             InputAggregator.PopulateViewModels(this);
