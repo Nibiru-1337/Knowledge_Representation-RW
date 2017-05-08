@@ -1,12 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RW_backend.Logic;
 using RW_backend.Logic.Queries;
 using RW_backend.Models;
 using RW_backend.Models.BitSets;
-using RW_backend.Models.Clauses;
-using RW_backend.Models.Clauses.LogicClauses;
-using RW_backend.Models.GraphModels;
 using RW_Frontend;
+using RW_Frontend.InputsViewModels;
 
 namespace RW_tests.SceneriosTests
 {
@@ -16,11 +16,11 @@ namespace RW_tests.SceneriosTests
         [TestMethod]
         public void YaleScenarioTest()
         {
-            var model = PrepareModel();
+            var vm = PrepareVM();
+            var model = PrepareModel(vm);
             var logic = new BackendLogic();
-            ////dalej jak już będziemy mieć kwerendy, to coś w rodzaju
             var world = logic.CalculateWorld(model);
-			var query = Query.Create("!alive after SHOOT by {Bob}");
+            var query = PrepareAfterQuery_Shoot(vm, false, "loaded");
             var queryResult = query.Evaluate(world);
             Assert.IsTrue(queryResult.IsTrue, "query should be true");
             Assert.IsNotNull(queryResult.Function, "function should not be null");
@@ -28,7 +28,74 @@ namespace RW_tests.SceneriosTests
             Assert.AreEqual(new State(0), queryResult.Function[1]);//!alive,!loaded
         }
 
-        private static Model PrepareModel()
+        [TestMethod]
+        public void YaleScenarioSuccesOnlyTest_ShootLoaded()
+        {
+            var vm = PrepareVM();
+            var model = PrepareModel(vm);
+            var logic = new BackendLogic();
+            var world = logic.CalculateWorld(model);
+            var query = PrepareAfterQuery_Shoot(vm, false, "loaded");
+            var queryResult = query.Evaluate(world);
+            Assert.IsTrue(queryResult.IsTrue, "query should be true - SHOOT with loaded");
+        }
+
+        [TestMethod]
+        public void YaleScenarioSuccesOnlyTest_ShootNotLoaded()
+        {
+            var vm = PrepareVM();
+            var model = PrepareModel(vm);
+            var logic = new BackendLogic();
+            var world = logic.CalculateWorld(model);
+            var query = PrepareAfterQuery_Shoot(vm, false, "!loaded");
+            var queryResult = query.Evaluate(world);
+            Assert.IsFalse(queryResult.IsTrue, "query should not be true - SHOOT with !loaded");
+        }
+
+        [TestMethod]
+        public void YaleScenarioSuccesOnlyTest_Shoot()
+        {
+            var vm = PrepareVM();
+            var model = PrepareModel(vm);
+            var logic = new BackendLogic();
+            var world = logic.CalculateWorld(model);
+            var query = PrepareAfterQuery_Shoot(vm, false, "");
+            var queryResult = query.Evaluate(world);
+            Assert.IsTrue(queryResult.IsTrue, "possibly query should be true");
+            query = PrepareAfterQuery_Shoot(vm, true, "");
+            queryResult = query.Evaluate(world);
+            Assert.IsFalse(queryResult.IsTrue, "necessary query should not be true");
+        }
+
+        private static AfterQuery PrepareAfterQuery_Shoot(VM vm, bool always, string initial)
+        {
+            var fluentsViewModels = vm.Fluents.Select(fluent => new FluentViewModel(fluent)).ToList();
+            var actionsViewModels = vm.Actions.Select(action => new ActionViewModel(action)).ToList();
+            var agentsViewModels = vm.Agents.Select(agent => new AgentViewModel(agent)).ToList();
+            return new ModelConverter().ConvertAfterQuery(CreateAfterQueryVM_Shoot(always, initial), agentsViewModels, actionsViewModels, fluentsViewModels);
+        }
+        
+        private static AfterQueryViewModel CreateAfterQueryVM_Shoot(bool always, string initial)
+        {
+            var after = new AfterQueryViewModel(always ? AfterQueryViewModel.AfterQueryNecOrPos.Necessary : AfterQueryViewModel.AfterQueryNecOrPos.Possibly,
+                "!alive", new Dictionary<string, List<string>> { { "SHOOT", new List<string> { "Bob" } } }, initial);
+            return after;
+        }
+
+        private static Model PrepareModel(VM vm)
+        {
+            var fluents = vm.Fluents.Select(fluent => new FluentViewModel(fluent)).ToList();
+            var actions = vm.Actions.Select(action => new ActionViewModel(action)).ToList();
+            var agents = vm.Agents.Select(agent => new AgentViewModel(agent)).ToList();
+
+            var causes = new List<CausesClauseViewModel> { new CausesClauseViewModel("SHOOT", new List<string> { "Bob" }, "!alive", "loaded") };
+
+            var converter = new ModelConverter();
+            var model = converter.ConvertToModel(fluents, actions, agents, causes);
+            return model;
+        }
+
+        private static VM PrepareVM()
         {
             var vm = VM.Create(noninertial: new string[0],
                 fluents: new[] { "loaded", "alive" },
@@ -39,11 +106,8 @@ namespace RW_tests.SceneriosTests
                 after: new string[0],
                 causes: new[] { "SHOOT by {Bob} causes !alive if loaded" },
                 releases: new string[0]
-            );
-
-            var converter = new ModelConverter();
-            var model = converter.ConvertToModel(vm);
-            return model;
+                );
+            return vm;
         }
     }
 }
