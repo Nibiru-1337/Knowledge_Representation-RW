@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using RW_backend.Models.Clauses.LogicClauses;
+using RW_backend.Models.Factories;
 
 namespace RW_backend.Logic.Parser
 {
@@ -33,11 +34,13 @@ namespace RW_backend.Logic.Parser
         //}
         public LogicClause ParseToLogicClause(string text)
         {
-            throw new NotImplementedException();
+            return ParseText(text);
+            //throw new NotImplementedException();
         }
 
         protected LogicClause ParseText(string text)
         {
+            if (string.IsNullOrWhiteSpace(text)) return new LogicClausesFactory().CreateEmptyLogicClause();
             //assumption CNF or DNF
             bool isCNF = CheckIfCNF(text);
             text = text.Replace(BracketStart.ToString(), "");
