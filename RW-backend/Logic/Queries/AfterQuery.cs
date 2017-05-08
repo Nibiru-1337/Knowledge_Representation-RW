@@ -36,7 +36,11 @@ namespace RW_backend.Logic.Queries
 			bool oneOk = false;
 
 			if (result.Executable == Executable.Never)
-				return new QueryResult() {IsTrue = false};
+				return new QueryResult()
+				{
+					IsTrue = false,
+					WrongPath = result.WrongPath,
+				};
 			Logger.Log("reachable states = " + String.Join(", ", result.ReachableStates));
 			foreach (State reachableState in result.ReachableStates)
 			{
@@ -52,7 +56,9 @@ namespace RW_backend.Logic.Queries
 			Logger.Log("result = all ok ? " + allOk + ", one ok? " + oneOk);
 			return new QueryResult()
 			{
-				IsTrue = Always ? allOk : oneOk,
+				IsTrue = Always ? (allOk && result.Executable == Executable.Always) : oneOk,
+				SuccessfulPath = result.SuccessfulPath,
+				WrongPath = result.WrongPath
 			};
 		}
 	}

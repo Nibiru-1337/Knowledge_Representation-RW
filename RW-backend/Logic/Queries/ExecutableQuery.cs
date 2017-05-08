@@ -28,7 +28,9 @@ namespace RW_backend.Logic.Queries
 				IsTrue =
 					Always
 						? result.Executable == Executable.Always
-						: (result.Executable == Executable.Always || result.Executable == Executable.Sometimes)
+						: (result.Executable == Executable.Always || result.Executable == Executable.Sometimes),
+				WrongPath = result.WrongPath,
+				SuccessfulPath = result.SuccessfulPath,
 			};
 		}
 

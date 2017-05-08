@@ -6,6 +6,8 @@ namespace RW_backend.Logic.Queries.Results
 	public class QueryResult
 	{
 		public bool IsTrue;
-		public List<State> Function;
+		public List<State> SuccessfulPath;
+		public List<State> WrongPath;
+		public List<State> StatePath => SuccessfulPath;
 	}
 }
