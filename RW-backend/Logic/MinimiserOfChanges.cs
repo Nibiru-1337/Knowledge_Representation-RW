@@ -22,6 +22,7 @@ namespace RW_backend.Logic
 				int changes = (initialState.SetOfDifferentValuesThan(reachableState.FluentValues)
 								| releasedFluents) & ~noninertialFluents;
 
+				Logger.Log("changes = " + changes);
 				if (changesSets.Count == 0)
 				{
 					changesSets.Add(new KeyValuePair<BitSet, List<State>>(new BitSet(changes), new List<State>() {reachableState}));
@@ -30,7 +31,7 @@ namespace RW_backend.Logic
 				
 				for (int i = 0; i < changesSets.Count; i++)
 				{
-					if (changesSets[i].Key.Set == reachableState.FluentValues)
+					if (changesSets[i].Key.Set == changes)
 					{
 						changesSets[i].Value.Add(reachableState);
 					}

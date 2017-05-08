@@ -12,6 +12,13 @@ namespace RW_tests.BuildingOfWorldTests
 	[TestClass]
 	public class MinimiserTests
 	{
+		const int NotAliveNotLoaded = 0;
+		const int AliveNotLoaded = 1;
+		const int NotAliveLoaded = 2;
+		const int AliveLoaded = 3;
+
+
+
 		// TODO: tests with noninertial fluents
 		// TODO: tests with releases
 		[TestMethod]
@@ -28,6 +35,18 @@ namespace RW_tests.BuildingOfWorldTests
 			Assert.AreEqual(3, afterMinimisation[0].FluentValues, "wrong state after minimisation");
 		}
 
+
+		[TestMethod]
+		public void MinimiseChangesToZeroTest()
+		{
+			MinimiserOfChanges minimser = new MinimiserOfChanges();
+			var result = minimser.MinimaliseChanges(new State(AliveNotLoaded),
+				new List<State>() { new State(AliveNotLoaded), new State(NotAliveNotLoaded) }, 0, 0);
+			Assert.AreEqual(1, result.Count, "wrong number of minimised states");
+			Assert.AreEqual(AliveNotLoaded, result[0].FluentValues, "wrong state after minimisation");
+
+
+		}
 
 
 
