@@ -10,7 +10,7 @@
     <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel>
-                <Expander FontSize="14" Header="Fluenty" BorderBrush="Black" BorderThickness="2" Margin="5">
+                <Expander FontSize="14" Header="Fluenty" BorderBrush="Black" BorderThickness="2" Margin="5" IsExpanded="True">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="4*" />
@@ -33,7 +33,7 @@
                         </StackPanel>
                     </Grid>
                 </Expander>
-                <Expander FontSize="14" Header="Akcje" BorderBrush="Black" BorderThickness="2" Margin="5">
+                <Expander FontSize="14" Header="Akcje" BorderBrush="Black" BorderThickness="2" Margin="5" IsExpanded="True">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="4*" />
@@ -56,7 +56,7 @@
                         </StackPanel>
                     </Grid>
                 </Expander>
-                <Expander FontSize="14" Header="Agenci" BorderBrush="Black" BorderThickness="2" Margin="5">
+                <Expander FontSize="14" Header="Agenci" BorderBrush="Black" BorderThickness="2" Margin="5" IsExpanded="True">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="4*" />
@@ -83,7 +83,7 @@
                 <Expander FontSize="14" Header="After" BorderBrush="Black" BorderThickness="1" Margin="5" />
                 <Expander FontSize="14" Header="Observable" BorderBrush="Black" BorderThickness="1" Margin="5" />
                 <Expander FontSize="14" Header="Impossible" BorderBrush="Black" BorderThickness="1" Margin="5" />
-                <Expander FontSize="14" Header="Causes" BorderBrush="Black" BorderThickness="1" Margin="5">
+                <Expander FontSize="14" Header="Causes" BorderBrush="Black" BorderThickness="1" Margin="5" IsExpanded="True">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="15*" />
