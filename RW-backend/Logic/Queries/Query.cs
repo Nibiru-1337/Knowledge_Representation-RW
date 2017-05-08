@@ -82,11 +82,11 @@ namespace RW_backend.Logic.Queries
 				    int howManyStateAvailable = 0;
 
 				    Logger.Log("~* state = " + state);
-				    if (world.Connections[Program[i].ActionId][state].Count == 0)
-				    {
-						executableAlways = false;
-						intersectedStatesSet.Clear();
-					}
+				 //   if (world.Connections[Program[i].ActionId][state].Count == 0)
+				 //   {
+					//	executableAlways = false;
+					//	intersectedStatesSet.Clear();
+					//}
 
 				    foreach (AgentSetChecker setChecker in world.Connections[Program[i].ActionId][state])
 				    {
