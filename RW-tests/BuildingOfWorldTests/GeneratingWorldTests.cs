@@ -109,6 +109,10 @@ namespace RW_tests.BuildingOfWorldTests
 
 			model.CausesStatements.Add(new Causes(logicClausesFactory.CreateSingleFluentClause(Loaded, false),
 				logicClausesFactory.CreateContradictingClause(0), Shoot, SingleAgent(Bob)));
+			// jeśli loaded jest prawdziwe, to nie da się użyć SHOOT
+			// ale jeśli jest !loaded, to SHOOT nie zabije Fredka
+			// zatem Fredek powinien wciąż żyć
+
 
 			World world = new BackendLogic().CalculateWorld(model);
 			

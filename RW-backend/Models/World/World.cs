@@ -83,13 +83,13 @@ namespace RW_backend.Models.World
             //for every unique ActionID
             for (int i = 0; i < actionCount; i++)
             {
-				//Logger.Log("<ACTION> " + i);
+				Logger.Log("<ACTION> " + i);
 
                 var stateToAgentSetCheckers = new Dictionary<State, IList<AgentSetChecker>>();
                 //for every starting state
                 foreach (var startingState in States)
                 {
-					//Logger.Log("state = " + startingState);
+					Logger.Log("state = " + startingState);
 
 					//TODO check assumption that actionCount is numer of unique ActionIDs, and that they are always sequential
 					List<Causes> sameID = causesList.Where(a => a.Action == i).ToList();
@@ -97,26 +97,26 @@ namespace RW_backend.Models.World
                     //for each action with the same ActionID
                     foreach (var causesClause in sameID)
                     {
-						//Logger.Log("causes no " + causesClause);
+						Logger.Log("causes nr " + causesClause);
                         //if there is no conditions or state satisfies conditions
                         if (causesClause.InitialCondition == null 
 							|| causesClause.InitialCondition.CheckForState(startingState.FluentValues))
                         {
-							//Logger.Log("state satisfies condition");
+							Logger.Log("state satisfies condition");
                             //get all states that have proper result fluents as caused by action
                             List<State> possibleResults = new List<State>();
 
                             foreach (var endingState in States)
                             {
-								//Logger.Log("checking for " + endingState + ", logic clause = " + causesClause.Effect);
+								Logger.Log("checking for " + endingState + ", logic clause = " + causesClause.Effect);
                                 if (causesClause.Effect.CheckForState(endingState.FluentValues))
                                 {
-									//Logger.Log("(pass)");
+									Logger.Log("(pass)");
                                     possibleResults.Add(endingState);
                                 }
                                 else
                                 {
-	                                //Logger.Log("(not)");
+	                                Logger.Log("(not)");
                                 }
                             }
 
