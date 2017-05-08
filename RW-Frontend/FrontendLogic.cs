@@ -1,7 +1,11 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Windows;
 using RW_backend.Logic;
+using RW_backend.Logic.Queries.Results;
 using RW_backend.Models;
 using RW_backend.Models.World;
+using RW_Frontend.InputsViewModels;
 
 namespace RW_Frontend
 {
@@ -30,13 +34,24 @@ namespace RW_Frontend
         //TODO zapamiętywanie wyznaczonej reprezentacji świata
         //TODO wywoływanie obliczeń kwerend z BackendLogic
 
-        public void PrepareWorld(VM vm)
+        public void CalculateAfterQuery(VM vm, AfterQueryViewModel afterQueryViewModel)
+        {
+            var world = PrepareWorld(vm);
+            var query = new ModelConverter().ConvertAfterQuery(afterQueryViewModel, InputAggregator.AgentsViewModels,InputAggregator.ActionsViewModels,InputAggregator.FluentsViewModels);
+
+            var queryResult = query.Evaluate(world);
+
+            MessageBox.Show(queryResult.IsTrue ? "Kwerenda spełniona" : "Kwerenda niespełniona", "Wynik kwerendy",
+                MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        
+        public World PrepareWorld(VM vm)
         {
             var model = new ModelConverter().ConvertToModel(vm);
 
             var world = new BackendLogic().CalculateWorld(model);
 
-            
+            return world;
         }
     }
 }
