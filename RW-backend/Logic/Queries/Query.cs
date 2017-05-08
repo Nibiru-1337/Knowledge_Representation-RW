@@ -51,6 +51,7 @@ namespace RW_backend.Logic.Queries
 			List<State> newStates = new List<State>();
 			List<State> newStatesForThatState = new List<State>();
 			Dictionary<State, int> intersectedStatesSet = new Dictionary<State, int>();
+			List<KeyValuePair<int, State>>[] programExecution = new List<KeyValuePair<int, State>>[Program.Count];
 
 
 			var result = new ProgramExecutionResult();
@@ -69,25 +70,30 @@ namespace RW_backend.Logic.Queries
 					return result;
 				}
 
+				programExecution[i] = new List<KeyValuePair<int, State>>(states.Count);
 
-				foreach (var state in states)
+
+
+			    for (int index = 0; index < states.Count; index++)
 			    {
-					newStatesForThatState.Clear();
-					intersectedStatesSet.Clear();
+				    var state = states[index];
+				    newStatesForThatState.Clear();
+				    intersectedStatesSet.Clear();
 				    int howManyStateAvailable = 0;
 
-					Logger.Log("~* state = " + state);
-				    
+				    Logger.Log("~* state = " + state);
+
 				    foreach (AgentSetChecker setChecker in world.Connections[Program[i].ActionId][state])
 				    {
-						Logger.Log("checking for " + setChecker.AgentsSet);
-						Logger.Log("can be executed = "+ setChecker.CanBeExecutedByAgentsSet(Program[i].AgentsSet.AgentSet));
-						Logger.Log("eng = " + !setChecker.UsesAgentFromSet(notEngagedAgents));
+					    Logger.Log("checking for " + setChecker.AgentsSet);
+					    Logger.Log("can be executed = "
+									+ setChecker.CanBeExecutedByAgentsSet(Program[i].AgentsSet.AgentSet));
+					    Logger.Log("eng = " + !setChecker.UsesAgentFromSet(notEngagedAgents));
 
 					    if (setChecker.CanBeExecutedByAgentsSet(Program[i].AgentsSet.AgentSet)
 							&& !setChecker.UsesAgentFromSet(notEngagedAgents)) //
 					    {
-							Logger.Log("pass, states here = " + string.Join(", ", setChecker.Edges));
+						    Logger.Log("pass, states here = " + string.Join(", ", setChecker.Edges));
 						    howManyStateAvailable++;
 						    if (setChecker.Edges.Count == 0)
 						    {
@@ -119,10 +125,9 @@ namespace RW_backend.Logic.Queries
 					    intersectedStatesSet.Where(pair => pair.Value == howManyStateAvailable)
 						    .Select(pair => pair.Key)
 						    .ToList();
-					
-					
-					newStates.AddRange(minimiser.MinimaliseChanges(state, newStatesForThatState));
 
+
+				    newStates.AddRange(minimiser.MinimaliseChanges(state, newStatesForThatState));
 			    }
 
 			    if (newStates.Count == 0)

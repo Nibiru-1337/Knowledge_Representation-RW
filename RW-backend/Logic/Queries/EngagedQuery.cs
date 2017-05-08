@@ -32,6 +32,7 @@ namespace RW_backend.Logic.Queries
 			return new QueryResult()
 			{
 				IsTrue = resultWithout.Executable == Executable.Always,
+				
 			};
 		}
 

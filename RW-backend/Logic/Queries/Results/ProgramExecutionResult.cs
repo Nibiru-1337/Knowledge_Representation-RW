@@ -14,5 +14,7 @@ namespace RW_backend.Logic.Queries.Results
 	{
 		public Executable Executable { get; set; }
 		public List<State> ReachableStates { get; set; }
+		public List<State> WrongPath { get; set; }
+		public List<State> SuccessfulPath { get; set; }
 	}
 }
