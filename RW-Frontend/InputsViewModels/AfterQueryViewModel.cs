@@ -32,10 +32,10 @@ namespace RW_Frontend.InputsViewModels
         {
             var typeComboBox = afterQueryStackPanel.Children[0] as ComboBox;
             if (typeComboBox == null)
-                throw new Exception("Null ref.");
+                throw new ApplicationException("Null ref.");
             var selectedComboBoxItem = typeComboBox.SelectedItem as string;
             if (selectedComboBoxItem == null)
-                throw new Exception("Null ref.");
+                throw new ApplicationException("Null ref.");
             return selectedComboBoxItem == "possibly" ? AfterQueryNecOrPos.Possibly : AfterQueryNecOrPos.Necessary;
         }
 
@@ -93,10 +93,10 @@ namespace RW_Frontend.InputsViewModels
                     }
                     else
                     {
-                        throw new Exception("Action is already declared.");
+                        throw new ApplicationException("Action is already declared.");
                     }
                 }
-                catch (Exception e)
+                catch (ApplicationException e)
                 {
                     MessageBox.Show(e.Message.ToString());
                 }
