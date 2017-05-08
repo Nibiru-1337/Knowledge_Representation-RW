@@ -1,4 +1,7 @@
 ﻿using System.Collections.ObjectModel;
+using RW_backend.Logic;
+using RW_backend.Models;
+using RW_backend.Models.World;
 
 namespace RW_Frontend
 {
@@ -26,5 +29,14 @@ namespace RW_Frontend
 
         //TODO zapamiętywanie wyznaczonej reprezentacji świata
         //TODO wywoływanie obliczeń kwerend z BackendLogic
+
+        public void PrepareWorld(VM vm)
+        {
+            var model = new ModelConverter().ConvertToModel(vm);
+
+            var world = new BackendLogic().CalculateWorld(model);
+
+            
+        }
     }
 }
