@@ -636,10 +636,15 @@ namespace RW_Frontend
 
         private void RemoveAfterQueryButtonClick(object sender, RoutedEventArgs e)
         {
-            Button clickedButton = (Button)sender;
+            var removingItemIdx = FindAfterQueryIndexByButton((Button)sender);
+            AfterQueryStackPanels.RemoveAt(removingItemIdx);
+        }
+
+        private int FindAfterQueryIndexByButton(Button clickedButton)
+        {
             var removingStackPanel = AfterQueryStackPanels.First(_ => _.Children.Contains(clickedButton));
             int removingItemIdx = AfterQueryStackPanels.IndexOf(removingStackPanel);
-            AfterQueryStackPanels.RemoveAt(removingItemIdx);
+            return removingItemIdx;
         }
 
         #region AfterQuery -> StackPanels
@@ -757,6 +762,12 @@ namespace RW_Frontend
             //var agents = InputAggregator.AgentsViewModels;
             //var causes = InputAggregator.CausesClauseViewModels;
             //var afterQuery = InputAggregator.AfterQueriesViewModels;
+            var afterQueriesViewModels = InputAggregator.AfterQueriesViewModels;
+
+            var afterQueryIndex = FindAfterQueryIndexByButton((Button) sender);
+            var queryVM = afterQueriesViewModels[afterQueryIndex];
+
+            new FrontendLogic().CalculateAfterQuery(this, queryVM);
         }
 
         private void CalculateEngagedQuery(object sender, RoutedEventArgs e)
