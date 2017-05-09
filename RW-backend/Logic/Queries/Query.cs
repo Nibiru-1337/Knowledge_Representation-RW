@@ -133,11 +133,11 @@ namespace RW_backend.Logic.Queries
 				    Logger.Log("intersecting here = "
 								+ string.Join(", ",
 									intersectedStatesSet.Select(p => "(" + p.Value + ", " + p.Key + ")")));
+#endif
 				    newStatesForThatState =
 					    intersectedStatesSet.Where(pair => pair.Value == howManyStateAvailable)
 						    .Select(pair => pair.Key)
 						    .ToList();
-#endif
 
 				    newStates.AddRange(minimiser.MinimaliseChanges(state, newStatesForThatState));
 			    }
