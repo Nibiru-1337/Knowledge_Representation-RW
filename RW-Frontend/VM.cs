@@ -179,6 +179,7 @@ namespace RW_Frontend
             return comboBox;
         }
 
+        internal const string AnyAgent = "ANY";
         private Expander CreateAgentsExpanderListBox()
         {
             var ep = new Expander() {Name = "AgentsExpanderListBox", Header = "Agenci", VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(10)};
@@ -192,7 +193,7 @@ namespace RW_Frontend
             ep.MouseEnter += (s, e) =>
             {
                 var actions = AgentsTextBoxes.Select(_ => _.Text).Where(_ => _ != String.Empty);
-                actions = actions.Concat(new List<string>() { "ANY" });
+                actions = actions.Concat(new List<string>() { AnyAgent });
                 listBox.ItemsSource = actions;
             };
             return ep;
@@ -754,19 +755,27 @@ namespace RW_Frontend
 
         private void CalculateAfterQuery(object sender, RoutedEventArgs e)
         {
-            InputAggregator.PopulateViewModels(this);
-            //Dostęp do pobranych z widoku danych:
-            //var fluents = InputAggregator.FluentsViewModels;
-            //var actions = InputAggregator.ActionsViewModels;
-            //var agents = InputAggregator.AgentsViewModels;
-            //var causes = InputAggregator.CausesClauseViewModels;
-            //var afterQuery = InputAggregator.AfterQueriesViewModels;
-            var afterQueriesViewModels = InputAggregator.AfterQueriesViewModels;
+            try
+            {
+                InputAggregator.PopulateViewModels(this);
+                //Dostęp do pobranych z widoku danych:
+                //var fluents = InputAggregator.FluentsViewModels;
+                //var actions = InputAggregator.ActionsViewModels;
+                //var agents = InputAggregator.AgentsViewModels;
+                //var causes = InputAggregator.CausesClauseViewModels;
+                //var afterQuery = InputAggregator.AfterQueriesViewModels;
+                var afterQueriesViewModels = InputAggregator.AfterQueriesViewModels;
 
-            var afterQueryIndex = FindAfterQueryIndexByButton((Button) sender);
-            var queryVM = afterQueriesViewModels[afterQueryIndex];
+                var afterQueryIndex = FindAfterQueryIndexByButton((Button)sender);
+                var queryVM = afterQueriesViewModels[afterQueryIndex];
 
-            new FrontendLogic().CalculateAfterQuery(this, queryVM);
+                new FrontendLogic().CalculateAfterQuery(this, queryVM);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show("Wystąpił błąd podczas obliczeń\n" + exception.Message, "Błąd",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void CalculateEngagedQuery(object sender, RoutedEventArgs e)
