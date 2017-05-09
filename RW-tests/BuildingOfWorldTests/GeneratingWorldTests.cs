@@ -150,7 +150,7 @@ namespace RW_tests.BuildingOfWorldTests
 		public void YaleScenerioBobShootExecutableAlways10FluentsTest()
 		{
 			Model model = GenerateModel();
-			model.FluentsCount = 11;
+			model.FluentsCount = 10;
 			World world = new BackendLogic().CalculateWorld(model);
 			LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
 			ExecutableQuery query = new ExecutableQuery(new ActionAgentsPair[]
