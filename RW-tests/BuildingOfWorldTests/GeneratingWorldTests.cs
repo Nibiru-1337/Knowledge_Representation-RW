@@ -146,6 +146,20 @@ namespace RW_tests.BuildingOfWorldTests
 			Assert.AreEqual(false, query.Evaluate(world).IsTrue, "wrong result of query");
 		}
 
+		[TestMethod]
+		public void YaleScenerioBobShootExecutableAlways10FluentsTest()
+		{
+			Model model = GenerateModel();
+			model.FluentsCount = 11;
+			World world = new BackendLogic().CalculateWorld(model);
+			LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
+			ExecutableQuery query = new ExecutableQuery(new ActionAgentsPair[]
+			{
+				new ActionAgentsPair(Shoot, BobSet),
+			}, logicClausesFactory.CreateSingleFluentClause(Alive, false), true);
+			Assert.AreEqual(true, query.Evaluate(world).IsTrue, "Bob should be able to shoot");
+		}
+
 
 		Model GenerateModel(bool initialStates = false)
 		{
