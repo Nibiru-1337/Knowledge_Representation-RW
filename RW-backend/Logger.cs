@@ -1,13 +1,13 @@
-﻿using System;
-
+﻿#define DEBUG_TEXT
 namespace RW_backend
 {
 	public static class Logger
 	{
-
-		public static void Log(string message)
+        public static void Log(string message)
 		{
-			Console.WriteLine(message);
+#if DEBUG && DEBUG_TEXT
+			System.Console.WriteLine(message);
+#endif
 		}
-	}
+    }
 }

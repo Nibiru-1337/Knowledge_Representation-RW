@@ -59,11 +59,13 @@ namespace RW_backend.Logic.Queries
 		    {
 			    // wykonujemy program
 			    newStates.Clear();
-				Logger.Log("~~~~");
+#if DEBUG
+                Logger.Log("~~~~");
 				Logger.Log("states available for i = " + i);
 				Logger.Log("=> " + string.Join(", ", states));
+#endif
 
-				if (!world.Connections.ContainsKey(Program[i].ActionId))
+                if (!world.Connections.ContainsKey(Program[i].ActionId))
 				{
 					//TODO: wrong actionID? exception?
 					result.Executable = Executable.Never;
@@ -80,8 +82,9 @@ namespace RW_backend.Logic.Queries
 				    newStatesForThatState.Clear();
 				    intersectedStatesSet.Clear();
 				    int howManyStateAvailable = 0;
-
+#if DEBUG
 				    Logger.Log("~* state = " + state);
+#endif
 				 //   if (world.Connections[Program[i].ActionId][state].Count == 0)
 				 //   {
 					//	executableAlways = false;
@@ -90,15 +93,19 @@ namespace RW_backend.Logic.Queries
 
 				    foreach (AgentSetChecker setChecker in world.Connections[Program[i].ActionId][state])
 				    {
+#if DEBUG
 					    Logger.Log("checking for " + setChecker.AgentsSet);
 					    Logger.Log("can be executed = "
 									+ setChecker.CanBeExecutedByAgentsSet(Program[i].AgentsSet.AgentSet));
 					    Logger.Log("eng = " + !setChecker.UsesAgentFromSet(notEngagedAgents));
+#endif
 
 					    if (setChecker.CanBeExecutedByAgentsSet(Program[i].AgentsSet.AgentSet)
 							&& !setChecker.UsesAgentFromSet(notEngagedAgents)) //
 					    {
+#if DEBUG
 						    Logger.Log("pass, states here = " + string.Join(", ", setChecker.Edges));
+#endif
 						    howManyStateAvailable++;
 						    if (setChecker.Edges.Count == 0)
 						    {
@@ -122,7 +129,7 @@ namespace RW_backend.Logic.Queries
 						    }
 					    }
 				    }
-
+#if DEBUG
 				    Logger.Log("intersecting here = "
 								+ string.Join(", ",
 									intersectedStatesSet.Select(p => "(" + p.Value + ", " + p.Key + ")")));
@@ -130,14 +137,16 @@ namespace RW_backend.Logic.Queries
 					    intersectedStatesSet.Where(pair => pair.Value == howManyStateAvailable)
 						    .Select(pair => pair.Key)
 						    .ToList();
-
+#endif
 
 				    newStates.AddRange(minimiser.MinimaliseChanges(state, newStatesForThatState));
 			    }
 
 			    if (newStates.Count == 0)
 			    {
+#if DEBUG
 					Logger.Log("new states count = 0, so never executable");
+#endif
 					result.Executable = Executable.Never;
 				    return result;
 			    }
@@ -145,12 +154,16 @@ namespace RW_backend.Logic.Queries
 
 		    }
 
+#if DEBUG
 			Logger.Log("last states = " + string.Join(", ", states));
+#endif
 		    result.ReachableStates = states;
 		    result.Executable = states.Count == 0
 			    ? Executable.Never
 			    : (executableAlways ? Executable.Always : Executable.Sometimes);
+#if DEBUG
 			Logger.Log("executable = " + result.Executable);
+#endif
 		    return result;
 
 	    }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿//#define EXTENDED_DEBUG
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using RW_backend.Models.BitSets;
@@ -86,7 +87,9 @@ namespace RW_backend.Models.World
                 //for every starting state
                 foreach (var startingState in States)
                 {
+#if DEBUG
 					Logger.Log("state = " + startingState);
+#endif
 
 					//TODO check assumption that actionCount is numer of unique ActionIDs, and that they are always sequential
 					List<Causes> sameID = causesList.Where(a => a.Action == i).ToList();
@@ -94,26 +97,36 @@ namespace RW_backend.Models.World
                     //for each action with the same ActionID
                     foreach (var causesClause in sameID)
                     {
+#if DEBUG
 						Logger.Log("causes nr " + causesClause);
+#endif
                         //if there is no conditions or state satisfies conditions
                         if (causesClause.InitialCondition == null 
 							|| causesClause.InitialCondition.CheckForState(startingState.FluentValues))
                         {
+#if DEBUG
 							Logger.Log("state satisfies condition");
+#endif
                             //get all states that have proper result fluents as caused by action
                             List<State> possibleResults = new List<State>();
 
                             foreach (var endingState in States)
                             {
-								Logger.Log("checking for " + endingState + ", logic clause = " + causesClause.Effect);
+#if DEBUG && EXTENDED_DEBUG
+                                Logger.Log("checking for " + endingState + ", logic clause = " + causesClause.Effect);
+#endif
                                 if (causesClause.Effect.CheckForState(endingState.FluentValues))
                                 {
+#if DEBUG && EXTENDED_DEBUG
 									Logger.Log("(pass)");
+#endif
                                     possibleResults.Add(endingState);
                                 }
                                 else
                                 {
+#if DEBUG && EXTENDED_DEBUG
 	                                Logger.Log("(not)");
+#endif
                                 }
                             }
 
