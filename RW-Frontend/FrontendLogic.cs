@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System;
 using System.Windows;
 using RW_backend.Logic;
-using RW_backend.Logic.Queries.Results;
-using RW_backend.Models;
 using RW_backend.Models.World;
 using RW_Frontend.InputsViewModels;
 
@@ -30,6 +27,7 @@ namespace RW_Frontend
 
             MessageBox.Show(queryResult.IsTrue ? "Kwerenda spełniona" : "Kwerenda niespełniona", "Wynik kwerendy",
                 MessageBoxButton.OK, MessageBoxImage.Information);
+            GC.Collect();
         }
 
         public World PrepareWorld(VM vm)

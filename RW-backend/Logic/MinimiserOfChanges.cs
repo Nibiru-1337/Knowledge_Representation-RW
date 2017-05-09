@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿//#define EXTENDED_DEBUG
+using System.Collections.Generic;
 using System.Linq;
 using RW_backend.Models.BitSets;
 
@@ -18,9 +19,10 @@ namespace RW_backend.Logic
 			{
 				int changes = (initialState.SetOfDifferentValuesThan(reachableState.FluentValues)
 								| releasedFluents) & ~noninertialFluents;
-
-				Logger.Log("changes = " + changes);
-				if (changesSets.Count == 0)
+#if DEBUG && EXTENDED_DEBUG
+                Logger.Log("changes = " + changes);
+#endif
+                if (changesSets.Count == 0)
 				{
 					changesSets.Add(new KeyValuePair<BitSet, List<State>>(new BitSet(changes), new List<State>() {reachableState}));
 					continue;
