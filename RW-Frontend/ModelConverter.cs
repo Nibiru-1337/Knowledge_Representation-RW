@@ -150,9 +150,9 @@ namespace RW_Frontend
             var program = new List<ActionAgentsPair>();
             foreach (var actionBy in scenario)
             {
-                string actionName = actionBy.Key;
+                string actionName = actionBy.Item1;
                 int actionId = revActionDict[actionName];
-                List<string> agentNames = actionBy.Value;
+                List<string> agentNames = actionBy.Item2;
                 List<int> agentIds = agentNames.Select(a => revAgentDict[a]).ToList();
                 BitSetFactory bitSetFactory = new BitSetFactory();
                 int set = bitSetFactory.CreateBitSetValueFrom(agentIds);

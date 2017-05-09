@@ -192,7 +192,7 @@ namespace RW_Frontend
             ep.MouseEnter += (s, e) =>
             {
                 var actions = AgentsTextBoxes.Select(_ => _.Text).Where(_ => _ != String.Empty);
-                actions = actions.Concat(new List<string>() { String.Empty });
+                actions = actions.Concat(new List<string>() { "ANY" });
                 listBox.ItemsSource = actions;
             };
             return ep;
