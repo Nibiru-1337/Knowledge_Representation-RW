@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RW_backend.Logic;
@@ -92,7 +93,7 @@ namespace RW_tests.SceneriosTests
         private static AfterQueryViewModel CreateAfterQueryVM_Shoot(bool always, string initial)
         {
             var after = new AfterQueryViewModel(always ? AfterQueryViewModel.AfterQueryNecOrPos.Necessary : AfterQueryViewModel.AfterQueryNecOrPos.Possibly,
-                "!alive", new Dictionary<string, List<string>> { { "SHOOT", new List<string> { "Bob" } } }, initial);
+                "!alive", new List<Tuple<string, List<string>>>() { new Tuple<string, List<string>>("SHOOT", new List<string>() { "Bob" }) }, initial);
             return after;
         }
 

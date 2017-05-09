@@ -14,12 +14,12 @@ namespace RW_Frontend.InputsViewModels
 
         public string AlfaLogicExp { get; set; }
 
-        public Dictionary<string, List<string>> ActionByAgents { get; set; }
+        public List<Tuple<string, List<string>>> ActionByAgents { get; set; }
 
         public string PiLogicExp { get; set; }
 
         public AfterQueryViewModel(AfterQueryNecOrPos afterQueryType, string alfaLogicexp,
-            Dictionary<string, List<string>> actionsByAgents, string piLogixExp)
+            List<Tuple<string, List<string>>> actionsByAgents, string piLogixExp)
         {
             this.AfterQueryType = afterQueryType;
             this.AlfaLogicExp = alfaLogicexp;
@@ -47,9 +47,9 @@ namespace RW_Frontend.InputsViewModels
             return alfaLogicExpTextBox.Text;
         }
 
-        public static Dictionary<string, List<string>> GetActionsByAgentsFromView(StackPanel afterQueryStackPanel)
+        public static List<Tuple<string, List<string>>> GetActionsByAgentsFromView(StackPanel afterQueryStackPanel)
         {
-            var actionsByAgents = new Dictionary<string, List<string>>();
+            var actionsByAgents = new List<Tuple<string, List<string>>>();
 
             var expander = afterQueryStackPanel.Children[3] as Expander;
             if (expander == null)
@@ -87,14 +87,7 @@ namespace RW_Frontend.InputsViewModels
                         agents.Add(agent as string);
                     }
 
-                    if (!actionsByAgents.ContainsKey(action))
-                    {
-                        actionsByAgents.Add(action, agents);
-                    }
-                    else
-                    {
-                        throw new ApplicationException("Action is already declared.");
-                    }
+                    actionsByAgents.Add(new Tuple<string, List<string>>(action, agents));
                 }
                 catch (ApplicationException e)
                 {
