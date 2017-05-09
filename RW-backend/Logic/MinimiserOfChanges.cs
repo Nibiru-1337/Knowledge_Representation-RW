@@ -27,12 +27,14 @@ namespace RW_backend.Logic
 					changesSets.Add(new KeyValuePair<BitSet, List<State>>(new BitSet(changes), new List<State>() {reachableState}));
 					continue;
 				}
-				
+
+				bool inserted = false;
 				for (int i = 0; i < changesSets.Count; i++)
 				{
 					if (changesSets[i].Key.Set == changes)
 					{
 						changesSets[i].Value.Add(reachableState);
+						inserted = true;
 					}
 					else
 					{
@@ -46,6 +48,7 @@ namespace RW_backend.Logic
 							// no to bez sensu
 							// więc
 							// nothing to do
+							inserted = true;
 						}
 						else if (changesSets[i].Key.IsSupersetOf(changes))
 						{
@@ -55,17 +58,24 @@ namespace RW_backend.Logic
 							DeleteAllWorseThan(changes, changesSets);
 							changesSets.Add(new KeyValuePair<BitSet, List<State>>(new BitSet(changes),
 								new List<State>() { reachableState }));
+							inserted = true;
 							break;
 						}
 						else
 						{
-							changesSets.Add(new KeyValuePair<BitSet, List<State>>(new BitSet(changes),
-								new List<State>() {reachableState}));
+							//changesSets.Add(new KeyValuePair<BitSet, List<State>>(new BitSet(changes),
+							//	new List<State>() {reachableState}));
+							//break;
 						}
 
 					}
 				}
-					
+				if (!inserted)
+				{
+					changesSets.Add(new KeyValuePair<BitSet, List<State>>(new BitSet(changes),
+						new List<State>() {reachableState}));
+				}
+
 			}
 
 			return changesSets.Aggregate(new List<State>(), (list, p) =>
