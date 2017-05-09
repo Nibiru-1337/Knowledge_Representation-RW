@@ -50,11 +50,19 @@ namespace RW_Frontend
             var causesList = new List<Causes>();
             foreach (var t in causesVms)
             {
-                //TODO handle "" agent
-                List<int> agentIds = t.Agents.Select(a => revAgentDict[a]).ToList();
-                BitSetFactory bitSetFactory = new BitSetFactory();
-                int set = bitSetFactory.CreateBitSetValueFrom(agentIds);
-                AgentsSet agentSet = new AgentsSet(set);
+                const string AnyAgent = "";
+                AgentsSet agentSet;
+                if (t.Agents.Contains(AnyAgent))
+                {
+                    agentSet = new AgentsSet(0);
+                }
+                else
+                {
+                    List<int> agentIds = t.Agents.Select(a => revAgentDict[a]).ToList();
+                    BitSetFactory bitSetFactory = new BitSetFactory();
+                    int set = bitSetFactory.CreateBitSetValueFrom(agentIds);
+                    agentSet = new AgentsSet(set);
+                }
                 LogicClause effect = parser.ParseToLogicClause(t.AlfaLogicExp);
                 LogicClause condition = parser.ParseToLogicClause(t.PiLogicExp);
                 int actionId = revActionDict[t.Action];
