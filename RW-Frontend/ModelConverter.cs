@@ -50,9 +50,8 @@ namespace RW_Frontend
             var causesList = new List<Causes>();
             foreach (var t in causesVms)
             {
-                const string AnyAgent = "";
                 AgentsSet agentSet;
-                if (t.Agents.Contains(AnyAgent))
+                if (t.Agents.Contains(VM.AnyAgent))
                 {
                     agentSet = new AgentsSet(0);
                 }
