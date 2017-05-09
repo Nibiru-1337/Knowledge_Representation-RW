@@ -85,13 +85,13 @@ namespace RW_backend.Logic.Queries
 #if DEBUG
 				    Logger.Log("~* state = " + state);
 #endif
-				 //   if (world.Connections[Program[i].ActionId][state].Count == 0)
-				 //   {
-					//	executableAlways = false;
-					//	intersectedStatesSet.Clear();
-					//}
+					if (world.Connections[Program[i].ActionId][state].Count == 0)
+					{
+						intersectedStatesSet.Add(state, 1);
+						howManyStateAvailable = 1;
+					}
 
-				    foreach (AgentSetChecker setChecker in world.Connections[Program[i].ActionId][state])
+					foreach (AgentSetChecker setChecker in world.Connections[Program[i].ActionId][state])
 				    {
 #if DEBUG
 					    Logger.Log("checking for " + setChecker.AgentsSet);
