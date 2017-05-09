@@ -146,22 +146,59 @@ namespace RW_tests.BuildingOfWorldTests
 			Assert.AreEqual(false, query.Evaluate(world).IsTrue, "wrong result of query");
 		}
 
-		[TestMethod]
-		public void YaleScenerioBobShootExecutableAlways10FluentsTest()
-		{
-			Model model = GenerateModel();
-			model.FluentsCount = 11;
-			World world = new BackendLogic().CalculateWorld(model);
-			LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
-			ExecutableQuery query = new ExecutableQuery(new ActionAgentsPair[]
-			{
-				new ActionAgentsPair(Shoot, BobSet),
-			}, logicClausesFactory.CreateSingleFluentClause(Alive, false), true);
-			Assert.AreEqual(true, query.Evaluate(world).IsTrue, "Bob should be able to shoot");
-		}
 
+        [TestMethod]
+        public void YaleScenerioBobShootExecutableAlways10FluentsTest()
+        {
+            var world = YaleWorldWithMoreFluents(10);
+            var query = YaleExecutableQuery();
+            Assert.AreEqual(true, query.Evaluate(world).IsTrue, "Bob should be able to shoot");
+        }
 
-		Model GenerateModel(bool initialStates = false)
+        [TestMethod]
+        public void YaleScenerioIncreasingFluentsCountTest()
+        {
+            const int MinimumProblemSize = 11;
+            const int DesiredProblemSize = 20;
+            int fluentsCount;
+            for (fluentsCount = 11; fluentsCount <= DesiredProblemSize; fluentsCount++)
+            {
+                try
+                {
+                    var world = YaleWorldWithMoreFluents(fluentsCount);
+                    var query = YaleExecutableQuery();
+                    Assert.AreEqual(true, query.Evaluate(world).IsTrue, "Bob should be able to shoot");
+                }
+                catch (OutOfMemoryException) { break; }
+            }
+            if (fluentsCount > DesiredProblemSize)
+            {
+                Console.WriteLine("Your RAM size rocks! (or the algorithm was improved)");
+                return;
+            }
+            Console.WriteLine("Your RAM failed at {0} fluents", fluentsCount);
+            Assert.IsTrue(fluentsCount > MinimumProblemSize, "Buy more RAM");
+        }
+
+        private static ExecutableQuery YaleExecutableQuery()
+        {
+            LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
+            ExecutableQuery query = new ExecutableQuery(new ActionAgentsPair[]
+            {
+                new ActionAgentsPair(Shoot, BobSet),
+            }, logicClausesFactory.CreateSingleFluentClause(Alive, false), true);
+            return query;
+        }
+
+        private World YaleWorldWithMoreFluents(int fluentsCount)
+        {
+            Model model = GenerateModel();
+            model.FluentsCount = fluentsCount;
+            World world = new BackendLogic().CalculateWorld(model);
+            return world;
+        }
+
+        Model GenerateModel(bool initialStates = false)
 		{
 			// 1. shoot by bob causes !alive if loaded
 			// 2. shoot by bob causes !loaded
