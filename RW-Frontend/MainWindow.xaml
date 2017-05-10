@@ -111,6 +111,11 @@
                 <Expander FontSize="14" Header="Releases" BorderBrush="Black" BorderThickness="1" Margin="5" />
                 <Expander FontSize="14" Header="Always" BorderBrush="Black" BorderThickness="1" Margin="5" />
                 <Expander FontSize="14" Header="Nonintertial" BorderBrush="Black" BorderThickness="1" Margin="5" />
+                <Button  FontSize="20"
+                               
+                                Command="{Binding GenerateModelCommand}">
+                    Wygeneruj model
+                </Button>
                 <Expander FontSize="14" Header="Queries" BorderBrush="Black" BorderThickness="2" Margin="5">
                     <StackPanel>
                         <Grid>

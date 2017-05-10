@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using RW_backend.Models.World;
 using RW_Frontend.Annotations;
 using RW_Frontend.InputsViewModels;
 
@@ -69,7 +70,7 @@ namespace RW_Frontend
                 ReleasesStatements = new ObservableCollection<string>(releases)
             };
         }
-
+        public World World { get; private set; }
 
         #region Components Control
 
@@ -509,6 +510,18 @@ namespace RW_Frontend
 
         #endregion
 
+        public ICommand GenerateModelCommand
+        {
+            get
+            {
+                return new RelayCommand(GenerateModel, CanDo);
+            }
+        }
+        private void GenerateModel()
+        {
+            //InputAggregator.PopulateViewModels(this);
+            World = new FrontendLogic().PrepareWorld(this);
+        }
         #region Causes clauses
 
         public ICommand AddCausesClauseCommand
