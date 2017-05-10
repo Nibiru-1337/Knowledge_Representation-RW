@@ -118,24 +118,31 @@ namespace RW_Frontend
             {
                 case "Fluent":
                     button.Click += RemoveFluentButtonClick;
+                    button.ToolTip = Properties.Settings.Default.RemoveFluent;
                     break;
                 case "Action":
                     button.Click += RemoveActionButtonClick;
+                    button.ToolTip = Properties.Settings.Default.RemoveAction;
                     break;
                 case "Agent":
                     button.Click += RemoveAgentButtonClick;
+                    button.ToolTip = Properties.Settings.Default.RemoveAgent;
                     break;
                 case "Causes":
                     button.Click += RemoveCausesClauseButtonClick;
+                    button.ToolTip = Properties.Settings.Default.RemoveCauses;
                     break;
                 case "AfterQuery":
                     button.Click += RemoveAfterQueryButtonClick;
+                    button.ToolTip = Properties.Settings.Default.RemoveAfterQuery;
                     break;
                 case "ExecutableQuery":
                     button.Click += RemoveExecutableQueryButtonClick;
+                    button.ToolTip = Properties.Settings.Default.RemoveExecutableQuery;
                     break;
                 case "EngagedQuery":
                     button.Click += RemoveEngagedQueryButtonClick;
+                    button.ToolTip = Properties.Settings.Default.RemoveExecutableQuery;
                     break;
             }
             return button;
@@ -155,12 +162,15 @@ namespace RW_Frontend
             {
                 case "Executable":
                     button.Click += CalculateExecutableQuery;
+                    button.ToolTip = Properties.Settings.Default.CalculateExecutableQuery;
                     break;
                 case "After":
                     button.Click += CalculateAfterQuery;
+                    button.ToolTip = Properties.Settings.Default.CalculateAfterQuery;
                     break;
                 case "Engaged":
                     button.Click += CalculateEngagedQuery;
+                    button.ToolTip = Properties.Settings.Default.CalculateEngagedQuery;
                     break;             
             }
             return button;

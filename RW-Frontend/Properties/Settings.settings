@@ -1,7 +1,57 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="RW_Frontend.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="RemoveFluent" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Usuń fluent</Value>
+    </Setting>
+    <Setting Name="RemoveAction" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Usuń akcję</Value>
+    </Setting>
+    <Setting Name="RemoveAgent" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Usuń agenta</Value>
+    </Setting>
+    <Setting Name="RemoveCauses" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Usuń zdanie "causes"</Value>
+    </Setting>
+    <Setting Name="RemoveAfterQuery" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Usuń kwerendę "after"</Value>
+    </Setting>
+    <Setting Name="RemoveExecutableQuery" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Usuń kwerendę "executable"</Value>
+    </Setting>
+    <Setting Name="RemoveEngagedQuery" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Usuń kwerendę "engaged"</Value>
+    </Setting>
+    <Setting Name="AddFluent" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Dodaj nowy fluent</Value>
+    </Setting>
+    <Setting Name="AddAction" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Dodaj nową akcję</Value>
+    </Setting>
+    <Setting Name="AddAgent" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Dodaj nowego agenta</Value>
+    </Setting>
+    <Setting Name="AddCauses" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Dodaj nowe zdanie "causes"</Value>
+    </Setting>
+    <Setting Name="AddAfterQuery" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Dodaj nową kwerendę "after"</Value>
+    </Setting>
+    <Setting Name="AddExecutableQuery" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Dodaj nową kwerendę "executable"</Value>
+    </Setting>
+    <Setting Name="AddEngagedQuery" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Dodaj nową kwerendę "engaged"</Value>
+    </Setting>
+    <Setting Name="CalculateAfterQuery" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Znajdź wynik dla kwerendy "after"</Value>
+    </Setting>
+    <Setting Name="CalculateExecutableQuery" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Znajdź wynik dla kwerendy "executable"</Value>
+    </Setting>
+    <Setting Name="CalculateEngagedQuery" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Znajdź wynik dla kwerendy "engaged"</Value>
+    </Setting>
+  </Settings>
 </SettingsFile>
