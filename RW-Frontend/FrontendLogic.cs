@@ -20,7 +20,8 @@ namespace RW_Frontend
 
         public void CalculateAfterQuery(VM vm, AfterQueryViewModel afterQueryViewModel)
         {
-            var world = PrepareWorld(vm);
+            //var world = PrepareWorld(vm);
+            var world = vm.World;
             var query = new ModelConverter().ConvertAfterQuery(afterQueryViewModel, InputAggregator.AgentsViewModels, InputAggregator.ActionsViewModels, InputAggregator.FluentsViewModels);
 
             var queryResult = query.Evaluate(world);
