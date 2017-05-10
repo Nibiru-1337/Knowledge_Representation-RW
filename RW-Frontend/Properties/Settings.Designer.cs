@@ -8,22 +8,222 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace RW_Frontend.Properties
-{
-
-
+namespace RW_Frontend.Properties {
+    
+    
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "11.0.0.0")]
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase
-    {
-
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
+    public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
-
-        public static Settings Default
-        {
-            get
-            {
+        
+        public static Settings Default {
+            get {
                 return defaultInstance;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Usuń fluent")]
+        public string RemoveFluent {
+            get {
+                return ((string)(this["RemoveFluent"]));
+            }
+            set {
+                this["RemoveFluent"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Usuń akcję")]
+        public string RemoveAction {
+            get {
+                return ((string)(this["RemoveAction"]));
+            }
+            set {
+                this["RemoveAction"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Usuń agenta")]
+        public string RemoveAgent {
+            get {
+                return ((string)(this["RemoveAgent"]));
+            }
+            set {
+                this["RemoveAgent"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Usuń zdanie \"causes\"")]
+        public string RemoveCauses {
+            get {
+                return ((string)(this["RemoveCauses"]));
+            }
+            set {
+                this["RemoveCauses"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Usuń kwerendę \"after\"")]
+        public string RemoveAfterQuery {
+            get {
+                return ((string)(this["RemoveAfterQuery"]));
+            }
+            set {
+                this["RemoveAfterQuery"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Usuń kwerendę \"executable\"")]
+        public string RemoveExecutableQuery {
+            get {
+                return ((string)(this["RemoveExecutableQuery"]));
+            }
+            set {
+                this["RemoveExecutableQuery"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Usuń kwerendę \"engaged\"")]
+        public string RemoveEngagedQuery {
+            get {
+                return ((string)(this["RemoveEngagedQuery"]));
+            }
+            set {
+                this["RemoveEngagedQuery"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Dodaj nowy fluent")]
+        public string AddFluent {
+            get {
+                return ((string)(this["AddFluent"]));
+            }
+            set {
+                this["AddFluent"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Dodaj nową akcję")]
+        public string AddAction {
+            get {
+                return ((string)(this["AddAction"]));
+            }
+            set {
+                this["AddAction"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Dodaj nowego agenta")]
+        public string AddAgent {
+            get {
+                return ((string)(this["AddAgent"]));
+            }
+            set {
+                this["AddAgent"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Dodaj nowe zdanie \"causes\"")]
+        public string AddCauses {
+            get {
+                return ((string)(this["AddCauses"]));
+            }
+            set {
+                this["AddCauses"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Dodaj nową kwerendę \"after\"")]
+        public string AddAfterQuery {
+            get {
+                return ((string)(this["AddAfterQuery"]));
+            }
+            set {
+                this["AddAfterQuery"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Dodaj nową kwerendę \"executable\"")]
+        public string AddExecutableQuery {
+            get {
+                return ((string)(this["AddExecutableQuery"]));
+            }
+            set {
+                this["AddExecutableQuery"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Dodaj nową kwerendę \"engaged\"")]
+        public string AddEngagedQuery {
+            get {
+                return ((string)(this["AddEngagedQuery"]));
+            }
+            set {
+                this["AddEngagedQuery"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Znajdź wynik dla kwerendy \"after\"")]
+        public string CalculateAfterQuery {
+            get {
+                return ((string)(this["CalculateAfterQuery"]));
+            }
+            set {
+                this["CalculateAfterQuery"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Znajdź wynik dla kwerendy \"executable\"")]
+        public string CalculateExecutableQuery {
+            get {
+                return ((string)(this["CalculateExecutableQuery"]));
+            }
+            set {
+                this["CalculateExecutableQuery"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Znajdź wynik dla kwerendy \"engaged\"")]
+        public string CalculateEngagedQuery {
+            get {
+                return ((string)(this["CalculateEngagedQuery"]));
+            }
+            set {
+                this["CalculateEngagedQuery"] = value;
             }
         }
     }
