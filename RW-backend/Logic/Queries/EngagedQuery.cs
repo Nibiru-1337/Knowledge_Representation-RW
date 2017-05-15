@@ -29,7 +29,7 @@ namespace RW_backend.Logic.Queries
 				resultWithout.ReachableStates);
 			return new QueryResult()
 			{
-				IsTrue = setsTheSame,
+				IsTrue = Always ? setsTheSame : !setsTheSame
 			};
 		}
 

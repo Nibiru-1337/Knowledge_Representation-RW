@@ -5,6 +5,7 @@ using System.Linq;
 using RW_backend.Models.BitSets;
 using RW_backend.Models.Clauses;
 using RW_backend.Models.Clauses.LogicClauses;
+using RW_backend.Models.Factories;
 
 namespace RW_backend.Models.World
 {
@@ -18,6 +19,7 @@ namespace RW_backend.Models.World
         // so far the constructor creates an array of all possible states
         // without any edges in between them (edges are added with AddCauses)
         public  IList<State> States { get; private set; }
+		public int FluentsCount { get; private set; }
 
         //TODO delete if ActionIds not needed in World class
         // information about the actions in this world
@@ -28,18 +30,17 @@ namespace RW_backend.Models.World
         public Dictionary<int, Dictionary<State, IList<AgentSetChecker>>> Connections { get; private set; }
 		public IList<State> InitialStates { get; private set; } 
 		public BitSet NonInertialFluents { get; private set; }
-		public Dictionary<KeyValuePair<int, AgentsSet>, BitSet> ReleasedFluents { get; private set; } 
+		public Dictionary<int, Dictionary<State, List<ReleasesWithAgentsSet>>> ReleasedFluents { get; private set; }
 
-        public World(int fluentsCount, IList<LogicClause> alwaysList, IList<LogicClause> initiallyList, 
-			BitSet nonInertialFluents, Dictionary<KeyValuePair<int, AgentsSet>, BitSet> releasedFluents)
+        public World(int fluentsesCount, IList<LogicClause> alwaysList, IList<LogicClause> initiallyList, 
+			BitSet nonInertialFluents)
         {
 	        NonInertialFluents = nonInertialFluents;
-	        ReleasedFluents = releasedFluents;
-
-	        if (fluentsCount > MaxFluentCount)
+	        FluentsCount = fluentsesCount;
+	        if (fluentsesCount > MaxFluentCount)
 				throw new ArgumentException("max fluent count = " + MaxFluentCount);
 
-            int totalNodes = (int)1<<fluentsCount;
+            int totalNodes = (int)1<<fluentsesCount;
             Connections = new Dictionary<int, Dictionary<State, IList<AgentSetChecker>>>();
             States = new List<State>(totalNodes);
             ActionIds = new List<int>();
@@ -76,7 +77,7 @@ namespace RW_backend.Models.World
         }
 
         //add the edges concerning a particular causes action
-        public void AddCauses(IList<Causes>causesList, int actionCount)
+        public void AddCauses(IList<Causes> causesList, int actionCount)
         {
             //for every unique ActionID
             for (int i = 0; i < actionCount; i++)
@@ -130,28 +131,10 @@ namespace RW_backend.Models.World
                                 }
                             }
 
-                            //find state(s) that have the least amount of changed fluents
-							// TODO: think about Minimalisation in building world
-							// especially about these statement:
+							// Minimalisation in building world
+							// scenerio:
 							// SHOOT by Bob causes !alive if loaded
 							// SHOOT by Bob causes !loaded
-                            //List<State> result = new List<State>();
-                            //int min = Int32.MaxValue;
-                            //foreach (var endingState in possibleResults)
-                            //{
-                            //    int diff = _StateDifference(startingState, endingState);
-                            //    if (min > diff)
-                            //    {
-                            //        min = diff;
-                            //        result.Clear();
-                            //        result.Add(endingState);
-                            //    }
-                            //    else if (min == diff)
-                            //    {
-                            //        result.Add(endingState);
-                            //    }
-                            //}
-                            //add the results of action from starting state into ActionSetChecker
 	                        var result = possibleResults;
                             ascList.Add(new AgentSetChecker(causesClause.AgentsSet.AgentSet, result));
                         }
@@ -161,7 +144,62 @@ namespace RW_backend.Models.World
                 Connections.Add(i, stateToAgentSetCheckers);
                 //TODO delete if ActionIds not needed in World class
                 ActionIds.Add(i);
-            } 
+            }
         }
+
+	    public void AddReleases(IList<Releases> releasesList, int actionCount)
+	    {
+			
+
+			BitSetFactory bitSetFactory = new BitSetFactory();
+			ReleasedFluents = new Dictionary<int, Dictionary<State, List<ReleasesWithAgentsSet>>>(ActionIds.Count);
+
+		    if (releasesList == null || releasesList.Count == 0)
+			    return;
+
+
+			//for every unique ActionID
+			for (int i = 0; i < actionCount; i++)
+			{
+				Logger.Log("<ACTION> " + i);
+
+				var stateToReleasesWithAgentsSet = new Dictionary<State, List<ReleasesWithAgentsSet>>();
+
+				//for every starting state
+				foreach (var startingState in States)
+				{
+#if DEBUG
+					Logger.Log("state = " + startingState);
+#endif
+
+					//TODO check assumption that actionCount is numer of unique ActionIDs, and that they are always sequential
+					List<Releases> sameID = releasesList.Where(a => a.Action == i).ToList();
+
+					var ascList = new List<ReleasesWithAgentsSet>(sameID.Count);
+					//for each action with the same ActionID
+					foreach (var releaseClause in sameID)
+					{
+#if DEBUG
+						Logger.Log("releases nr " + releaseClause);
+#endif
+						//if there is no conditions or state satisfies conditions
+						if (releaseClause.InitialCondition == null
+							|| releaseClause.InitialCondition.CheckForState(startingState.FluentValues))
+						{
+#if DEBUG
+							Logger.Log("state satisfies condition");
+#endif
+							ascList.Add(new ReleasesWithAgentsSet(releaseClause.AgentsSet.AgentSet,
+								new BitSet(bitSetFactory.CreateFromOneElement(releaseClause.FluentReleased))));
+						}
+					}
+					stateToReleasesWithAgentsSet.Add(startingState, ascList);
+				}
+				ReleasedFluents.Add(i, stateToReleasesWithAgentsSet);
+			}
+
+
+
+		}
     }
 }

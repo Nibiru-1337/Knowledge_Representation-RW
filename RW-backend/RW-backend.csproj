@@ -62,11 +62,13 @@
     <Compile Include="Models\Clauses\Causes.cs" />
     <Compile Include="Logic\Queries\EngagedQuery.cs" />
     <Compile Include="Logic\Queries\ExecutableQuery.cs" />
-    <Compile Include="Models\World\AgentSetChecker.cs" />
+    <Compile Include="Models\World\AgentSetContainers\AgentSetChecker.cs" />
     <Compile Include="Models\Model.cs" />
     <Compile Include="Logic\Queries\Query.cs" />
     <Compile Include="Models\Clauses\Releases.cs" />
     <Compile Include="Models\BitSets\State.cs" />
+    <Compile Include="Models\World\AgentSetContainers\AgentSetContainer.cs" />
+    <Compile Include="Models\World\AgentSetContainers\ReleasesWithAgentsSet.cs" />
     <Compile Include="Models\World\World.cs" />
   </ItemGroup>
   <ItemGroup>

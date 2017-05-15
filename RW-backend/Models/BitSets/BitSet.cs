@@ -7,9 +7,9 @@ namespace RW_backend.Models.BitSets
 		private int MaxElementsCount = 32;
 		public int Set { get; }
 
-		public BitSet(int fluentValues)
+		public BitSet(int set)
 		{
-			Set = fluentValues;
+			Set = set;
 		}
 
 
