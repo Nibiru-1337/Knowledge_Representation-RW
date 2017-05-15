@@ -25,28 +25,37 @@ namespace RW_backend.Logic.Queries
 			MinimiserOfChanges minimiser = new MinimiserOfChanges();
 			var resultWith = ExecuteProgram(world, minimiser, initialStates.ToList(), 0);
 			var resultWithout = ExecuteProgram(world, minimiser, initialStates, AgentsSet.AgentSet);
-			bool setsTheSame = CompareSets(resultWith.ReachableStates,
-				resultWithout.ReachableStates);
+			bool setsTheSame;
+			bool setsExactlyDifferent;
+
+			CompareSets(resultWith.ReachableStates,
+				resultWithout.ReachableStates, out setsTheSame, out setsExactlyDifferent);
+
 			return new QueryResult()
 			{
-				IsTrue = Always ? setsTheSame : !setsTheSame
+				IsTrue = Always ? setsExactlyDifferent : !setsTheSame
 			};
 		}
 
-		private bool CompareSets(List<State> with, List<State> without)
+
+		private void CompareSets(List<State> with, List<State> without, out bool theSame, out bool exactlyDifferent)
 		{
-			// zbiory musz¹ byæ takie same
+			theSame = true;
+			int howManyDifferent = 0;
+			
 			if (with.Count != without.Count)
-				return false;
+				theSame = false;
+
 			Dictionary<int, State> dictionary = with.ToDictionary(w => w.FluentValues);
 			foreach (State state in without)
 			{
 				if (!dictionary.ContainsKey(state.FluentValues))
 				{
-					return false;
+					theSame = false;
+					howManyDifferent++;
 				}
 			}
-			return true;
+			exactlyDifferent = howManyDifferent == without.Count;
 		}
 
 	}

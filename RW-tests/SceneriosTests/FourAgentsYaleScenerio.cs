@@ -35,7 +35,7 @@ namespace RW_tests.SceneriosTests
 		public void UltimateYaleTest()
 		{
 			World world = new BackendLogic().CalculateWorld(CreateModel());
-
+			
 
 
 
