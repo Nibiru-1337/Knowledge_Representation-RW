@@ -158,7 +158,7 @@ namespace RW_tests.BuildingOfWorldTests
         [TestMethod]
         public void YaleScenerioIncreasingFluentsCountTest()
         {
-            const int MinimumProblemSize = 11;
+            const int MinimumProblemSize = 1;
             const int DesiredProblemSize = 20;
             int fluentsCount;
             for (fluentsCount = 11; fluentsCount <= DesiredProblemSize; fluentsCount++)
@@ -170,6 +170,7 @@ namespace RW_tests.BuildingOfWorldTests
                     Assert.AreEqual(true, query.Evaluate(world).IsTrue, "Bob should be able to shoot");
                 }
                 catch (OutOfMemoryException) { break; }
+				Console.WriteLine("for " + fluentsCount + " is ok");
             }
             if (fluentsCount > DesiredProblemSize)
             {

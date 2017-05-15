@@ -32,11 +32,13 @@ namespace RW_backend.Logic.Queries
 			InitialStateCondition = initialStateCondition;
 		}
 
-	    protected internal List<State> GetInitialStates(IList<State> allInitialStates)
+	    protected internal List<State> GetInitialStates(IList<State> initialStatesInSystem, IList<State> allStates)
 	    {
-			List<State> states = new List<State>(allInitialStates.Count);
-			states.AddRange(allInitialStates.Where(state => InitialStateCondition.CheckForState(state.FluentValues)));
-			return states;
+		    if (InitialStateCondition == null)
+			    return initialStatesInSystem.ToList();
+		    else
+			    return allStates.Where(state => InitialStateCondition.CheckForState(state.FluentValues))
+					    .ToList();
 	    }
 
 		protected internal ProgramExecutionResult ExecuteProgram(World world, MinimiserOfChanges minimiser, 
@@ -167,6 +169,8 @@ namespace RW_backend.Logic.Queries
 		    return result;
 
 	    }
+
+		
 
 		public static Query Create(string queryString)
 		{

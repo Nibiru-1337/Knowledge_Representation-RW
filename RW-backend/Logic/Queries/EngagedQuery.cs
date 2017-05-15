@@ -21,17 +21,32 @@ namespace RW_backend.Logic.Queries
 
 		public override QueryResult Evaluate(World world)
 		{
-			// no wiêc robimy dwie wersje: z i bez agentów
-			var initialStates = GetInitialStates(world.InitialStates);
+			var initialStates = GetInitialStates(world.InitialStates, world.States);
 			MinimiserOfChanges minimiser = new MinimiserOfChanges();
 			var resultWith = ExecuteProgram(world, minimiser, initialStates.ToList(), 0);
 			var resultWithout = ExecuteProgram(world, minimiser, initialStates, AgentsSet.AgentSet);
-			// TODO: coœ trzeba zrobiæ z ró¿nic¹
+			bool setsTheSame = CompareSets(resultWith.ReachableStates,
+				resultWithout.ReachableStates);
 			return new QueryResult()
 			{
-				IsTrue = resultWithout.Executable == Executable.Always,
-				
+				IsTrue = setsTheSame,
 			};
+		}
+
+		private bool CompareSets(List<State> with, List<State> without)
+		{
+			// zbiory musz¹ byæ takie same
+			if (with.Count != without.Count)
+				return false;
+			Dictionary<int, State> dictionary = with.ToDictionary(w => w.FluentValues);
+			foreach (State state in without)
+			{
+				if (!dictionary.ContainsKey(state.FluentValues))
+				{
+					return false;
+				}
+			}
+			return true;
 		}
 
 	}
