@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using RW_backend.Logic.Queries.Results;
 using RW_backend.Models.BitSets;
 using RW_backend.Models.Clauses.LogicClauses;
+using RW_backend.Models.Factories;
 using RW_backend.Models.GraphModels;
 using RW_backend.Models.World;
 
@@ -45,16 +46,9 @@ namespace RW_backend.Logic.Queries
 		protected internal ProgramExecutionResult ExecuteProgram(World world, MinimiserOfChanges minimiser, 
 			List<State> initialStates, int notEngagedAgents = 0)
 	    {
-			// tylko patrzymy na program, który juz tutaj jest zapisany
-			// TODO: pewnie coś załatwić, żeby nie używać tylu list
-
 		    List<State> states = initialStates;
-
 		    bool executableAlways = true;
-			List<State> newStates = new List<State>();
-			List<State> newStatesForThatState = new List<State>();
-			Dictionary<State, int> intersectedStatesSet = new Dictionary<State, int>();
-			List<KeyValuePair<int, State>>[] programExecution = new List<KeyValuePair<int, State>>[Program.Count];
+			//List<KeyValuePair<int, State>>[] programExecution = new List<KeyValuePair<int, State>>[Program.Count];
 
 
 			var result = new ProgramExecutionResult();
@@ -74,10 +68,10 @@ namespace RW_backend.Logic.Queries
 					return result;
 				}
 
-				programExecution[i] = new List<KeyValuePair<int, State>>(states.Count);
+				//programExecution[i] = new List<KeyValuePair<int, State>>(states.Count);
 
 
-			    newStates = TakeNextTimeStep(i, states, world, notEngagedAgents, minimiser,
+			    var newStates = TakeNextTimeStep(i, states, world, notEngagedAgents, minimiser,
 				    ref executableAlways);
 			    
 
@@ -107,9 +101,11 @@ namespace RW_backend.Logic.Queries
 		    return result;
 
 	    }
+		
 
 
-	    List<State> TakeNextTimeStep(int step, List<State> states, World world, int notEngagedAgents, MinimiserOfChanges minimiser, ref bool executableAlways)
+	    List<State> TakeNextTimeStep(int step, List<State> states, World world, int notEngagedAgents, 
+			MinimiserOfChanges minimiser, ref bool executableAlways)
 	    {
 			List<State> newStatesForThatState = new List<State>();
 			List<State> newStates = new List<State>();
@@ -124,11 +120,24 @@ namespace RW_backend.Logic.Queries
 					GoFurtherFromThatState(world.Connections[Program[step].ActionId][state], notEngagedAgents,
 						state, step, ref executableAlways);
 
-				newStates.AddRange(minimiser.MinimaliseChanges(state, newStatesForThatState));
+				// get released
+				BitSet releasedFluents;
+				if (world.ReleasedFluents.ContainsKey(Program[step].ActionId))
+				{
+					releasedFluents =
+						GetReleasedFluents(world.ReleasedFluents[Program[step].ActionId][state], world,
+							state,
+							step, notEngagedAgents);
+				}
+				else releasedFluents = new BitSet(0); // zero releases causes in that world
+				newStates.AddRange(minimiser.MinimaliseChanges(state, newStatesForThatState, releasedFluents.Set, world.NonInertialFluents.Set));
 			}
 
 		    return newStates;
 	    }
+
+
+
 
 	    private List<State> GoFurtherFromThatState(IList<AgentSetChecker> setCheckers, int notEngagedAgents, State state, 
 			int step, ref bool executableAlways)
@@ -173,6 +182,28 @@ namespace RW_backend.Logic.Queries
 		    return GetAvailableStatesFromIntersected(intersectedStatesSet, howManyStateAvailable);
 	    }
 
+	    private BitSet GetReleasedFluents(IList<ReleasesWithAgentsSet> releases, World world, State state, int step, int notEngagedAgents)
+	    {
+			if (releases.Count == 0) // empty action
+			{
+				return new BitSet(0);
+			}
+
+		    int set = 0;
+			BitValueOperator bop = new BitValueOperator();
+			foreach (ReleasesWithAgentsSet release in releases)
+			{
+				if (ActionCanBeExecutedByThoseAgents(release, Program[step].AgentsSet.AgentSet,
+					notEngagedAgents)) //
+				{
+					set = bop.GetSumOfSets(set, release.FluentsReleased.Set);
+				}
+			}
+
+		    return new BitSet(set);
+
+	    }
+
 	    private List<State> GetAvailableStatesFromIntersected(Dictionary<State, int> intersectedStatesSet, int howManyStatesAvailable)
 	    {
 			return intersectedStatesSet.Where(pair => pair.Value == howManyStatesAvailable)
@@ -195,7 +226,7 @@ namespace RW_backend.Logic.Queries
 			}
 		}
 
-	    private bool ActionCanBeExecutedByThoseAgents(AgentSetChecker checker,
+	    private bool ActionCanBeExecutedByThoseAgents(AgentSetContainer checker,
 		    int agentsAvailable, int notEngagedAgents)
 	    {
 			return checker.CanBeExecutedByAgentsSet(agentsAvailable)

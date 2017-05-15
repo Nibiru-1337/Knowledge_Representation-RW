@@ -20,5 +20,10 @@
 			return (bitValue & (1 << bitIndex)) > 0;
 		}
 
+		public int GetSumOfSets(int left, int right)
+		{
+			return left | right;
+		}
+
 	}
 }

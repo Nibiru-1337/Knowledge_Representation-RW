@@ -8,14 +8,14 @@ namespace RW_backend.Models.Clauses
 	/// </summary>
 	public class Releases
 	{
-		public LogicClause Condition { get; }
+		public LogicClause InitialCondition { get; }
 		public int FluentReleased { get; }
 		public int Action { get; }
 		public AgentsSet AgentsSet { get; }
 
-		public Releases(LogicClause condition, int fluentReleased, int action, AgentsSet agentsSet)
+		public Releases(LogicClause initialCondition, int fluentReleased, int action, AgentsSet agentsSet)
 		{
-			Condition = condition;
+			InitialCondition = initialCondition;
 			FluentReleased = fluentReleased;
 			Action = action;
 			AgentsSet = agentsSet;

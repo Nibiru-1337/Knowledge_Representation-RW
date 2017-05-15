@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RW_backend.Logic;
 using RW_backend.Logic.Queries;
 using RW_backend.Models;
@@ -11,8 +6,9 @@ using RW_backend.Models.Clauses;
 using RW_backend.Models.Factories;
 using RW_backend.Models.GraphModels;
 using RW_backend.Models.World;
+using RW_tests.BuildingOfWorldTests;
 
-namespace RW_tests.BuildingOfWorldTests
+namespace RW_tests.SceneriosTests
 {
 	[TestClass]
 	public class YaleScenerioTests
