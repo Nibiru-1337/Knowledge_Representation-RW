@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using RW_backend.Logic.Queries.Results;
 using RW_backend.Models.BitSets;
 using RW_backend.Models.Clauses.LogicClauses;
@@ -28,7 +29,8 @@ namespace RW_backend.Logic.Queries
 		public override QueryResult Evaluate(World world)
 		{
 			MinimiserOfChanges minimiser = new MinimiserOfChanges();
-			ProgramExecutionResult result = this.ExecuteProgram(world, minimiser, GetInitialStates(world.InitialStates));
+			ProgramExecutionResult result = this.ExecuteProgram(world, minimiser,
+				GetInitialStates(world.InitialStates, world.States));
 
 			bool allOk = true;
 			bool oneOk = false;
