@@ -54,6 +54,9 @@
   <ItemGroup>
     <Compile Include="BuildingOfWorldTests\GeneratingWorldTests.cs" />
     <Compile Include="BuildingOfWorldTests\MinimiserTests.cs" />
+    <Compile Include="BuildingOfWorldTests\PerformanceTests.cs" />
+    <Compile Include="BuildingOfWorldTests\SimpleYaleScenerioWorldGenerator.cs" />
+    <Compile Include="SceneriosTests\YaleScenerioTests.cs" />
     <Compile Include="LogicTests\AlternativeOfConjunctionsTests.cs" />
     <Compile Include="LogicTests\ConjunctionOfAlternativesTests.cs" />
     <Compile Include="LogicTests\UniformLogicClausesTests.cs" />
