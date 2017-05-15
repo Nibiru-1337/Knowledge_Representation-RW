@@ -55,7 +55,10 @@ namespace RW_backend.Logic.Queries
 					howManyDifferent++;
 				}
 			}
-			exactlyDifferent = howManyDifferent == without.Count;
+			if (with.Count == 0 && without.Count == 0)
+				exactlyDifferent = false;
+			else
+				exactlyDifferent = howManyDifferent == without.Count;
 		}
 
 	}
