@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using RW_backend.Logic.Queries.Results;
@@ -60,7 +61,6 @@ namespace RW_backend.Logic.Queries
 			for (int i = 0; i < Program.Count; i++)
 		    {
 			    // wykonujemy program
-			    newStates.Clear();
 #if DEBUG
                 Logger.Log("~~~~");
 				Logger.Log("states available for i = " + i);
@@ -77,72 +77,9 @@ namespace RW_backend.Logic.Queries
 				programExecution[i] = new List<KeyValuePair<int, State>>(states.Count);
 
 
-
-			    for (int index = 0; index < states.Count; index++)
-			    {
-				    var state = states[index];
-				    newStatesForThatState.Clear();
-				    intersectedStatesSet.Clear();
-				    int howManyStateAvailable = 0;
-#if DEBUG
-				    Logger.Log("~* state = " + state);
-#endif
-					if (world.Connections[Program[i].ActionId][state].Count == 0)
-					{
-						intersectedStatesSet.Add(state, 1);
-						howManyStateAvailable = 1;
-					}
-
-					foreach (AgentSetChecker setChecker in world.Connections[Program[i].ActionId][state])
-				    {
-#if DEBUG
-					    Logger.Log("checking for " + setChecker.AgentsSet);
-					    Logger.Log("can be executed = "
-									+ setChecker.CanBeExecutedByAgentsSet(Program[i].AgentsSet.AgentSet));
-					    Logger.Log("eng = " + !setChecker.UsesAgentFromSet(notEngagedAgents));
-#endif
-
-					    if (setChecker.CanBeExecutedByAgentsSet(Program[i].AgentsSet.AgentSet)
-							&& !setChecker.UsesAgentFromSet(notEngagedAgents)) //
-					    {
-#if DEBUG
-						    Logger.Log("pass, states here = " + string.Join(", ", setChecker.Edges));
-#endif
-						    howManyStateAvailable++;
-						    if (setChecker.Edges.Count == 0)
-						    {
-							    executableAlways = false;
-							    intersectedStatesSet.Clear();
-							    break;
-						    }
-						    else
-						    {
-							    foreach (State edge in setChecker.Edges)
-							    {
-								    if (intersectedStatesSet.ContainsKey(edge))
-								    {
-									    intersectedStatesSet[edge]++;
-								    }
-								    else
-								    {
-									    intersectedStatesSet.Add(edge, 1);
-								    }
-							    }
-						    }
-					    }
-				    }
-#if DEBUG
-				    Logger.Log("intersecting here = "
-								+ string.Join(", ",
-									intersectedStatesSet.Select(p => "(" + p.Value + ", " + p.Key + ")")));
-#endif
-				    newStatesForThatState =
-					    intersectedStatesSet.Where(pair => pair.Value == howManyStateAvailable)
-						    .Select(pair => pair.Key)
-						    .ToList();
-
-				    newStates.AddRange(minimiser.MinimaliseChanges(state, newStatesForThatState));
-			    }
+			    newStates = TakeNextTimeStep(i, states, world, notEngagedAgents, minimiser,
+				    ref executableAlways);
+			    
 
 			    if (newStates.Count == 0)
 			    {
@@ -152,6 +89,7 @@ namespace RW_backend.Logic.Queries
 					result.Executable = Executable.Never;
 				    return result;
 			    }
+
 			    states = newStates.Distinct().ToList(); // żeby nie powtarzać
 
 		    }
@@ -170,7 +108,99 @@ namespace RW_backend.Logic.Queries
 
 	    }
 
-		
+
+	    List<State> TakeNextTimeStep(int step, List<State> states, World world, int notEngagedAgents, MinimiserOfChanges minimiser, ref bool executableAlways)
+	    {
+			List<State> newStatesForThatState = new List<State>();
+			List<State> newStates = new List<State>();
+			
+			for (int index = 0; index < states.Count; index++)
+			{
+				var state = states[index];
+#if DEBUG
+				Logger.Log("~* state = " + state);
+#endif
+				newStatesForThatState =
+					GoFurtherFromThatState(world.Connections[Program[step].ActionId][state], notEngagedAgents,
+						state, step, ref executableAlways);
+
+				newStates.AddRange(minimiser.MinimaliseChanges(state, newStatesForThatState));
+			}
+
+		    return newStates;
+	    }
+
+	    private List<State> GoFurtherFromThatState(IList<AgentSetChecker> setCheckers, int notEngagedAgents, State state, 
+			int step, ref bool executableAlways)
+	    {
+		    int howManyStateAvailable = 0;
+			Dictionary<State, int> intersectedStatesSet = new Dictionary<State, int>();
+
+		    if (setCheckers.Count == 0) // empty action
+		    {
+				return  new List<State>() {state};
+		    }
+
+		    foreach (AgentSetChecker setChecker in setCheckers)
+		    {
+#if DEBUG
+			    Logger.Log("checking for " + setChecker.AgentsSet);
+			    Logger.Log("can be executed = "
+							+ setChecker.CanBeExecutedByAgentsSet(Program[step].AgentsSet.AgentSet));
+			    Logger.Log("eng = " + !setChecker.UsesAgentFromSet(notEngagedAgents));
+#endif
+
+			    if (ActionCanBeExecutedByThoseAgents(setChecker, Program[step].AgentsSet.AgentSet,
+				    notEngagedAgents)) //
+			    {
+#if DEBUG
+				    Logger.Log("pass, states here = " + string.Join(", ", setChecker.Edges));
+#endif
+				    howManyStateAvailable++;
+				    if (setChecker.Edges.Count == 0) // impossible action in that state with those agents
+				    {
+					    executableAlways = false;
+					    intersectedStatesSet.Clear();
+					    break;
+				    }
+				    AddToIntersected(setChecker.Edges, intersectedStatesSet);
+			    }
+		    }
+#if DEBUG
+			Logger.Log("intersecting here = "
+						+ string.Join(", ", intersectedStatesSet.Select(p => "(" + p.Value + ", " + p.Key + ")")));
+#endif
+		    return GetAvailableStatesFromIntersected(intersectedStatesSet, howManyStateAvailable);
+	    }
+
+	    private List<State> GetAvailableStatesFromIntersected(Dictionary<State, int> intersectedStatesSet, int howManyStatesAvailable)
+	    {
+			return intersectedStatesSet.Where(pair => pair.Value == howManyStatesAvailable)
+					.Select(pair => pair.Key)
+					.ToList();
+		}
+
+	    private void AddToIntersected(List<State> edges, Dictionary<State, int> intersectedStatesSet)
+	    {
+			foreach (State edge in edges)
+			{
+				if (intersectedStatesSet.ContainsKey(edge))
+				{
+					intersectedStatesSet[edge]++;
+				}
+				else
+				{
+					intersectedStatesSet.Add(edge, 1);
+				}
+			}
+		}
+
+	    private bool ActionCanBeExecutedByThoseAgents(AgentSetChecker checker,
+		    int agentsAvailable, int notEngagedAgents)
+	    {
+			return checker.CanBeExecutedByAgentsSet(agentsAvailable)
+					&& !checker.UsesAgentFromSet(notEngagedAgents);
+	    }
 
 		public static Query Create(string queryString)
 		{
