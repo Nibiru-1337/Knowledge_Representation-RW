@@ -1,4 +1,4 @@
-﻿#define DEBUG_TEXT
+﻿//#define DEBUG_TEXT
 namespace RW_backend
 {
 	public static class Logger

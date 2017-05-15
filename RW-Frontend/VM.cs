@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using RW_backend.Models.World;
 using RW_Frontend.Annotations;
 using RW_Frontend.InputsViewModels;
 
@@ -69,7 +70,7 @@ namespace RW_Frontend
                 ReleasesStatements = new ObservableCollection<string>(releases)
             };
         }
-
+        public World World { get; private set; }
 
         #region Components Control
 
@@ -118,24 +119,31 @@ namespace RW_Frontend
             {
                 case "Fluent":
                     button.Click += RemoveFluentButtonClick;
+                    button.ToolTip = Properties.Settings.Default.RemoveFluent;
                     break;
                 case "Action":
                     button.Click += RemoveActionButtonClick;
+                    button.ToolTip = Properties.Settings.Default.RemoveAction;
                     break;
                 case "Agent":
                     button.Click += RemoveAgentButtonClick;
+                    button.ToolTip = Properties.Settings.Default.RemoveAgent;
                     break;
                 case "Causes":
                     button.Click += RemoveCausesClauseButtonClick;
+                    button.ToolTip = Properties.Settings.Default.RemoveCauses;
                     break;
                 case "AfterQuery":
                     button.Click += RemoveAfterQueryButtonClick;
+                    button.ToolTip = Properties.Settings.Default.RemoveAfterQuery;
                     break;
                 case "ExecutableQuery":
                     button.Click += RemoveExecutableQueryButtonClick;
+                    button.ToolTip = Properties.Settings.Default.RemoveExecutableQuery;
                     break;
                 case "EngagedQuery":
                     button.Click += RemoveEngagedQueryButtonClick;
+                    button.ToolTip = Properties.Settings.Default.RemoveExecutableQuery;
                     break;
             }
             return button;
@@ -155,12 +163,15 @@ namespace RW_Frontend
             {
                 case "Executable":
                     button.Click += CalculateExecutableQuery;
+                    button.ToolTip = Properties.Settings.Default.CalculateExecutableQuery;
                     break;
                 case "After":
                     button.Click += CalculateAfterQuery;
+                    button.ToolTip = Properties.Settings.Default.CalculateAfterQuery;
                     break;
                 case "Engaged":
                     button.Click += CalculateEngagedQuery;
+                    button.ToolTip = Properties.Settings.Default.CalculateEngagedQuery;
                     break;             
             }
             return button;
@@ -179,6 +190,7 @@ namespace RW_Frontend
             return comboBox;
         }
 
+        internal const string AnyAgent = "ANY";
         private Expander CreateAgentsExpanderListBox()
         {
             var ep = new Expander() {Name = "AgentsExpanderListBox", Header = "Agenci", VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(10)};
@@ -192,7 +204,7 @@ namespace RW_Frontend
             ep.MouseEnter += (s, e) =>
             {
                 var actions = AgentsTextBoxes.Select(_ => _.Text).Where(_ => _ != String.Empty);
-                actions = actions.Concat(new List<string>() { "ANY" });
+                actions = actions.Concat(new List<string>() { AnyAgent });
                 listBox.ItemsSource = actions;
             };
             return ep;
@@ -498,6 +510,18 @@ namespace RW_Frontend
 
         #endregion
 
+        public ICommand GenerateModelCommand
+        {
+            get
+            {
+                return new RelayCommand(GenerateModel, CanDo);
+            }
+        }
+        private void GenerateModel()
+        {
+            //InputAggregator.PopulateViewModels(this);
+            World = new FrontendLogic().PrepareWorld(this);
+        }
         #region Causes clauses
 
         public ICommand AddCausesClauseCommand
@@ -754,19 +778,27 @@ namespace RW_Frontend
 
         private void CalculateAfterQuery(object sender, RoutedEventArgs e)
         {
-            InputAggregator.PopulateViewModels(this);
-            //Dostęp do pobranych z widoku danych:
-            //var fluents = InputAggregator.FluentsViewModels;
-            //var actions = InputAggregator.ActionsViewModels;
-            //var agents = InputAggregator.AgentsViewModels;
-            //var causes = InputAggregator.CausesClauseViewModels;
-            //var afterQuery = InputAggregator.AfterQueriesViewModels;
-            var afterQueriesViewModels = InputAggregator.AfterQueriesViewModels;
+            try
+            {
+                InputAggregator.PopulateViewModels(this);
+                //Dostęp do pobranych z widoku danych:
+                //var fluents = InputAggregator.FluentsViewModels;
+                //var actions = InputAggregator.ActionsViewModels;
+                //var agents = InputAggregator.AgentsViewModels;
+                //var causes = InputAggregator.CausesClauseViewModels;
+                //var afterQuery = InputAggregator.AfterQueriesViewModels;
+                var afterQueriesViewModels = InputAggregator.AfterQueriesViewModels;
 
-            var afterQueryIndex = FindAfterQueryIndexByButton((Button) sender);
-            var queryVM = afterQueriesViewModels[afterQueryIndex];
+                var afterQueryIndex = FindAfterQueryIndexByButton((Button)sender);
+                var queryVM = afterQueriesViewModels[afterQueryIndex];
 
-            new FrontendLogic().CalculateAfterQuery(this, queryVM);
+                new FrontendLogic().CalculateAfterQuery(this, queryVM);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show("Wystąpił błąd podczas obliczeń\n" + exception.Message, "Błąd",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void CalculateEngagedQuery(object sender, RoutedEventArgs e)
