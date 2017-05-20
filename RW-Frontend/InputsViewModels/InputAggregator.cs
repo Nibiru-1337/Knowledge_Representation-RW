@@ -12,7 +12,10 @@ namespace RW_Frontend.InputsViewModels
         public static List<FluentViewModel> FluentsViewModels;
         public static List<ActionViewModel> ActionsViewModels;
         public static List<AgentViewModel> AgentsViewModels;
+
         public static List<CausesClauseViewModel> CausesClauseViewModels;
+        public static List<AlwaysClauseViewModel> AlwaysClauseViewModels;
+
         public static List<AfterQueryViewModel> AfterQueriesViewModels;
 
         public static void PopulateViewModels(VM viewModel)
@@ -22,6 +25,7 @@ namespace RW_Frontend.InputsViewModels
             AgentsViewModels = PopulateAgents(viewModel);
 
             CausesClauseViewModels = PopulateCausesClauses(viewModel);
+            AlwaysClauseViewModels = PopulateAlwaysClauses(viewModel);
 
             AfterQueriesViewModels = PopulateAfterQueries(viewModel);
         }
@@ -60,6 +64,17 @@ namespace RW_Frontend.InputsViewModels
                 causesClauses.Add(new CausesClauseViewModel(action, agents, alfaLogicExp, piLogicExp));
             }
             return causesClauses;
+        }
+
+        private static List<AlwaysClauseViewModel> PopulateAlwaysClauses(VM viewModel)
+        {
+            var alwaysClauses = new List<AlwaysClauseViewModel>();
+            foreach (var stackPanel in viewModel.AlwaysClausesStackPanels)
+            {
+                var alfaLogicExp = AlwaysClauseViewModel.GetAlfaLogicExpFromView(stackPanel);
+                alwaysClauses.Add(new AlwaysClauseViewModel(alfaLogicExp));
+            }
+            return alwaysClauses;
         }
 
         private static List<AfterQueryViewModel> PopulateAfterQueries(VM viewModel)
