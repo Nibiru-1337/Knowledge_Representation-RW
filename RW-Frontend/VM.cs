@@ -129,9 +129,37 @@ namespace RW_Frontend
                     button.Click += RemoveAgentButtonClick;
                     button.ToolTip = Properties.Settings.Default.RemoveAgent;
                     break;
+                case "Initially":
+                    button.Click += RemoveInitiallyClauseButtonClick;
+                    button.ToolTip = Properties.Settings.Default.RemoveInitially;
+                    break;
+                case "After":
+                    button.Click += RemoveAfterClauseButtonClick;
+                    button.ToolTip = Properties.Settings.Default.RemoveAfter;
+                    break;
+                case "Observable":
+                    button.Click += RemoveObservableClauseButtonClick;
+                    button.ToolTip = Properties.Settings.Default.RemoveObservable;
+                    break;
                 case "Causes":
                     button.Click += RemoveCausesClauseButtonClick;
                     button.ToolTip = Properties.Settings.Default.RemoveCauses;
+                    break;
+                case "Impossible":
+                    button.Click += RemoveImpossibleClauseButtonClick;
+                    button.ToolTip = Properties.Settings.Default.RemoveImpossible;
+                    break;
+                case "Releases":
+                    button.Click += RemoveReleasesClauseButtonClick;
+                    button.ToolTip = Properties.Settings.Default.RemoveReleases;
+                    break;
+                case "Always":
+                    button.Click += RemoveAlwaysClauseButtonClick;
+                    button.ToolTip = Properties.Settings.Default.RemoveAlways;
+                    break;
+                case "Noninertial":
+                    button.Click += RemoveNoninertialClauseButtonClick;
+                    button.ToolTip = Properties.Settings.Default.RemoveNoninertial;
                     break;
                 case "AfterQuery":
                     button.Click += RemoveAfterQueryButtonClick;
@@ -190,6 +218,18 @@ namespace RW_Frontend
             return comboBox;
         }
 
+        private ComboBox CreateFluentsComboBox()
+        {
+            var comboBox = new ComboBox() { Name = "FluentsComboBox", Margin = new Thickness(5), Height = 25, Width = 150, VerticalAlignment = VerticalAlignment.Center };
+            comboBox.SelectedItem = String.Empty;
+            comboBox.MouseEnter += (s, e) =>
+            {
+                var fluents = FluentsTextBoxes.Select(_ => _.Text).Where(_ => _ != String.Empty);
+                comboBox.ItemsSource = fluents;
+            };
+            return comboBox;
+        }
+
         internal const string AnyAgent = "ANY";
         private Expander CreateAgentsExpanderListBox()
         {
@@ -213,6 +253,12 @@ namespace RW_Frontend
         private Label CreateByLabel()
         {
             var label = new Label() {Margin = new Thickness(5), Content = "by", VerticalAlignment = VerticalAlignment.Center};
+            return label;
+        }
+
+        private Label CreateWithLabel()
+        {
+            var label = new Label() { Margin = new Thickness(5), Content = "with", VerticalAlignment = VerticalAlignment.Center };
             return label;
         }
 
@@ -247,7 +293,7 @@ namespace RW_Frontend
         {
             var stackPanel = new StackPanel() {Orientation = Orientation.Horizontal};
 
-            var addingButton = new Button() {Content = "+", Height = 20, Width = 20, Margin = new Thickness(5), FontSize = 12};
+            var addingButton = new Button() {Content = "+", Height = 20, Width = 20, Margin = new Thickness(5), FontSize = 12, ToolTip = Properties.Settings.Default.AddScenario};
             addingButton.Click += (s, e) =>
             {
                 var expanderContent = expander.Content as StackPanel;
@@ -256,7 +302,7 @@ namespace RW_Frontend
                 expanderContent.Children.Add(CreateActionByAgentsStackPanel());
             };
 
-            var removingButton = new Button() {Content = "x", Height = 20, Width = 20, Margin = new Thickness(5), FontSize = 12};
+            var removingButton = new Button() {Content = "x", Height = 20, Width = 20, Margin = new Thickness(5), FontSize = 12, ToolTip = Properties.Settings.Default.RemoveScenario };
             removingButton.Click += (s, e) =>
             {
                 var expanderContent = expander.Content as StackPanel;
@@ -522,6 +568,170 @@ namespace RW_Frontend
             //InputAggregator.PopulateViewModels(this);
             World = new FrontendLogic().PrepareWorld(this);
         }
+
+       
+
+       
+
+        #region Initially clauses
+
+        public ICommand AddInitiallyClauseCommand
+        {
+            get { return new RelayCommand(AddInitiallyClause, CanDo); }
+        }
+
+        private void AddInitiallyClause()
+        {
+            InitiallyClausesStackPanels.Add(CreateInitiallyClauseStackPanel());
+        }
+
+        private StackPanel CreateInitiallyClauseStackPanel()
+        {
+            var stackPanel = new StackPanel() { Orientation = Orientation.Horizontal };
+            stackPanel.Children.Add(new Label() { Margin = new Thickness(5), Content = "initially", VerticalAlignment = VerticalAlignment.Center });
+            stackPanel.Children.Add(CreateLogicExpTextBox("alfaInitiallyExp"));
+            stackPanel.Children.Add(CreateRemoveButton("Initially"));
+            return stackPanel;
+        }
+
+        private void RemoveInitiallyClauseButtonClick(object sender, RoutedEventArgs e)
+        {
+            Button clickedButton = (Button)sender;
+            var removingStackPanel = InitiallyClausesStackPanels.First(_ => _.Children.Contains(clickedButton));
+            int removingItemIdx = InitiallyClausesStackPanels.IndexOf(removingStackPanel);
+            InitiallyClausesStackPanels.RemoveAt(removingItemIdx);
+        }
+
+        #region InitiallyClauses -> StackPanels
+
+        private ObservableCollection<StackPanel> _initiallyClausesStackPanels;
+
+        public ObservableCollection<StackPanel> InitiallyClausesStackPanels
+        {
+            get
+            {
+                if (_initiallyClausesStackPanels == null)
+                {
+                    _initiallyClausesStackPanels = new ObservableCollection<StackPanel>()
+                    {
+                        CreateInitiallyClauseStackPanel()
+                    };
+                }
+                return _initiallyClausesStackPanels;
+            }
+        }
+
+        #endregion
+
+        #endregion
+
+        #region After clauses
+
+        public ICommand AddAfterClauseCommand
+        {
+            get { return new RelayCommand(AddAfterClause, CanDo); }
+        }
+
+        private void AddAfterClause()
+        {
+            AfterClausesStackPanels.Add(CreateAfterClauseStackPanel());
+        }
+
+        private StackPanel CreateAfterClauseStackPanel()
+        {
+            var stackPanel = new StackPanel() { Orientation = Orientation.Horizontal };
+            stackPanel.Children.Add(CreateLogicExpTextBox("alfaAfterExp"));
+            stackPanel.Children.Add(new Label() { Margin = new Thickness(5), Content = "after", VerticalAlignment = VerticalAlignment.Center });
+            stackPanel.Children.Add(CreateActionsByAgentsExpander());
+            stackPanel.Children.Add(CreateRemoveButton("After"));
+            return stackPanel;
+        }
+
+        private void RemoveAfterClauseButtonClick(object sender, RoutedEventArgs e)
+        {
+            Button clickedButton = (Button)sender;
+            var removingStackPanel = AfterClausesStackPanels.First(_ => _.Children.Contains(clickedButton));
+            int removingItemIdx = AfterClausesStackPanels.IndexOf(removingStackPanel);
+            AfterClausesStackPanels.RemoveAt(removingItemIdx);
+        }
+
+        #region AfterClauses -> StackPanels
+
+        private ObservableCollection<StackPanel> _afterClausesStackPanels;
+
+        public ObservableCollection<StackPanel> AfterClausesStackPanels
+        {
+            get
+            {
+                if (_afterClausesStackPanels == null)
+                {
+                    _afterClausesStackPanels = new ObservableCollection<StackPanel>()
+                    {
+                        CreateAfterClauseStackPanel()
+                    };
+                }
+                return _afterClausesStackPanels;
+            }
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Observable clauses
+
+        public ICommand AddObservableClauseCommand
+        {
+            get { return new RelayCommand(AddObservableClause, CanDo); }
+        }
+
+        private void AddObservableClause()
+        {
+            ObservableClausesStackPanels.Add(CreateObservableClauseStackPanel());
+        }
+
+        private StackPanel CreateObservableClauseStackPanel()
+        {
+            var stackPanel = new StackPanel() { Orientation = Orientation.Horizontal };
+            stackPanel.Children.Add(new Label() { Margin = new Thickness(5), Content = "observable", VerticalAlignment = VerticalAlignment.Center });
+            stackPanel.Children.Add(CreateLogicExpTextBox("alfaObservableExp"));
+            stackPanel.Children.Add(new Label() { Margin = new Thickness(5), Content = "after", VerticalAlignment = VerticalAlignment.Center });
+            stackPanel.Children.Add(CreateActionsByAgentsExpander());
+            stackPanel.Children.Add(CreateRemoveButton("Observable"));
+            return stackPanel;
+        }
+
+        private void RemoveObservableClauseButtonClick(object sender, RoutedEventArgs e)
+        {
+            Button clickedButton = (Button)sender;
+            var removingStackPanel = ObservableClausesStackPanels.First(_ => _.Children.Contains(clickedButton));
+            int removingItemIdx = ObservableClausesStackPanels.IndexOf(removingStackPanel);
+            ObservableClausesStackPanels.RemoveAt(removingItemIdx);
+        }
+
+        #region ObservableClauses -> StackPanels
+
+        private ObservableCollection<StackPanel> _observableClausesStackPanels;
+
+        public ObservableCollection<StackPanel> ObservableClausesStackPanels
+        {
+            get
+            {
+                if (_observableClausesStackPanels == null)
+                {
+                    _observableClausesStackPanels = new ObservableCollection<StackPanel>()
+                    {
+                        CreateObservableClauseStackPanel()
+                    };
+                }
+                return _observableClausesStackPanels;
+            }
+        }
+
+        #endregion
+
+        #endregion
+
         #region Causes clauses
 
         public ICommand AddCausesClauseCommand
@@ -536,11 +746,11 @@ namespace RW_Frontend
 
         private StackPanel CreateCausesClauseStackPanel()
         {
-            var stackPanel = new StackPanel() {Orientation = Orientation.Horizontal};
+            var stackPanel = new StackPanel() { Orientation = Orientation.Horizontal };
             stackPanel.Children.Add(CreateActionsComboBox());
             stackPanel.Children.Add(CreateByLabel());
             stackPanel.Children.Add(CreateAgentsExpanderListBox());
-            stackPanel.Children.Add(new Label() {Margin = new Thickness(5), Content = "causes", VerticalAlignment = VerticalAlignment.Center});
+            stackPanel.Children.Add(new Label() { Margin = new Thickness(5), Content = "causes", VerticalAlignment = VerticalAlignment.Center });
             stackPanel.Children.Add(CreateLogicExpTextBox("alfaCausesExp"));
             stackPanel.Children.Add(CreateIfLabel());
             stackPanel.Children.Add(CreateLogicExpTextBox("piCausesExp"));
@@ -550,7 +760,7 @@ namespace RW_Frontend
 
         private void RemoveCausesClauseButtonClick(object sender, RoutedEventArgs e)
         {
-            Button clickedButton = (Button) sender;
+            Button clickedButton = (Button)sender;
             var removingStackPanel = CausesClausesStackPanels.First(_ => _.Children.Contains(clickedButton));
             int removingItemIdx = CausesClausesStackPanels.IndexOf(removingStackPanel);
             CausesClausesStackPanels.RemoveAt(removingItemIdx);
@@ -572,6 +782,223 @@ namespace RW_Frontend
                     };
                 }
                 return _causesClausesStackPanels;
+            }
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Impossible clauses
+
+        public ICommand AddImpossibleClauseCommand
+        {
+            get { return new RelayCommand(AddImpossibleClause, CanDo); }
+        }
+
+        private void AddImpossibleClause()
+        {
+            ImpossibleClausesStackPanels.Add(CreateImpossibleClauseStackPanel());
+        }
+
+        private StackPanel CreateImpossibleClauseStackPanel()
+        {
+            var stackPanel = new StackPanel() { Orientation = Orientation.Horizontal };
+            stackPanel.Children.Add(new Label() { Margin = new Thickness(5), Content = "impossible", VerticalAlignment = VerticalAlignment.Center });
+            stackPanel.Children.Add(CreateActionsComboBox());
+            stackPanel.Children.Add(CreateWithLabel());
+            stackPanel.Children.Add(CreateAgentsExpanderListBox());
+            stackPanel.Children.Add(CreateIfLabel());
+            stackPanel.Children.Add(CreateLogicExpTextBox("piImpossibleExp"));
+            stackPanel.Children.Add(CreateRemoveButton("Impossible"));
+            return stackPanel;
+        }
+
+        private void RemoveImpossibleClauseButtonClick(object sender, RoutedEventArgs e)
+        {
+            Button clickedButton = (Button)sender;
+            var removingStackPanel = ImpossibleClausesStackPanels.First(_ => _.Children.Contains(clickedButton));
+            int removingItemIdx = ImpossibleClausesStackPanels.IndexOf(removingStackPanel);
+            ImpossibleClausesStackPanels.RemoveAt(removingItemIdx);
+        }
+
+        #region ImpossibleClauses -> StackPanels
+
+        private ObservableCollection<StackPanel> _impossibleClausesStackPanels;
+
+        public ObservableCollection<StackPanel> ImpossibleClausesStackPanels
+        {
+            get
+            {
+                if (_impossibleClausesStackPanels == null)
+                {
+                    _impossibleClausesStackPanels = new ObservableCollection<StackPanel>()
+                    {
+                        CreateImpossibleClauseStackPanel()
+                    };
+                }
+                return _impossibleClausesStackPanels;
+            }
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Releases clauses
+
+        public ICommand AddReleasesClauseCommand
+        {
+            get { return new RelayCommand(AddReleasesClause, CanDo); }
+        }
+
+        private void AddReleasesClause()
+        {
+            ReleasesClausesStackPanels.Add(CreateReleasesClauseStackPanel());
+        }
+
+        private StackPanel CreateReleasesClauseStackPanel()
+        {
+            var stackPanel = new StackPanel() { Orientation = Orientation.Horizontal };
+            stackPanel.Children.Add(CreateActionsComboBox());
+            stackPanel.Children.Add(CreateByLabel());
+            stackPanel.Children.Add(CreateAgentsExpanderListBox());
+            stackPanel.Children.Add(new Label() { Margin = new Thickness(5), Content = "releases", VerticalAlignment = VerticalAlignment.Center });
+            stackPanel.Children.Add(CreateFluentsComboBox());
+            stackPanel.Children.Add(CreateIfLabel());
+            stackPanel.Children.Add(CreateLogicExpTextBox("piReleasesExp"));
+            stackPanel.Children.Add(CreateRemoveButton("Releases"));
+            return stackPanel;
+        }
+
+        private void RemoveReleasesClauseButtonClick(object sender, RoutedEventArgs e)
+        {
+            Button clickedButton = (Button)sender;
+            var removingStackPanel = ReleasesClausesStackPanels.First(_ => _.Children.Contains(clickedButton));
+            int removingItemIdx = ReleasesClausesStackPanels.IndexOf(removingStackPanel);
+            ReleasesClausesStackPanels.RemoveAt(removingItemIdx);
+        }
+
+        #region ReleasesClauses -> StackPanels
+
+        private ObservableCollection<StackPanel> _releasesClausesStackPanels;
+
+        public ObservableCollection<StackPanel> ReleasesClausesStackPanels
+        {
+            get
+            {
+                if (_releasesClausesStackPanels == null)
+                {
+                    _releasesClausesStackPanels = new ObservableCollection<StackPanel>()
+                    {
+                        CreateReleasesClauseStackPanel()
+                    };
+                }
+                return _releasesClausesStackPanels;
+            }
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Always clauses
+
+        public ICommand AddAlwaysClauseCommand
+        {
+            get { return new RelayCommand(AddAlwaysClause, CanDo); }
+        }
+
+        private void AddAlwaysClause()
+        {
+            AlwaysClausesStackPanels.Add(CreateAlwaysClauseStackPanel());
+        }
+
+        private StackPanel CreateAlwaysClauseStackPanel()
+        {
+            var stackPanel = new StackPanel() { Orientation = Orientation.Horizontal };
+            stackPanel.Children.Add(new Label() { Margin = new Thickness(5), Content = "always", VerticalAlignment = VerticalAlignment.Center });
+            stackPanel.Children.Add(CreateLogicExpTextBox("alfaAlwaysExp"));
+            stackPanel.Children.Add(CreateRemoveButton("Always"));
+            return stackPanel;
+        }
+
+        private void RemoveAlwaysClauseButtonClick(object sender, RoutedEventArgs e)
+        {
+            Button clickedButton = (Button)sender;
+            var removingStackPanel = AlwaysClausesStackPanels.First(_ => _.Children.Contains(clickedButton));
+            int removingItemIdx = AlwaysClausesStackPanels.IndexOf(removingStackPanel);
+            AlwaysClausesStackPanels.RemoveAt(removingItemIdx);
+        }
+
+        #region AlwaysClauses -> StackPanels
+
+        private ObservableCollection<StackPanel> _alwaysClausesStackPanels;
+
+        public ObservableCollection<StackPanel> AlwaysClausesStackPanels
+        {
+            get
+            {
+                if (_alwaysClausesStackPanels == null)
+                {
+                    _alwaysClausesStackPanels = new ObservableCollection<StackPanel>()
+                    {
+                        CreateAlwaysClauseStackPanel()
+                    };
+                }
+                return _alwaysClausesStackPanels;
+            }
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Noninertial clauses
+
+        public ICommand AddNoninertialClauseCommand
+        {
+            get { return new RelayCommand(AddNoninertialClause, CanDo); }
+        }
+
+        private void AddNoninertialClause()
+        {
+            NoninertialClausesStackPanels.Add(CreateNoninertialClauseStackPanel());
+        }
+
+        private StackPanel CreateNoninertialClauseStackPanel()
+        {
+            var stackPanel = new StackPanel() { Orientation = Orientation.Horizontal };
+            stackPanel.Children.Add(new Label() { Margin = new Thickness(5), Content = "noninertial", VerticalAlignment = VerticalAlignment.Center });
+            stackPanel.Children.Add(CreateFluentsComboBox());
+            stackPanel.Children.Add(CreateRemoveButton("Noninertial"));
+            return stackPanel;
+        }
+
+        private void RemoveNoninertialClauseButtonClick(object sender, RoutedEventArgs e)
+        {
+            Button clickedButton = (Button)sender;
+            var removingStackPanel = NoninertialClausesStackPanels.First(_ => _.Children.Contains(clickedButton));
+            int removingItemIdx = NoninertialClausesStackPanels.IndexOf(removingStackPanel);
+            NoninertialClausesStackPanels.RemoveAt(removingItemIdx);
+        }
+
+        #region NoninertialClauses -> StackPanels
+
+        private ObservableCollection<StackPanel> _noninertialClausesStackPanels;
+
+        public ObservableCollection<StackPanel> NoninertialClausesStackPanels
+        {
+            get
+            {
+                if (_noninertialClausesStackPanels == null)
+                {
+                    _noninertialClausesStackPanels = new ObservableCollection<StackPanel>()
+                    {
+                        CreateNoninertialClauseStackPanel()
+                    };
+                }
+                return _noninertialClausesStackPanels;
             }
         }
 
