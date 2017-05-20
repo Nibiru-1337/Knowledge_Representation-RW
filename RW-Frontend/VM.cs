@@ -1009,6 +1009,7 @@ namespace RW_Frontend
             stackPanel.Children.Add(CreateFromLabel());
             stackPanel.Children.Add(CreateLogicExpTextBox("piExecutableQueryExp"));
             stackPanel.Children.Add(CreateRemoveButton("ExecutableQuery"));
+            stackPanel.Children.Add(CreateCalculateQueryButton("Executable"));
 
             return stackPanel;
         }
@@ -1132,6 +1133,8 @@ namespace RW_Frontend
             stackPanel.Children.Add(CreateFromLabel());
             stackPanel.Children.Add(CreateLogicExpTextBox("piEngagedQueryExp"));
             stackPanel.Children.Add(CreateRemoveButton("EngagedQuery"));
+            stackPanel.Children.Add(CreateCalculateQueryButton("Engaged"));
+
             return stackPanel;
         }
 
@@ -1198,6 +1201,8 @@ namespace RW_Frontend
 
         private void CalculateExecutableQuery(object sender, RoutedEventArgs e)
         {
+            MessageBox.Show("ExecutableQuery");
+
         }
 
         private void CalculateAfterQuery(object sender, RoutedEventArgs e)
@@ -1228,6 +1233,7 @@ namespace RW_Frontend
 
         private void CalculateEngagedQuery(object sender, RoutedEventArgs e)
         {
+            MessageBox.Show("EngagedQuery");
         }
         #endregion
     }

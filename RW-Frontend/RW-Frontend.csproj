@@ -63,6 +63,8 @@
     <Compile Include="InputsViewModels\AgentViewModel.cs" />
     <Compile Include="InputsViewModels\AlwaysClauseViewModel.cs" />
     <Compile Include="InputsViewModels\CausesClauseViewModel.cs" />
+    <Compile Include="InputsViewModels\EngagedQueryViewModel.cs" />
+    <Compile Include="InputsViewModels\ExecutableQueryViewModel.cs" />
     <Compile Include="InputsViewModels\FluentViewModel.cs" />
     <Compile Include="InputsViewModels\ImpossibleClauseViewModel.cs" />
     <Compile Include="InputsViewModels\InitiallyClauseViewModel.cs" />
