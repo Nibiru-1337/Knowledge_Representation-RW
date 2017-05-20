@@ -555,24 +555,7 @@ namespace RW_Frontend
         #endregion
 
         #endregion
-
-        public ICommand GenerateModelCommand
-        {
-            get
-            {
-                return new RelayCommand(GenerateModel, CanDo);
-            }
-        }
-        private void GenerateModel()
-        {
-            //InputAggregator.PopulateViewModels(this);
-            World = new FrontendLogic().PrepareWorld(this);
-        }
-
-       
-
-       
-
+           
         #region Initially clauses
 
         public ICommand AddInitiallyClauseCommand
@@ -1199,6 +1182,20 @@ namespace RW_Frontend
 
         #region Queries control
 
+        public ICommand GenerateModelCommand
+        {
+            get
+            {
+                return new RelayCommand(GenerateModel, CanDo);
+            }
+        }
+        private void GenerateModel()
+        {
+            //InputAggregator.PopulateViewModels(this);
+            World = new FrontendLogic().PrepareWorld(this);
+        }
+
+
         private void CalculateExecutableQuery(object sender, RoutedEventArgs e)
         {
         }
@@ -1214,6 +1211,7 @@ namespace RW_Frontend
                 //var agents = InputAggregator.AgentsViewModels;
                 //var causes = InputAggregator.CausesClauseViewModels;
                 //var afterQuery = InputAggregator.AfterQueriesViewModels;
+
                 var afterQueriesViewModels = InputAggregator.AfterQueriesViewModels;
 
                 var afterQueryIndex = FindAfterQueryIndexByButton((Button)sender);
