@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace RW_Frontend.InputsViewModels
 {
@@ -109,6 +110,25 @@ namespace RW_Frontend.InputsViewModels
         {
             Possibly,
             Necessary
+        }
+
+        public void SetResultLabel(StackPanel afterQueryStackPanel, bool result)
+        {
+            var resultLabel = afterQueryStackPanel.Children[8] as Label;
+            if (resultLabel == null)
+                return;
+            if (result)
+            {
+                resultLabel.Content = "Tak";
+                resultLabel.Foreground = Brushes.Green;
+                resultLabel.BorderBrush = Brushes.Green;
+            }
+            else
+            {
+                resultLabel.Content = "Nie";
+                resultLabel.Foreground = Brushes.Red;
+                resultLabel.BorderBrush = Brushes.Red;
+            }
         }
     }
 }

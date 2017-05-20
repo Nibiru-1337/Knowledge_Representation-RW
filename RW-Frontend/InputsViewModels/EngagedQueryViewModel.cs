@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace RW_Frontend.InputsViewModels
 {
@@ -13,7 +14,6 @@ namespace RW_Frontend.InputsViewModels
         public List<string> Agents { get; set; }
         public EngagedQueryAlwaysOrNot EngagedQueryType { get; set; }
         public List<Tuple<string, List<string>>> ActionByAgents { get; set; }
-
         public string PiLogicExp { get; set; }
 
 
@@ -118,6 +118,25 @@ namespace RW_Frontend.InputsViewModels
         {
             Always,
             NotAlways
+        }
+
+        public void SetResultLabel(StackPanel engagedQueryStackPanel, bool result)
+        {
+            var resultLabel = engagedQueryStackPanel.Children[8] as Label;
+            if (resultLabel == null)
+                return;
+            if (result)
+            {
+                resultLabel.Content = "Tak";
+                resultLabel.Foreground = Brushes.Green;
+                resultLabel.BorderBrush = Brushes.Green;
+            }
+            else
+            {
+                resultLabel.Content = "Nie";
+                resultLabel.Foreground = Brushes.Red;
+                resultLabel.BorderBrush = Brushes.Red;
+            }
         }
     }
 }

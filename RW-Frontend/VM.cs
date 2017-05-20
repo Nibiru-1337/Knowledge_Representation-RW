@@ -274,6 +274,12 @@ namespace RW_Frontend
             return label;
         }
 
+        private Label CreateQueryResultLabel()
+        {
+            var label = new Label() { Margin = new Thickness(10), Content = "Result", VerticalAlignment = VerticalAlignment.Center, FontWeight = FontWeights.Bold, BorderBrush = Brushes.Gray, Foreground = Brushes.Gray, BorderThickness = new Thickness(2)};
+            return label;
+        }
+
         private TextBox CreateLogicExpTextBox(string name)
         {
             var textBox = new TextBox()
@@ -1010,16 +1016,22 @@ namespace RW_Frontend
             stackPanel.Children.Add(CreateLogicExpTextBox("piExecutableQueryExp"));
             stackPanel.Children.Add(CreateRemoveButton("ExecutableQuery"));
             stackPanel.Children.Add(CreateCalculateQueryButton("Executable"));
+            stackPanel.Children.Add(CreateQueryResultLabel());
 
             return stackPanel;
         }
 
         private void RemoveExecutableQueryButtonClick(object sender, RoutedEventArgs e)
         {
-            Button clickedButton = (Button)sender;
-            var removingStackPanel = AfterQueryStackPanels.First(_ => _.Children.Contains(clickedButton));
-            int removingItemIdx = AfterQueryStackPanels.IndexOf(removingStackPanel);
-            AfterQueryStackPanels.RemoveAt(removingItemIdx);
+            var removingItemIdx = FindExecutableQueryIndexByButton((Button)sender);
+            ExecutableQueryStackPanels.RemoveAt(removingItemIdx);
+        }
+
+        private int FindExecutableQueryIndexByButton(Button clickedButton)
+        {
+            var removingStackPanel = ExecutableQueryStackPanels.First(_ => _.Children.Contains(clickedButton));
+            int removingItemIdx = ExecutableQueryStackPanels.IndexOf(removingStackPanel);
+            return removingItemIdx;
         }
 
         #region ExecutableQuery -> StackPanels
@@ -1066,6 +1078,7 @@ namespace RW_Frontend
             stackPanel.Children.Add(CreateLogicExpTextBox("piAfterQueryExp"));
             stackPanel.Children.Add(CreateRemoveButton("AfterQuery"));
             stackPanel.Children.Add(CreateCalculateQueryButton("After"));
+            stackPanel.Children.Add(CreateQueryResultLabel());
             return stackPanel;
         }
 
@@ -1134,19 +1147,25 @@ namespace RW_Frontend
             stackPanel.Children.Add(CreateLogicExpTextBox("piEngagedQueryExp"));
             stackPanel.Children.Add(CreateRemoveButton("EngagedQuery"));
             stackPanel.Children.Add(CreateCalculateQueryButton("Engaged"));
+            stackPanel.Children.Add(CreateQueryResultLabel());
 
             return stackPanel;
         }
 
         private void RemoveEngagedQueryButtonClick(object sender, RoutedEventArgs e)
         {
-            Button clickedButton = (Button)sender;
-            var removingStackPanel = EngagedQueryStackPanels.First(_ => _.Children.Contains(clickedButton));
-            int removingItemIdx = EngagedQueryStackPanels.IndexOf(removingStackPanel);
+            var removingItemIdx = FindEngagedQueryIndexByButton((Button)sender);
             EngagedQueryStackPanels.RemoveAt(removingItemIdx);
         }
 
-        #region AfterQuery -> StackPanels
+        private int FindEngagedQueryIndexByButton(Button clickedButton)
+        {
+            var removingStackPanel = EngagedQueryStackPanels.First(_ => _.Children.Contains(clickedButton));
+            int removingItemIdx = EngagedQueryStackPanels.IndexOf(removingStackPanel);
+            return removingItemIdx;
+        }
+
+        #region EngagedQuery -> StackPanels
 
         private ObservableCollection<StackPanel> _engagedQueryStackPanels;
 
@@ -1201,8 +1220,12 @@ namespace RW_Frontend
 
         private void CalculateExecutableQuery(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("ExecutableQuery");
-
+            MessageBox.Show("EngagedQuery");
+            InputAggregator.PopulateViewModels(this);
+            var executableQueriesViewModels = InputAggregator.ExecutableQueriesViewModels;
+            var executableQueryIndex = FindExecutableQueryIndexByButton((Button)sender);
+            var queryVM = executableQueriesViewModels[executableQueryIndex];
+            queryVM.SetResultLabel(ExecutableQueryStackPanels[executableQueryIndex], true);
         }
 
         private void CalculateAfterQuery(object sender, RoutedEventArgs e)
@@ -1221,8 +1244,10 @@ namespace RW_Frontend
 
                 var afterQueryIndex = FindAfterQueryIndexByButton((Button)sender);
                 var queryVM = afterQueriesViewModels[afterQueryIndex];
-
                 new FrontendLogic().CalculateAfterQuery(this, queryVM);
+
+                //Ustaweienie labelu z wynikiem kwerendy
+                //queryVM.SetResultLabel(AfterQueryStackPanels[afterQueryIndex], true);
             }
             catch (Exception exception)
             {
@@ -1234,6 +1259,11 @@ namespace RW_Frontend
         private void CalculateEngagedQuery(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("EngagedQuery");
+            InputAggregator.PopulateViewModels(this);
+            var engagedQueriesViewModels = InputAggregator.EngagedQueriesViewModels;
+            var engagedQueryIndex = FindEngagedQueryIndexByButton((Button)sender);
+            var queryVM = engagedQueriesViewModels[engagedQueryIndex];
+            queryVM.SetResultLabel(EngagedQueryStackPanels[engagedQueryIndex], false);
         }
         #endregion
     }
