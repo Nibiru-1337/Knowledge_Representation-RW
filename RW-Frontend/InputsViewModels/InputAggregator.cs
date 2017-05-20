@@ -22,7 +22,9 @@ namespace RW_Frontend.InputsViewModels
         public static List<AlwaysClauseViewModel> AlwaysClauseViewModels;
         public static List<NoninertialClauseViewModel> NoninertialClauseViewModels;
 
+        public static List<ExecutableQueryViewModel> ExecutableQueriesViewModels;
         public static List<AfterQueryViewModel> AfterQueriesViewModels;
+        public static List<EngagedQueryViewModel> EngagedQueriesViewModels;
 
         public static void PopulateViewModels(VM viewModel)
         {
@@ -39,8 +41,9 @@ namespace RW_Frontend.InputsViewModels
             AlwaysClauseViewModels = PopulateAlwaysClauses(viewModel);
             NoninertialClauseViewModels = PopulateNoninertialClauses(viewModel);
 
+            ExecutableQueriesViewModels = PopulateExecutableQueries(viewModel);
             AfterQueriesViewModels = PopulateAfterQueries(viewModel);
-
+            EngagedQueriesViewModels = PopulateEngagedQueries(viewModel);
         }
 
         private static List<FluentViewModel> PopulateFluents(VM viewModel)
@@ -165,6 +168,20 @@ namespace RW_Frontend.InputsViewModels
             return noninertialClauses;
         }
 
+        private static List<ExecutableQueryViewModel> PopulateExecutableQueries(VM viewModel)
+        {
+            var executableQueries = new List<ExecutableQueryViewModel>();
+            foreach (var stackPanel in viewModel.ExecutableQueryStackPanels)
+            {
+                var executableQueryType = ExecutableQueryViewModel.GetExecutableQueryTypeFromView(stackPanel);
+                var actionsByAgents = ExecutableQueryViewModel.GetActionsByAgentsFromView(stackPanel);
+                var piLogicExp = ExecutableQueryViewModel.GetPiLogicExpFromView(stackPanel);
+
+                executableQueries.Add(new ExecutableQueryViewModel(executableQueryType, actionsByAgents, piLogicExp));
+            }
+            return executableQueries;
+        }
+
         private static List<AfterQueryViewModel> PopulateAfterQueries(VM viewModel)
         {
             var afterQueries = new List<AfterQueryViewModel>();
@@ -178,6 +195,21 @@ namespace RW_Frontend.InputsViewModels
                 afterQueries.Add(new AfterQueryViewModel(afterQueryType, alfaLogicExp, actionsByAgents, piLogicExp));
             }
             return afterQueries;
+        }
+
+        private static List<EngagedQueryViewModel> PopulateEngagedQueries(VM viewModel)
+        {
+            var engagedQueries = new List<EngagedQueryViewModel>();
+            foreach (var stackPanel in viewModel.EngagedQueryStackPanels)
+            {
+                var agents = EngagedQueryViewModel.GetAgentsFromView(stackPanel);
+                var engagedQueryType = EngagedQueryViewModel.GetEngagedQueryTypeFromView(stackPanel);
+                var actionsByAgents = EngagedQueryViewModel.GetActionsByAgentsFromView(stackPanel);
+                var piLogicExp = EngagedQueryViewModel.GetPiLogicExpFromView(stackPanel);
+
+                engagedQueries.Add(new EngagedQueryViewModel(agents, engagedQueryType, actionsByAgents, piLogicExp));
+            }
+            return engagedQueries;
         }
     }
 }
