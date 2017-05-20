@@ -70,8 +70,7 @@ namespace RW_Frontend.InputsViewModels
                         return null;
                     string action = actionComboBox.SelectedItem as String;
                     if (action == null)
-                        action = String.Empty;
-                    ;
+                        action = String.Empty;                  
 
                     var agentsExpander = innerStackPanel.Children[2] as Expander;
                     if (agentsExpander == null)

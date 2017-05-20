@@ -13,8 +13,14 @@ namespace RW_Frontend.InputsViewModels
         public static List<ActionViewModel> ActionsViewModels;
         public static List<AgentViewModel> AgentsViewModels;
 
+        public static List<InitiallyClauseViewModel> InitiallyClauseViewModels;
+        public static List<AfterClauseViewModel> AfterClauseViewModels;
+        public static List<ObservableClauseViewModel> ObservableClauseViewModels;
         public static List<CausesClauseViewModel> CausesClauseViewModels;
+        public static List<ImpossibleClauseViewModel> ImpossibleClauseViewModels;
+        public static List<ReleasesClauseViewModel> ReleasesClauseViewModels;
         public static List<AlwaysClauseViewModel> AlwaysClauseViewModels;
+        public static List<NoninertialClauseViewModel> NoninertialClauseViewModels;
 
         public static List<AfterQueryViewModel> AfterQueriesViewModels;
 
@@ -24,10 +30,17 @@ namespace RW_Frontend.InputsViewModels
             ActionsViewModels = PopulateActions(viewModel);
             AgentsViewModels = PopulateAgents(viewModel);
 
+            InitiallyClauseViewModels = PopulateInitiallyClauses(viewModel);
+            AfterClauseViewModels = PopulateAfterClauses(viewModel);
+            ObservableClauseViewModels = PopulateObservableClauses(viewModel);
             CausesClauseViewModels = PopulateCausesClauses(viewModel);
+            ImpossibleClauseViewModels = PopulateImpossibleClauses(viewModel);
+            ReleasesClauseViewModels = PopulateReleasesClauses(viewModel);
             AlwaysClauseViewModels = PopulateAlwaysClauses(viewModel);
+            NoninertialClauseViewModels = PopulateNoninertialClauses(viewModel);
 
             AfterQueriesViewModels = PopulateAfterQueries(viewModel);
+
         }
 
         private static List<FluentViewModel> PopulateFluents(VM viewModel)
@@ -51,6 +64,41 @@ namespace RW_Frontend.InputsViewModels
             return agents;
         }
 
+        private static List<InitiallyClauseViewModel> PopulateInitiallyClauses(VM viewModel)
+        {
+            var initiallyClauses = new List<InitiallyClauseViewModel>();
+            foreach (var stackPanel in viewModel.InitiallyClausesStackPanels)
+            {
+                var alfaLogicExp = InitiallyClauseViewModel.GetAlfaLogicExpFromView(stackPanel);
+                initiallyClauses.Add(new InitiallyClauseViewModel(alfaLogicExp));
+            }
+            return initiallyClauses;
+        }
+
+        private static List<AfterClauseViewModel> PopulateAfterClauses(VM viewModel)
+        {
+            var afterClauses = new List<AfterClauseViewModel>();
+            foreach (var stackPanel in viewModel.AfterClausesStackPanels)
+            {
+                var alfaLogicExp = AfterClauseViewModel.GetAlfaLogicExpFromView(stackPanel);
+                var actionsByAgents = AfterClauseViewModel.GetActionsByAgentsFromView(stackPanel);
+                afterClauses.Add(new AfterClauseViewModel(alfaLogicExp, actionsByAgents));
+            }
+            return afterClauses;
+        }
+
+        private static List<ObservableClauseViewModel> PopulateObservableClauses(VM viewModel)
+        {
+            var observableClauses = new List<ObservableClauseViewModel>();
+            foreach (var stackPanel in viewModel.ObservableClausesStackPanels)
+            {
+                var alfaLogicExp = ObservableClauseViewModel.GetAlfaLogicExpFromView(stackPanel);
+                var actionsByAgents = ObservableClauseViewModel.GetActionsByAgentsFromView(stackPanel);
+                observableClauses.Add(new ObservableClauseViewModel(alfaLogicExp, actionsByAgents));
+            }
+            return observableClauses;
+        }
+
         private static List<CausesClauseViewModel> PopulateCausesClauses(VM viewModel)
         {
             var causesClauses = new List<CausesClauseViewModel>();
@@ -66,6 +114,35 @@ namespace RW_Frontend.InputsViewModels
             return causesClauses;
         }
 
+        private static List<ImpossibleClauseViewModel> PopulateImpossibleClauses(VM viewModel)
+        {
+            var impossibleClauses = new List<ImpossibleClauseViewModel>();
+            foreach (var stackPanel in viewModel.ImpossibleClausesStackPanels)
+            {
+                var action = ImpossibleClauseViewModel.GetActionFromView(stackPanel);
+                var agents = ImpossibleClauseViewModel.GetAgentsFromView(stackPanel);
+                var piLogicExp = ImpossibleClauseViewModel.GetPiLogicExpFromView(stackPanel);
+
+                impossibleClauses.Add(new ImpossibleClauseViewModel(action, agents, piLogicExp));
+            }
+            return impossibleClauses;
+        }
+
+        private static List<ReleasesClauseViewModel> PopulateReleasesClauses(VM viewModel)
+        {
+            var releasesClauses = new List<ReleasesClauseViewModel>();
+            foreach (var stackPanel in viewModel.ReleasesClausesStackPanels)
+            {
+                var action = ReleasesClauseViewModel.GetActionFromView(stackPanel);
+                var agents = ReleasesClauseViewModel.GetAgentsFromView(stackPanel);
+                var fluent = ReleasesClauseViewModel.GetFluentFromView(stackPanel);
+                var piLogicExp = ReleasesClauseViewModel.GetPiLogicExpFromView(stackPanel);
+
+                releasesClauses.Add(new ReleasesClauseViewModel(action, agents, fluent, piLogicExp));
+            }
+            return releasesClauses;
+        }
+
         private static List<AlwaysClauseViewModel> PopulateAlwaysClauses(VM viewModel)
         {
             var alwaysClauses = new List<AlwaysClauseViewModel>();
@@ -75,6 +152,17 @@ namespace RW_Frontend.InputsViewModels
                 alwaysClauses.Add(new AlwaysClauseViewModel(alfaLogicExp));
             }
             return alwaysClauses;
+        }
+
+        private static List<NoninertialClauseViewModel> PopulateNoninertialClauses(VM viewModel)
+        {
+            var noninertialClauses = new List<NoninertialClauseViewModel>();
+            foreach (var stackPanel in viewModel.NoninertialClausesStackPanels)
+            {
+                var fluent = NoninertialClauseViewModel.GetFluentFromView(stackPanel);
+                noninertialClauses.Add(new NoninertialClauseViewModel(fluent));
+            }
+            return noninertialClauses;
         }
 
         private static List<AfterQueryViewModel> PopulateAfterQueries(VM viewModel)

@@ -58,12 +58,18 @@
     </ApplicationDefinition>
     <Compile Include="FrontendLogic.cs" />
     <Compile Include="InputsViewModels\ActionViewModel.cs" />
+    <Compile Include="InputsViewModels\AfterClauseViewModel.cs" />
     <Compile Include="InputsViewModels\AfterQueryViewModel.cs" />
     <Compile Include="InputsViewModels\AgentViewModel.cs" />
     <Compile Include="InputsViewModels\AlwaysClauseViewModel.cs" />
     <Compile Include="InputsViewModels\CausesClauseViewModel.cs" />
     <Compile Include="InputsViewModels\FluentViewModel.cs" />
+    <Compile Include="InputsViewModels\ImpossibleClauseViewModel.cs" />
+    <Compile Include="InputsViewModels\InitiallyClauseViewModel.cs" />
     <Compile Include="InputsViewModels\InputAggregator.cs" />
+    <Compile Include="InputsViewModels\NoninertialClauseViewModel.cs" />
+    <Compile Include="InputsViewModels\ObservableClauseViewModel.cs" />
+    <Compile Include="InputsViewModels\ReleasesClauseViewModel.cs" />
     <Compile Include="ModelConverter.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="RelayCommand.cs" />
