@@ -276,7 +276,7 @@ namespace RW_Frontend
 
         private Label CreateQueryResultLabel()
         {
-            var label = new Label() { Margin = new Thickness(10), Content = "Result", VerticalAlignment = VerticalAlignment.Center, FontWeight = FontWeights.Bold, BorderBrush = Brushes.Gray, Foreground = Brushes.Gray, BorderThickness = new Thickness(2)};
+            var label = new Label() { Margin = new Thickness(10), Content = "T/N", VerticalAlignment = VerticalAlignment.Center, FontWeight = FontWeights.Bold, BorderBrush = Brushes.Gray, Foreground = Brushes.Gray, BorderThickness = new Thickness(2)};
             return label;
         }
 
