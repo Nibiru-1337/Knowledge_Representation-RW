@@ -1244,7 +1244,7 @@ namespace RW_Frontend
 
                 var afterQueryIndex = FindAfterQueryIndexByButton((Button)sender);
                 var queryVM = afterQueriesViewModels[afterQueryIndex];
-                new FrontendLogic().CalculateAfterQuery(this, queryVM);
+                new FrontendLogic().CalculateAfterQuery(this, queryVM, AfterQueryStackPanels[afterQueryIndex]);
 
                 //Ustaweienie labelu z wynikiem kwerendy
                 //queryVM.SetResultLabel(AfterQueryStackPanels[afterQueryIndex], true);

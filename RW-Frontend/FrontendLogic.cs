@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
 using RW_backend.Logic;
 using RW_backend.Models.World;
 using RW_Frontend.InputsViewModels;
@@ -18,7 +19,7 @@ namespace RW_Frontend
 
         //TODO zapamiętywanie wyznaczonej reprezentacji świata
 
-        public void CalculateAfterQuery(VM vm, AfterQueryViewModel afterQueryViewModel)
+        public void CalculateAfterQuery(VM vm, AfterQueryViewModel afterQueryViewModel, StackPanel afterQueryStackPanel)
         {
             //var world = PrepareWorld(vm);
             var world = vm.World;
@@ -26,8 +27,7 @@ namespace RW_Frontend
 
             var queryResult = query.Evaluate(world);
 
-            MessageBox.Show(queryResult.IsTrue ? "Kwerenda spełniona" : "Kwerenda niespełniona", "Wynik kwerendy",
-                MessageBoxButton.OK, MessageBoxImage.Information);
+            afterQueryViewModel.SetResultLabel(afterQueryStackPanel, queryResult.IsTrue);
             GC.Collect();
         }
 
