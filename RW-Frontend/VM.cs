@@ -233,7 +233,7 @@ namespace RW_Frontend
         internal const string AnyAgent = "ANY";
         private Expander CreateAgentsExpanderListBox()
         {
-            var ep = new Expander() {Name = "AgentsExpanderListBox", Header = "Agenci", VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(10)};
+            var ep = new Expander() {Name = "AgentsExpanderListBox", Header = "Agents", VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(10)};
             var listBox = new ListBox()
             {
                 Name = "AgentsListBox",
@@ -285,7 +285,7 @@ namespace RW_Frontend
             var textBox = new TextBox()
             {
                 Height = 25,
-                Width = 250,
+                Width = 150,
                 FontSize = 14,
                 Margin = new Thickness(5),
                 Name = name,
