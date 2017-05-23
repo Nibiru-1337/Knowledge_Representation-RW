@@ -17,17 +17,36 @@ namespace RW_Frontend
             mainWindow.DataContext = VM.Create();
         }
 
-        //TODO zapamiętywanie wyznaczonej reprezentacji świata
+        public void CalculateExecutableQuery(VM vm, ExecutableQueryViewModel executableQueryViewModel, StackPanel executableQueryStackPanel)
+        {
+            var world = vm.World;
+            var query = new ModelConverter().ConvertExecutableQuery(executableQueryViewModel, InputAggregator.AgentsViewModels, InputAggregator.ActionsViewModels, InputAggregator.FluentsViewModels);
+
+            var queryResult = query.Evaluate(world);
+
+            executableQueryViewModel.SetResultLabel(executableQueryStackPanel, queryResult.IsTrue);
+            GC.Collect();
+        }
 
         public void CalculateAfterQuery(VM vm, AfterQueryViewModel afterQueryViewModel, StackPanel afterQueryStackPanel)
         {
-            //var world = PrepareWorld(vm);
             var world = vm.World;
             var query = new ModelConverter().ConvertAfterQuery(afterQueryViewModel, InputAggregator.AgentsViewModels, InputAggregator.ActionsViewModels, InputAggregator.FluentsViewModels);
 
             var queryResult = query.Evaluate(world);
 
             afterQueryViewModel.SetResultLabel(afterQueryStackPanel, queryResult.IsTrue);
+            GC.Collect();
+        }
+
+        public void CalculateEngagedQuery(VM vm, EngagedQueryViewModel engagedQueryViewModel, StackPanel engagedQueryStackPanel)
+        {
+            var world = vm.World;
+            var query = new ModelConverter().ConvertEngagedQuery(engagedQueryViewModel, InputAggregator.AgentsViewModels, InputAggregator.ActionsViewModels, InputAggregator.FluentsViewModels);
+
+            var queryResult = query.Evaluate(world);
+
+            engagedQueryViewModel.SetResultLabel(engagedQueryStackPanel, queryResult.IsTrue);
             GC.Collect();
         }
 
