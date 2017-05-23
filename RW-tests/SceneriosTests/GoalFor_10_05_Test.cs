@@ -34,9 +34,6 @@ namespace RW_tests.SceneriosTests
             var query = PrepareAfterQuery_Shoot(vm, false, "alive&loaded");
             var queryResult = query.Evaluate(world);
             Assert.IsTrue(queryResult.IsTrue, "query should be true");
-            Assert.IsNotNull(queryResult.StatePath, "function should not be null");
-            Assert.AreEqual(new State(0x3), queryResult.StatePath[0]);//alive,loaded
-            Assert.AreEqual(new State(0), queryResult.StatePath[1]);//!alive,!loaded
         }
 
         /// <summary>
