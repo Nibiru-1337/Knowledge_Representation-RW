@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows.Controls;
 
 namespace RW_Frontend.InputsViewModels
@@ -19,10 +15,10 @@ namespace RW_Frontend.InputsViewModels
 
         public CausesClauseViewModel(string action, List<string> agents, string alfaLogicexp, string piLogixExp)
         {
-            this.Action = action;
-            this.Agents = agents;
-            this.AlfaLogicExp = alfaLogicexp;
-            this.PiLogicExp = piLogixExp;
+            Action = action;
+            Agents = agents;
+            AlfaLogicExp = alfaLogicexp;
+            PiLogicExp = piLogixExp;
         }
 
         public static string GetActionFromView(StackPanel causesClauseStackPanel)

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -20,10 +17,10 @@ namespace RW_Frontend.InputsViewModels
         public EngagedQueryViewModel(List<string> agents, EngagedQueryAlwaysOrNot engagedQueryType,
             List<Tuple<string, List<string>>> actionsByAgents, string piLogixExp)
         {
-            this.Agents = agents;
-            this.EngagedQueryType = engagedQueryType;
-            this.ActionByAgents = actionsByAgents;
-            this.PiLogicExp = piLogixExp;
+            Agents = agents;
+            EngagedQueryType = engagedQueryType;
+            ActionByAgents = actionsByAgents;
+            PiLogicExp = piLogixExp;
         }
 
         public static List<string> GetAgentsFromView(StackPanel engagedQueryStackPanel)
@@ -52,8 +49,8 @@ namespace RW_Frontend.InputsViewModels
             if (selectedComboBoxItem == null)
                 throw new ApplicationException("Null ref.");
             return selectedComboBoxItem == "always"
-                ? EngagedQueryViewModel.EngagedQueryAlwaysOrNot.Always
-                : EngagedQueryViewModel.EngagedQueryAlwaysOrNot.NotAlways;
+                ? EngagedQueryAlwaysOrNot.Always
+                : EngagedQueryAlwaysOrNot.NotAlways;
         }
 
         public static List<Tuple<string, List<string>>> GetActionsByAgentsFromView(StackPanel engagedQueryStackPanel)
@@ -99,7 +96,7 @@ namespace RW_Frontend.InputsViewModels
                 }
                 catch (ApplicationException e)
                 {
-                    MessageBox.Show(e.Message.ToString());
+                    MessageBox.Show(e.Message);
                 }
             }
 

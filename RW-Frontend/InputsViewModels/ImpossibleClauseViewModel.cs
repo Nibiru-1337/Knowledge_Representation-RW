@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows.Controls;
 
 namespace RW_Frontend.InputsViewModels
@@ -17,9 +13,9 @@ namespace RW_Frontend.InputsViewModels
 
         public ImpossibleClauseViewModel(string action, List<string> agents, string piLogixExp)
         {
-            this.Action = action;
-            this.Agents = agents;
-            this.PiLogicExp = piLogixExp;
+            Action = action;
+            Agents = agents;
+            PiLogicExp = piLogixExp;
         }
 
         public static string GetActionFromView(StackPanel impossibleClauseStackPanel)

@@ -24,7 +24,7 @@ namespace RW_backend.Logic
 #endif
                 if (changesSets.Count == 0)
 				{
-					changesSets.Add(new KeyValuePair<BitSet, List<State>>(new BitSet(changes), new List<State>() {reachableState}));
+					changesSets.Add(new KeyValuePair<BitSet, List<State>>(new BitSet(changes), new List<State> {reachableState}));
 					continue;
 				}
 
@@ -57,7 +57,7 @@ namespace RW_backend.Logic
 							// więc oczywiście trzeba usunąć
 							DeleteAllWorseThan(changes, changesSets);
 							changesSets.Add(new KeyValuePair<BitSet, List<State>>(new BitSet(changes),
-								new List<State>() { reachableState }));
+								new List<State> { reachableState }));
 							inserted = true;
 							break;
 						}
@@ -73,7 +73,7 @@ namespace RW_backend.Logic
 				if (!inserted)
 				{
 					changesSets.Add(new KeyValuePair<BitSet, List<State>>(new BitSet(changes),
-						new List<State>() {reachableState}));
+						new List<State> {reachableState}));
 				}
 
 			}

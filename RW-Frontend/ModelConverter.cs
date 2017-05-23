@@ -8,7 +8,7 @@ using RW_backend.Models.BitSets;
 using RW_backend.Models.Clauses;
 using RW_backend.Models.Clauses.LogicClauses;
 using RW_backend.Models.Factories;
-using RW_backend.Models.GraphModels;
+using RW_backend.Models.World;
 using RW_Frontend.InputsViewModels;
 
 namespace RW_Frontend
@@ -96,7 +96,7 @@ namespace RW_Frontend
 
         private static List<LogicClause> ConvertInitially(Parser parser, List<InitiallyClauseViewModel> initiallyVms)
         {
-            if(initiallyVms==null) return new List<LogicClause>();
+            if (initiallyVms == null) return new List<LogicClause>();
             return initiallyVms.Select(t => parser.ParseToLogicClause(t.AlfaLogicExp)).ToList();
         }
 
@@ -115,7 +115,7 @@ namespace RW_Frontend
             if (afterVms == null) return afterList;
             foreach (var afterClauseViewModel in afterVms)
             {
-                LogicClause effect = parser.ParseToLogicClause(afterClauseViewModel.AlfaLogicExp);
+                var effect = parser.ParseToLogicClause(afterClauseViewModel.AlfaLogicExp);
 
                 IReadOnlyList<ActionAgentsPair> program = ConvertScenario(afterClauseViewModel.ActionByAgents, reverseActionDict, reverseAgentDict);
                 afterList.Add(new After(effect, program, true));
@@ -130,7 +130,7 @@ namespace RW_Frontend
             if (observableVms == null) return afterList;
             foreach (var afterClauseViewModel in observableVms)
             {
-                LogicClause effect = parser.ParseToLogicClause(afterClauseViewModel.AlfaLogicExp);
+                var effect = parser.ParseToLogicClause(afterClauseViewModel.AlfaLogicExp);
 
                 IReadOnlyList<ActionAgentsPair> program = ConvertScenario(afterClauseViewModel.ActionByAgents, reverseActionDict, reverseAgentDict);
                 afterList.Add(new After(effect, program, false));
@@ -141,7 +141,7 @@ namespace RW_Frontend
 
         #endregion
 
-        private IList<Releases> ConvertReleases(Parser parser, List<ReleasesClauseViewModel> releasesClauseViewModels, Dictionary<string, int> reverseFluentDict, Dictionary<string, int> reverseActionDict, Dictionary<string, int> reverseAgentDict)
+        private static IList<Releases> ConvertReleases(Parser parser, List<ReleasesClauseViewModel> releasesClauseViewModels, Dictionary<string, int> reverseFluentDict, Dictionary<string, int> reverseActionDict, Dictionary<string, int> reverseAgentDict)
         {
             var releasesList = new List<Releases>();
             if (releasesClauseViewModels == null) return releasesList;
@@ -156,13 +156,13 @@ namespace RW_Frontend
             return releasesList;
         }
 
-        private IList<LogicClause> ConvertAlways(Parser parser, List<AlwaysClauseViewModel> alwaysClauseViewModels)
+        private static IList<LogicClause> ConvertAlways(Parser parser, List<AlwaysClauseViewModel> alwaysClauseViewModels)
         {
-            if(alwaysClauseViewModels==null) return new List<LogicClause>();
+            if (alwaysClauseViewModels == null) return new List<LogicClause>();
             return alwaysClauseViewModels.Select(t => parser.ParseToLogicClause(t.AlfaLogicExp)).ToList();
         }
 
-        private ISet<int> ConvertNoninertial(List<NoninertialClauseViewModel> noninertialClauseViewModels, Dictionary<string, int> reverseFluentDict)
+        private static ISet<int> ConvertNoninertial(List<NoninertialClauseViewModel> noninertialClauseViewModels, IReadOnlyDictionary<string, int> reverseFluentDict)
         {
             var set = new HashSet<int>();
             if (noninertialClauseViewModels == null) return set;
@@ -175,7 +175,7 @@ namespace RW_Frontend
         }
 
         #region Convert common elements
-        private List<ActionAgentsPair> ConvertScenario(List<Tuple<string, List<string>>> actionsByAgents, Dictionary<string, int> reverseActionDict, Dictionary<string, int> reverseAgentDict)
+        private List<ActionAgentsPair> ConvertScenario(List<Tuple<string, List<string>>> actionsByAgents, IReadOnlyDictionary<string, int> reverseActionDict, Dictionary<string, int> reverseAgentDict)
         {
             var actions = new List<ActionAgentsPair>();
             foreach (var actionByAgent in actionsByAgents)
@@ -187,7 +187,7 @@ namespace RW_Frontend
             return actions;
         }
 
-        private static AgentsSet ConvertAgentsSet(Dictionary<string, int> revAgentDict, List<string> agents)
+        private static AgentsSet ConvertAgentsSet(IReadOnlyDictionary<string, int> revAgentDict, List<string> agents)
         {
             AgentsSet agentSet;
             if (agents.Contains(VM.AnyAgent))
@@ -196,9 +196,9 @@ namespace RW_Frontend
             }
             else
             {
-                List<int> agentIds = agents.Select(a => revAgentDict[a]).ToList();
-                BitSetFactory bitSetFactory = new BitSetFactory();
-                int set = bitSetFactory.CreateBitSetValueFrom(agentIds);
+                var agentIds = agents.Select(a => revAgentDict[a]).ToList();
+                var bitSetFactory = new BitSetFactory();
+                var set = bitSetFactory.CreateBitSetValueFrom(agentIds);
                 agentSet = new AgentsSet(set);
             }
             return agentSet;
@@ -221,7 +221,7 @@ namespace RW_Frontend
         {
             agentDict = new Dictionary<int, string>();
             var revAgentDict = new Dictionary<string, int>();
-            for (int i = 0; i < agents.Count; i++)
+            for (var i = 0; i < agents.Count; i++)
             {
                 agentDict.Add(i, agents[i].Agent);
                 revAgentDict.Add(agents[i].Agent, i);
@@ -242,7 +242,7 @@ namespace RW_Frontend
         {
             actionDict = new Dictionary<int, string>();
             var revActionDict = new Dictionary<string, int>();
-            for (int i = 0; i < actions.Count; i++)
+            for (var i = 0; i < actions.Count; i++)
             {
                 actionDict.Add(i, actions[i].Action);
                 revActionDict.Add(actions[i].Action, i);
@@ -253,8 +253,7 @@ namespace RW_Frontend
         private static Dictionary<string, int> ConvertFluents(Model model, List<FluentViewModel> fluents)
         {
             Dictionary<int, string> fluentDict;
-            Dictionary<string, int> revFluentDict;
-            revFluentDict = GetFluentDictionaries(fluents, out fluentDict);
+            var revFluentDict = GetFluentDictionaries(fluents, out fluentDict);
             model.FluentsCount = fluents.Count;
             model.FluentsNames = fluentDict;
             return revFluentDict;
@@ -264,7 +263,7 @@ namespace RW_Frontend
         {
             fluentDict = new Dictionary<int, string>();
             var revFluentDict = new Dictionary<string, int>();
-            for (int i = 0; i < fluents.Count; i++)
+            for (var i = 0; i < fluents.Count; i++)
             {
                 fluentDict.Add(i, fluents[i].Fluent);
                 revFluentDict.Add(fluents[i].Fluent, i);
@@ -325,7 +324,7 @@ namespace RW_Frontend
 
         public EngagedQuery ConvertEngagedQuery(EngagedQueryViewModel viewModel, List<AgentViewModel> agentsViewModels, List<ActionViewModel> actionsViewModels, List<FluentViewModel> fluentsViewModels)
         {
-            
+
             var scenario = viewModel.ActionByAgents;
             var queryType = viewModel.EngagedQueryType;
             var agents = viewModel.Agents;
@@ -343,7 +342,7 @@ namespace RW_Frontend
             var always = EngagedQueryViewModel.EngagedQueryAlwaysOrNot.Always == queryType;
 
             var agentsSet = ConvertAgentsSet(revAgentDict, agents);
-            
+
             return new EngagedQuery(program, initialState, always, agentsSet);
         }
 

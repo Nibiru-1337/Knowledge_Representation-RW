@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -20,9 +17,9 @@ namespace RW_Frontend.InputsViewModels
         public ExecutableQueryViewModel(ExecutableQueryAlwaysOrNot executableQueryType,
             List<Tuple<string, List<string>>> actionsByAgents, string piLogixExp)
         {
-            this.ExecutableQueryType = executableQueryType;
-            this.ActionByAgents = actionsByAgents;
-            this.PiLogicExp = piLogixExp;
+            ExecutableQueryType = executableQueryType;
+            ActionByAgents = actionsByAgents;
+            PiLogicExp = piLogixExp;
         }
 
         public static ExecutableQueryAlwaysOrNot GetExecutableQueryTypeFromView(StackPanel executableQueryStackPanel)
@@ -33,7 +30,7 @@ namespace RW_Frontend.InputsViewModels
             var selectedComboBoxItem = typeComboBox.SelectedItem as string;
             if (selectedComboBoxItem == null)
                 throw new ApplicationException("Null ref.");
-            return selectedComboBoxItem == "always" ? ExecutableQueryViewModel.ExecutableQueryAlwaysOrNot.Always : ExecutableQueryViewModel.ExecutableQueryAlwaysOrNot.NotAlways;
+            return selectedComboBoxItem == "always" ? ExecutableQueryAlwaysOrNot.Always : ExecutableQueryAlwaysOrNot.NotAlways;
         }
 
         public static List<Tuple<string, List<string>>> GetActionsByAgentsFromView(StackPanel executableQueryStackPanel)
@@ -79,7 +76,7 @@ namespace RW_Frontend.InputsViewModels
                 }
                 catch (ApplicationException e)
                 {
-                    MessageBox.Show(e.Message.ToString());
+                    MessageBox.Show(e.Message);
                 }
             }
 

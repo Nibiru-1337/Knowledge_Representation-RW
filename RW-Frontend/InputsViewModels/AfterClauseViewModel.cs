@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -16,8 +13,8 @@ namespace RW_Frontend.InputsViewModels
 
         public AfterClauseViewModel(string alfaLogicexp, List<Tuple<string, List<string>>> actionsByAgents)
         {
-            this.AlfaLogicExp = alfaLogicexp;
-            this.ActionByAgents = actionsByAgents;
+            AlfaLogicExp = alfaLogicexp;
+            ActionByAgents = actionsByAgents;
         }
 
         public static string GetAlfaLogicExpFromView(StackPanel afterClauseStackPanel)
@@ -71,7 +68,7 @@ namespace RW_Frontend.InputsViewModels
                 }
                 catch (ApplicationException e)
                 {
-                    MessageBox.Show(e.Message.ToString());
+                    MessageBox.Show(e.Message);
                 }
             }
 

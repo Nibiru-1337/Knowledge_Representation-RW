@@ -21,10 +21,6 @@ namespace RW_backend.Models.World
         public  IList<State> States { get; private set; }
 		public int FluentsCount { get; private set; }
 
-        //TODO delete if ActionIds not needed in World class
-        // information about the actions in this world
-        public IList<int> ActionIds { get; private set; }
-
         //connections b/w states are represented with a chain of dictonaries
         // [int(ActionId)] [State(starting state)] -> List<AgentSetChecker>
         public Dictionary<int, Dictionary<State, IList<AgentSetChecker>>> Connections { get; private set; }
@@ -40,10 +36,9 @@ namespace RW_backend.Models.World
 	        if (fluentsesCount > MaxFluentCount)
 				throw new ArgumentException("max fluent count = " + MaxFluentCount);
 
-            int totalNodes = (int)1<<fluentsesCount;
+            int totalNodes = 1<<fluentsesCount;
             Connections = new Dictionary<int, Dictionary<State, IList<AgentSetChecker>>>();
             States = new List<State>(totalNodes);
-            ActionIds = new List<int>();
 
             for (int i = 0; i < totalNodes; i++)
             {
@@ -142,8 +137,6 @@ namespace RW_backend.Models.World
                     stateToAgentSetCheckers.Add(startingState, ascList);
                 }
                 Connections.Add(i, stateToAgentSetCheckers);
-                //TODO delete if ActionIds not needed in World class
-                ActionIds.Add(i);
             }
         }
 
@@ -152,7 +145,7 @@ namespace RW_backend.Models.World
 			
 
 			BitSetFactory bitSetFactory = new BitSetFactory();
-			ReleasedFluents = new Dictionary<int, Dictionary<State, List<ReleasesWithAgentsSet>>>(ActionIds.Count);
+			ReleasedFluents = new Dictionary<int, Dictionary<State, List<ReleasesWithAgentsSet>>>(actionCount);
 
 		    if (releasesList == null || releasesList.Count == 0)
 			    return;
