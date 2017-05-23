@@ -102,8 +102,16 @@ namespace RW_tests.SceneriosTests
 
             var causes = new List<CausesClauseViewModel> { new CausesClauseViewModel("SHOOT", new List<string> { "Bob" }, "!alive", "loaded"), new CausesClauseViewModel("SHOOT", new List<string> { "Bob" }, "!loaded", "") };
 
+            var initially = new List<InitiallyClauseViewModel>();
+            var after= new List<AfterClauseViewModel>();
+            var observable=new List<ObservableClauseViewModel>();
+            var impossible=new List<ImpossibleClauseViewModel>();
+            var releases=new List<ReleasesClauseViewModel>();
+            var always=new List<AlwaysClauseViewModel>();
+            var noninertial = new List<NoninertialClauseViewModel>();
+
             var converter = new ModelConverter();
-            var model = converter.ConvertToModel(fluents, actions, agents, causes);
+            var model = converter.ConvertToModel(fluents, actions, agents, causes, initially, after, observable, impossible, releases, always, noninertial);
             return model;
         }
 
