@@ -1213,41 +1213,54 @@ namespace RW_Frontend
         }
         private void GenerateModel()
         {
-            //InputAggregator.PopulateViewModels(this);
-            World = new FrontendLogic().PrepareWorld(this);
+            try
+            {
+                World = new FrontendLogic().PrepareWorld(this);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show("Wystąpił błąd podczas generowania modelu\n" + exception.Message, "Błąd",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
+        private void CheckModelGenerated()
+        {
+            if(World == null)
+                throw new ApplicationException("Nie wygenerowano modelu");
+        }
 
         private void CalculateExecutableQuery(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("EngagedQuery");
-            InputAggregator.PopulateViewModels(this);
-            var executableQueriesViewModels = InputAggregator.ExecutableQueriesViewModels;
-            var executableQueryIndex = FindExecutableQueryIndexByButton((Button)sender);
-            var queryVM = executableQueriesViewModels[executableQueryIndex];
-            queryVM.SetResultLabel(ExecutableQueryStackPanels[executableQueryIndex], true);
+            try
+            {
+                CheckModelGenerated();
+                InputAggregator.PopulateViewModels(this);
+                var executableQueriesViewModels = InputAggregator.ExecutableQueriesViewModels;
+                var executableQueryIndex = FindExecutableQueryIndexByButton((Button)sender);
+                var queryVM = executableQueriesViewModels[executableQueryIndex];
+
+                new FrontendLogic().CalculateExecutableQuery(this, queryVM, ExecutableQueryStackPanels[executableQueryIndex]);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show("Wystąpił błąd podczas obliczeń\n" + exception.Message, "Błąd",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void CalculateAfterQuery(object sender, RoutedEventArgs e)
         {
             try
             {
+                CheckModelGenerated();
                 InputAggregator.PopulateViewModels(this);
-                //Dostęp do pobranych z widoku danych:
-                //var fluents = InputAggregator.FluentsViewModels;
-                //var actions = InputAggregator.ActionsViewModels;
-                //var agents = InputAggregator.AgentsViewModels;
-                //var causes = InputAggregator.CausesClauseViewModels;
-                //var afterQuery = InputAggregator.AfterQueriesViewModels;
 
                 var afterQueriesViewModels = InputAggregator.AfterQueriesViewModels;
 
                 var afterQueryIndex = FindAfterQueryIndexByButton((Button)sender);
                 var queryVM = afterQueriesViewModels[afterQueryIndex];
                 new FrontendLogic().CalculateAfterQuery(this, queryVM, AfterQueryStackPanels[afterQueryIndex]);
-
-                //Ustaweienie labelu z wynikiem kwerendy
-                //queryVM.SetResultLabel(AfterQueryStackPanels[afterQueryIndex], true);
             }
             catch (Exception exception)
             {
@@ -1258,12 +1271,20 @@ namespace RW_Frontend
 
         private void CalculateEngagedQuery(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("EngagedQuery");
-            InputAggregator.PopulateViewModels(this);
-            var engagedQueriesViewModels = InputAggregator.EngagedQueriesViewModels;
-            var engagedQueryIndex = FindEngagedQueryIndexByButton((Button)sender);
-            var queryVM = engagedQueriesViewModels[engagedQueryIndex];
-            queryVM.SetResultLabel(EngagedQueryStackPanels[engagedQueryIndex], false);
+            try
+            {
+                CheckModelGenerated();
+                InputAggregator.PopulateViewModels(this);
+                var engagedQueriesViewModels = InputAggregator.EngagedQueriesViewModels;
+                var engagedQueryIndex = FindEngagedQueryIndexByButton((Button)sender);
+                var queryVM = engagedQueriesViewModels[engagedQueryIndex];
+                new FrontendLogic().CalculateEngagedQuery(this, queryVM, EngagedQueryStackPanels[engagedQueryIndex]);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show("Wystąpił błąd podczas obliczeń\n" + exception.Message, "Błąd",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
         #endregion
     }
