@@ -5,7 +5,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RW_backend.Logic;
 using RW_backend.Logic.Queries;
 using RW_backend.Models;
-using RW_backend.Models.BitSets;
 using RW_backend.Models.World;
 using RW_Frontend;
 using RW_Frontend.InputsViewModels;

@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using RW_backend.Logic.Queries.Results;
 using RW_backend.Models.BitSets;
 using RW_backend.Models.Clauses.LogicClauses;
-using RW_backend.Models.Factories;
-using RW_backend.Models.GraphModels;
 using RW_backend.Models.World;
 
 [assembly: InternalsVisibleTo("RW-tests")]
@@ -232,11 +228,6 @@ namespace RW_backend.Logic.Queries
 			return checker.CanBeExecutedByAgentsSet(agentsAvailable)
 					&& !checker.UsesAgentFromSet(notEngagedAgents);
 	    }
-
-		public static Query Create(string queryString)
-		{
-			throw new NotImplementedException();
-		}
 
 		public enum QueryType
 		{

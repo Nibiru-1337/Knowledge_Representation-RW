@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 
 namespace RW_Frontend.InputsViewModels
 {
@@ -13,7 +8,7 @@ namespace RW_Frontend.InputsViewModels
 
         public AlwaysClauseViewModel(string alfaLogicexp)
         {
-            this.AlfaLogicExp = alfaLogicexp;
+            AlfaLogicExp = alfaLogicexp;
         }
 
         public static string GetAlfaLogicExpFromView(StackPanel alwaysClauseStackPanel)

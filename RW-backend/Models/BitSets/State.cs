@@ -9,7 +9,7 @@ namespace RW_backend.Models.BitSets
     public class State:BitSet
     {
 	    public State(int fluentValues) : base(fluentValues) {}
-	    public int FluentValues => this.Set;
-		public bool FluentValue (int fluentNumber) => this.ElementValue(fluentNumber);
+	    public int FluentValues => Set;
+		public bool FluentValue (int fluentNumber) => ElementValue(fluentNumber);
     }
 }
