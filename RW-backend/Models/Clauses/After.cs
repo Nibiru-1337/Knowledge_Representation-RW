@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using RW_backend.Models.Clauses.LogicClauses;
-using RW_backend.Models.GraphModels;
+using RW_backend.Models.World;
 
 namespace RW_backend.Models.Clauses
 {

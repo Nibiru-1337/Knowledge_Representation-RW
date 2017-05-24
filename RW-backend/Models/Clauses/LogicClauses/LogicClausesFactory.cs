@@ -14,10 +14,10 @@ namespace RW_backend.Models.Factories
 		public LogicClause CreateSingleFluentClause(int fluent, bool negated)
 		{
 			if (negated)
-				return UniformAlternative.CreateFrom(new List<int>() { }, new List<int>() { fluent });
+				return UniformAlternative.CreateFrom(new List<int>(), new List<int> { fluent });
 			else
 			{
-				return UniformAlternative.CreateFrom(new List<int>() { fluent }, new List<int>() { });
+				return UniformAlternative.CreateFrom(new List<int> { fluent }, new List<int>());
 			}
 		}
 		
@@ -37,7 +37,7 @@ namespace RW_backend.Models.Factories
 
 		public LogicClause CreateContradictingClause(int fluent = 0)
 		{
-			return UniformConjunction.CreateFrom(new List<int>() {fluent}, new List<int>() {fluent});
+			return UniformConjunction.CreateFrom(new List<int> {fluent}, new List<int> {fluent});
 		}
 
 		public LogicClause CreateOnlyOneStateEnabledClause(int state)

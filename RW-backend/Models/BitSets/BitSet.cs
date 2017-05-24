@@ -46,7 +46,7 @@ namespace RW_backend.Models.BitSets
 			List<int> response = new List<int>(MaxElementsCount);
 			for (int i = 0; i < MaxElementsCount; i++)
 			{
-				if(this.ElementValue(i))
+				if(ElementValue(i))
 					response.Add(i);
 			}
 			return response;

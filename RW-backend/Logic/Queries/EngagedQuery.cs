@@ -3,7 +3,6 @@ using System.Linq;
 using RW_backend.Logic.Queries.Results;
 using RW_backend.Models.BitSets;
 using RW_backend.Models.Clauses.LogicClauses;
-using RW_backend.Models.GraphModels;
 using RW_backend.Models.World;
 
 namespace RW_backend.Logic.Queries

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace RW_Frontend.InputsViewModels
 {
@@ -21,10 +19,10 @@ namespace RW_Frontend.InputsViewModels
         public AfterQueryViewModel(AfterQueryNecOrPos afterQueryType, string alfaLogicexp,
             List<Tuple<string, List<string>>> actionsByAgents, string piLogixExp)
         {
-            this.AfterQueryType = afterQueryType;
-            this.AlfaLogicExp = alfaLogicexp;
-            this.ActionByAgents = actionsByAgents;
-            this.PiLogicExp = piLogixExp;
+            AfterQueryType = afterQueryType;
+            AlfaLogicExp = alfaLogicexp;
+            ActionByAgents = actionsByAgents;
+            PiLogicExp = piLogixExp;
         }
 
 
@@ -70,8 +68,7 @@ namespace RW_Frontend.InputsViewModels
                         return null;
                     string action = actionComboBox.SelectedItem as String;
                     if (action == null)
-                        action = String.Empty;
-                    ;
+                        action = String.Empty;                  
 
                     var agentsExpander = innerStackPanel.Children[2] as Expander;
                     if (agentsExpander == null)
@@ -91,7 +88,7 @@ namespace RW_Frontend.InputsViewModels
                 }
                 catch (ApplicationException e)
                 {
-                    MessageBox.Show(e.Message.ToString());
+                    MessageBox.Show(e.Message);
                 }
             }
 
@@ -110,6 +107,25 @@ namespace RW_Frontend.InputsViewModels
         {
             Possibly,
             Necessary
+        }
+
+        public void SetResultLabel(StackPanel afterQueryStackPanel, bool result)
+        {
+            var resultLabel = afterQueryStackPanel.Children[8] as Label;
+            if (resultLabel == null)
+                return;
+            if (result)
+            {
+                resultLabel.Content = "Tak";
+                resultLabel.Foreground = Brushes.Green;
+                resultLabel.BorderBrush = Brushes.Green;
+            }
+            else
+            {
+                resultLabel.Content = "Nie";
+                resultLabel.Foreground = Brushes.Red;
+                resultLabel.BorderBrush = Brushes.Red;
+            }
         }
     }
 }

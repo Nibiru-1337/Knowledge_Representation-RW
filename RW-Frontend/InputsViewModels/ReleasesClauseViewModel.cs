@@ -3,37 +3,36 @@ using System.Windows.Controls;
 
 namespace RW_Frontend.InputsViewModels
 {
-    public class CausesClauseViewModel
+    public class ReleasesClauseViewModel
     {
         public string Action { get; set; }
 
         public List<string> Agents { get; set; }
-
-        public string AlfaLogicExp { get; set; }
+        public string Fluent { get; set; }
 
         public string PiLogicExp { get; set; }
 
-        public CausesClauseViewModel(string action, List<string> agents, string alfaLogicexp, string piLogixExp)
+        public ReleasesClauseViewModel(string action, List<string> agents, string fluent, string piLogixExp)
         {
             Action = action;
             Agents = agents;
-            AlfaLogicExp = alfaLogicexp;
+            Fluent = fluent;
             PiLogicExp = piLogixExp;
         }
 
-        public static string GetActionFromView(StackPanel causesClauseStackPanel)
+        public static string GetActionFromView(StackPanel releasesClauseStackPanel)
         {
-            var actionComboBox = causesClauseStackPanel.Children[0] as ComboBox;
+            var actionComboBox = releasesClauseStackPanel.Children[0] as ComboBox;
             if (actionComboBox == null)
                 return null;
             return actionComboBox.SelectedItem as string;
         }
 
-        public static List<string> GetAgentsFromView(StackPanel causesClauseStackPanel)
+        public static List<string> GetAgentsFromView(StackPanel releasesClauseStackPanel)
         {
             var agents = new List<string>();
 
-            var expander = causesClauseStackPanel.Children[2] as Expander;
+            var expander = releasesClauseStackPanel.Children[2] as Expander;
             if (expander == null)
                 return null;
             var listBox = expander.Content as ListBox;
@@ -46,17 +45,18 @@ namespace RW_Frontend.InputsViewModels
             return agents;
         }
 
-        public static string GetAlfaLogicExpFromView(StackPanel causesClauseStackPanel)
+        public static string GetFluentFromView(StackPanel releasesClauseStackPanel)
         {
-            var alfaLogicExpTextBox = causesClauseStackPanel.Children[4] as TextBox;
-            if (alfaLogicExpTextBox == null)
+            var fluentComboBox = releasesClauseStackPanel.Children[4] as ComboBox;
+            if (fluentComboBox == null)
                 return null;
-            return alfaLogicExpTextBox.Text;
+            return fluentComboBox.SelectedItem as string;
         }
 
-        public static string GetPiLogicExpFromView(StackPanel causesClauseStackPanel)
+
+        public static string GetPiLogicExpFromView(StackPanel releasesClauseStackPanel)
         {
-            var piLogicExpTextBox = causesClauseStackPanel.Children[6] as TextBox;
+            var piLogicExpTextBox = releasesClauseStackPanel.Children[6] as TextBox;
             if (piLogicExpTextBox == null)
                 return null;
             return piLogicExpTextBox.Text;
