@@ -3,37 +3,34 @@ using System.Windows.Controls;
 
 namespace RW_Frontend.InputsViewModels
 {
-    public class CausesClauseViewModel
+    public class ImpossibleClauseViewModel
     {
         public string Action { get; set; }
 
         public List<string> Agents { get; set; }
 
-        public string AlfaLogicExp { get; set; }
-
         public string PiLogicExp { get; set; }
 
-        public CausesClauseViewModel(string action, List<string> agents, string alfaLogicexp, string piLogixExp)
+        public ImpossibleClauseViewModel(string action, List<string> agents, string piLogixExp)
         {
             Action = action;
             Agents = agents;
-            AlfaLogicExp = alfaLogicexp;
             PiLogicExp = piLogixExp;
         }
 
-        public static string GetActionFromView(StackPanel causesClauseStackPanel)
+        public static string GetActionFromView(StackPanel impossibleClauseStackPanel)
         {
-            var actionComboBox = causesClauseStackPanel.Children[0] as ComboBox;
+            var actionComboBox = impossibleClauseStackPanel.Children[1] as ComboBox;
             if (actionComboBox == null)
                 return null;
             return actionComboBox.SelectedItem as string;
         }
 
-        public static List<string> GetAgentsFromView(StackPanel causesClauseStackPanel)
+        public static List<string> GetAgentsFromView(StackPanel impossibleClauseStackPanel)
         {
             var agents = new List<string>();
 
-            var expander = causesClauseStackPanel.Children[2] as Expander;
+            var expander = impossibleClauseStackPanel.Children[3] as Expander;
             if (expander == null)
                 return null;
             var listBox = expander.Content as ListBox;
@@ -46,20 +43,13 @@ namespace RW_Frontend.InputsViewModels
             return agents;
         }
 
-        public static string GetAlfaLogicExpFromView(StackPanel causesClauseStackPanel)
+        public static string GetPiLogicExpFromView(StackPanel impossibleClauseStackPanel)
         {
-            var alfaLogicExpTextBox = causesClauseStackPanel.Children[4] as TextBox;
-            if (alfaLogicExpTextBox == null)
-                return null;
-            return alfaLogicExpTextBox.Text;
-        }
-
-        public static string GetPiLogicExpFromView(StackPanel causesClauseStackPanel)
-        {
-            var piLogicExpTextBox = causesClauseStackPanel.Children[6] as TextBox;
+            var piLogicExpTextBox = impossibleClauseStackPanel.Children[5] as TextBox;
             if (piLogicExpTextBox == null)
                 return null;
             return piLogicExpTextBox.Text;
         }
+
     }
 }

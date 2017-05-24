@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RW_backend.Models;
 using RW_backend.Models.BitSets;
 using RW_backend.Models.Clauses.LogicClauses;
-using RW_backend.Models.GraphModels;
 
 namespace RW_tests.LogicTests
 {

@@ -1,6 +1,6 @@
 ﻿using RW_backend.Models.BitSets;
 
-namespace RW_backend.Models.GraphModels
+namespace RW_backend.Models.World
 {
 	public class ActionAgentsPair
 	{

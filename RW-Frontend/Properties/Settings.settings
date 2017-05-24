@@ -53,5 +53,53 @@
     <Setting Name="CalculateEngagedQuery" Type="System.String" Scope="User">
       <Value Profile="(Default)">Znajdź wynik dla kwerendy "engaged"</Value>
     </Setting>
+    <Setting Name="RemoveAfter" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Usuń zdanie "after"</Value>
+    </Setting>
+    <Setting Name="AddAfter" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Dodaj nowe zdanie "after"</Value>
+    </Setting>
+    <Setting Name="AddScenario" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Dodaj scenariusz</Value>
+    </Setting>
+    <Setting Name="RemoveScenario" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Usuń scenariusz</Value>
+    </Setting>
+    <Setting Name="AddInitially" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Dodaj nowe zdanie "initially"</Value>
+    </Setting>
+    <Setting Name="RemoveInitially" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Usuń zdanie "initially"</Value>
+    </Setting>
+    <Setting Name="AddObservable" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Dodaj nowe zdanie "observable"</Value>
+    </Setting>
+    <Setting Name="RemoveObservable" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Usuń zdanie "observable"</Value>
+    </Setting>
+    <Setting Name="AddAlways" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Dodaj nowe zdanie "always"</Value>
+    </Setting>
+    <Setting Name="RemoveAlways" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Usuń zdanie "always"</Value>
+    </Setting>
+    <Setting Name="AddImpossible" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Dodaj nowe zdanie "impossible"</Value>
+    </Setting>
+    <Setting Name="RemoveImpossible" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Usuń zdanie "impossible"</Value>
+    </Setting>
+    <Setting Name="AddReleases" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Dodaj nowe zdanie "releases"</Value>
+    </Setting>
+    <Setting Name="RemoveReleases" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Usuń zdanie "releases"</Value>
+    </Setting>
+    <Setting Name="AddNoninertial" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Dodaj nowe zdanie "noninertial"</Value>
+    </Setting>
+    <Setting Name="RemoveNoninertial" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Usuń zdanie "noninertial"</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

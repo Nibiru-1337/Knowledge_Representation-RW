@@ -226,5 +226,197 @@ namespace RW_Frontend.Properties {
                 this["CalculateEngagedQuery"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Usuń zdanie \"after\"")]
+        public string RemoveAfter {
+            get {
+                return ((string)(this["RemoveAfter"]));
+            }
+            set {
+                this["RemoveAfter"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Dodaj nowe zdanie \"after\"")]
+        public string AddAfter {
+            get {
+                return ((string)(this["AddAfter"]));
+            }
+            set {
+                this["AddAfter"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Dodaj scenariusz")]
+        public string AddScenario {
+            get {
+                return ((string)(this["AddScenario"]));
+            }
+            set {
+                this["AddScenario"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Usuń scenariusz")]
+        public string RemoveScenario {
+            get {
+                return ((string)(this["RemoveScenario"]));
+            }
+            set {
+                this["RemoveScenario"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Dodaj nowe zdanie \"initially\"")]
+        public string AddInitially {
+            get {
+                return ((string)(this["AddInitially"]));
+            }
+            set {
+                this["AddInitially"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Usuń zdanie \"initially\"")]
+        public string RemoveInitially {
+            get {
+                return ((string)(this["RemoveInitially"]));
+            }
+            set {
+                this["RemoveInitially"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Dodaj nowe zdanie \"observable\"")]
+        public string AddObservable {
+            get {
+                return ((string)(this["AddObservable"]));
+            }
+            set {
+                this["AddObservable"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Usuń zdanie \"observable\"")]
+        public string RemoveObservable {
+            get {
+                return ((string)(this["RemoveObservable"]));
+            }
+            set {
+                this["RemoveObservable"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Dodaj nowe zdanie \"always\"")]
+        public string AddAlways {
+            get {
+                return ((string)(this["AddAlways"]));
+            }
+            set {
+                this["AddAlways"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Usuń zdanie \"always\"")]
+        public string RemoveAlways {
+            get {
+                return ((string)(this["RemoveAlways"]));
+            }
+            set {
+                this["RemoveAlways"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Dodaj nowe zdanie \"impossible\"")]
+        public string AddImpossible {
+            get {
+                return ((string)(this["AddImpossible"]));
+            }
+            set {
+                this["AddImpossible"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Usuń zdanie \"impossible\"")]
+        public string RemoveImpossible {
+            get {
+                return ((string)(this["RemoveImpossible"]));
+            }
+            set {
+                this["RemoveImpossible"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Dodaj nowe zdanie \"releases\"")]
+        public string AddReleases {
+            get {
+                return ((string)(this["AddReleases"]));
+            }
+            set {
+                this["AddReleases"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Usuń zdanie \"releases\"")]
+        public string RemoveReleases {
+            get {
+                return ((string)(this["RemoveReleases"]));
+            }
+            set {
+                this["RemoveReleases"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Dodaj nowe zdanie \"noninertial\"")]
+        public string AddNoninertial {
+            get {
+                return ((string)(this["AddNoninertial"]));
+            }
+            set {
+                this["AddNoninertial"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Usuń zdanie \"noninertial\"")]
+        public string RemoveNoninertial {
+            get {
+                return ((string)(this["RemoveNoninertial"]));
+            }
+            set {
+                this["RemoveNoninertial"] = value;
+            }
+        }
     }
 }

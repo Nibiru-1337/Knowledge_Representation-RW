@@ -5,7 +5,6 @@ using RW_backend.Models;
 using RW_backend.Models.Clauses;
 using RW_backend.Models.Clauses.LogicClauses;
 using RW_backend.Models.Factories;
-using RW_backend.Models.GraphModels;
 using RW_backend.Models.World;
 using RW_tests.BuildingOfWorldTests;
 

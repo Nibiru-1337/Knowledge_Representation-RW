@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using RW_backend.Logic;
 using RW_backend.Models;
 using RW_backend.Models.BitSets;
@@ -13,7 +9,7 @@ using RW_backend.Models.World;
 
 namespace RW_tests.BuildingOfWorldTests
 {
-	class YaleScenerio
+    static class YaleScenerio
 	{
 		// agents
 		public const int Bob = 0;

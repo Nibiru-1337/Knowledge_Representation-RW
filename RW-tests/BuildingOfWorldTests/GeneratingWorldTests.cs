@@ -1,18 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RW_backend.Logic;
 using RW_backend.Logic.Queries;
-using RW_backend.Logic.Queries.Results;
 using RW_backend.Models;
 using RW_backend.Models.BitSets;
 using RW_backend.Models.Clauses;
-using RW_backend.Models.Clauses.LogicClauses;
 using RW_backend.Models.Factories;
-using RW_backend.Models.GraphModels;
 using RW_backend.Models.World;
 
 namespace RW_tests.BuildingOfWorldTests

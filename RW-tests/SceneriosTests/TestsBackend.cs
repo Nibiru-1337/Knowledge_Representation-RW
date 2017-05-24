@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Specialized;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RW_backend.Models;
 using RW_backend.Models.BitSets;
 using RW_backend.Models.Clauses;
 using RW_backend.Models.Clauses.LogicClauses;
-using RW_backend.Models.GraphModels;
 using RW_backend.Models.World;
 
 namespace RW_tests.SceneriosTests
@@ -73,77 +68,5 @@ namespace RW_tests.SceneriosTests
 
             Assert.AreEqual(2, world.States.Count());
         }
-
-        [TestMethod]
-        public void WorldWithLoadedAliveAndBob()
-        {
-            //SIMPLE CASE WITH NO ACTIONS WITH THE SAME ACTIONID
-
-            //LOAD is actionId = 0 , SHOOT is actionId = 1
-            World world = _SetUpSimpleWorld();
-
-            //(LOAD) should have an edge from state alive, -loaded -> alive, loaded
-            AgentSetChecker asc = world.Connections[world.ActionIds[0]][new State(0x1)][0];
-            if (asc.CanBeExecutedByAgentsSet(0x0))
-				Assert.Fail("empty agent set should not execute LOAD"); //empty agent set should not execute LOAD
-            if (asc.CanBeExecutedByAgentsSet(0x1))
-            {
-                List<State> afterLOAD = asc.Edges;
-                Assert.AreEqual(1, afterLOAD.Count, "wrong number of states after LOAD");
-                Assert.AreEqual(new State(0x3), afterLOAD[0], "wrong state after LOAD");
-            }
-            //(LOAD) should have an edge from state alive, loaded -> alive, loaded
-            asc = world.Connections[world.ActionIds[0]][new State(0x3)][0];
-            if (asc.CanBeExecutedByAgentsSet(0x2))
-				Assert.Fail("Bob is not present, not executable"); //Bob is not present, not executable
-            if (asc.CanBeExecutedByAgentsSet(0x1))
-            {
-                List<State> afterLOAD = asc.Edges;
-                Assert.AreEqual(1, afterLOAD.Count);
-                Assert.AreEqual(new State(0x3), afterLOAD[0]);
-            }
-            //(LOAD) should have an edge from state -alive, loaded -> -alive, loaded
-            asc = world.Connections[world.ActionIds[0]][new State(0x2)][0];
-            if (asc.CanBeExecutedByAgentsSet(0x3)) //Bob is present, executable
-            {
-                List<State> afterLOAD = asc.Edges;
-                Assert.AreEqual(1, afterLOAD.Count);
-                Assert.AreEqual(new State(0x2), afterLOAD[0]);
-            }
-            else
-            {
-                Assert.Fail();
-            }
-            //(LOAD) should have an edge from state -alive, -loaded -> -alive, loaded
-            asc = world.Connections[world.ActionIds[0]][new State(0x0)][0];
-            if (asc.CanBeExecutedByAgentsSet(0x1)) {
-                List<State> afterLOAD = asc.Edges;
-                Assert.AreEqual(1, afterLOAD.Count);
-                Assert.AreEqual(new State(0x2), afterLOAD[0]);
-            }
-            //(SHOOT) should have an edge from state alive, loaded -> -alive, -loaded
-            asc = world.Connections[world.ActionIds[1]][new State(0x3)][0];
-            if (asc.CanBeExecutedByAgentsSet(0x1))
-            {
-                List<State> afterSHOOT = asc.Edges;
-                Assert.AreEqual(1, afterSHOOT.Count);
-                Assert.AreEqual(new State(0x0), afterSHOOT[0]);
-            }
-            //(SHOOT) should have an edge from state -alive, loaded -> -alive, -loaded
-            asc = world.Connections[world.ActionIds[1]][new State(0x2)][0];
-            if (asc.CanBeExecutedByAgentsSet(0x1))
-            {
-                List<State> afterSHOOT = asc.Edges;
-                Assert.AreEqual(1, afterSHOOT.Count);
-                Assert.AreEqual(new State(0x0), afterSHOOT[0]);
-            }
-            //(SHOOT) should not have edges from state alive, -loaded
-            Assert.AreEqual(0, world.Connections[world.ActionIds[1]][new State(0x1)].Count);
-
-            //(SHOOT) should not have edges from alive, -loaded
-            Assert.AreEqual(0, world.Connections[world.ActionIds[1]][new State(0x0)].Count);
-
-        }
-
     }
 }

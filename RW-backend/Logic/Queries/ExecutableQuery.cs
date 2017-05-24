@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using RW_backend.Logic.Queries.Results;
 using RW_backend.Models.Clauses.LogicClauses;
-using RW_backend.Models.GraphModels;
 using RW_backend.Models.World;
 
 namespace RW_backend.Logic.Queries
@@ -19,7 +18,7 @@ namespace RW_backend.Logic.Queries
 		{
 			MinimiserOfChanges minimiser = new MinimiserOfChanges();
 			var initial = GetInitialStates(world.InitialStates, world.States);
-			ProgramExecutionResult result = this.ExecuteProgram(world, minimiser, initial);
+			ProgramExecutionResult result = ExecuteProgram(world, minimiser, initial);
 
 			return new QueryResult()
 			{

@@ -16,11 +16,11 @@ namespace RW_backend.Models
         public int ActionsCount { get; set; }
         public int AgentsCount { get; set; }
 
-		//TODO: nie lepiej zwykłe tablice stringów?
-		// a słowniki string->int?
-        public IDictionary<int, string> FluentsNames{ get; set; }
-        public IDictionary<int, string> ActionsNames{ get; set; }
-        public IDictionary<int, string> AgentsNames{ get; set; }
+        //TODO: nie lepiej zwykłe tablice stringów?
+        // a słowniki string->int?
+        public IDictionary<int, string> FluentsNames { get; set; }
+        public IDictionary<int, string> ActionsNames { get; set; }
+        public IDictionary<int, string> AgentsNames { get; set; }
 
         public ISet<int> NoninertialFluents { get; set; }
 

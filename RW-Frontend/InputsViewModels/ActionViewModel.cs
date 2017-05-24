@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RW_Frontend.InputsViewModels
+﻿namespace RW_Frontend.InputsViewModels
 {
     public class ActionViewModel
     {
@@ -12,7 +6,7 @@ namespace RW_Frontend.InputsViewModels
 
         public ActionViewModel(string action)
         {
-            this.Action = action;
+            Action = action;
         }
     }
 }
