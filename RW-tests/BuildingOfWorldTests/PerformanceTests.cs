@@ -107,7 +107,7 @@ namespace RW_tests.BuildingOfWorldTests
 			const int MinimumProblemSize = 10;
 			const int DesiredProblemSize = 20;
 			int fluentsCount;
-			for (fluentsCount = 11; fluentsCount <= DesiredProblemSize; fluentsCount++)
+			for (fluentsCount = 14; fluentsCount <= DesiredProblemSize; fluentsCount++)
 			{
 				try
 				{
