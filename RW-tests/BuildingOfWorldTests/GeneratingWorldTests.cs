@@ -7,6 +7,7 @@ using RW_backend.Logic.Queries;
 using RW_backend.Models;
 using RW_backend.Models.BitSets;
 using RW_backend.Models.Clauses;
+using RW_backend.Models.Clauses.LogicClauses;
 using RW_backend.Models.Factories;
 using RW_backend.Models.World;
 
