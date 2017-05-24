@@ -32,16 +32,33 @@ namespace RW_backend.Logic.Queries
 			ProgramExecutionResult result = this.ExecuteProgram(world, minimiser,
 				GetInitialStates(world.InitialStates, world.States));
 
+			return GetResult(result);
+		}
+
+
+		private QueryResult GetResult(ProgramExecutionResult result)
+		{
 			bool allOk = true;
 			bool oneOk = false;
 
-			if (result.Executable == Executable.Never)
-				return new QueryResult()
-				{
-					IsTrue = false,
-					WrongPath = result.WrongPath,
-				};
+			if (result.Executable == Executable.Never) // jeœli always, to ok
+			{
+				return Always 
+					? new QueryResult()
+					{
+						IsTrue = true,
+						WrongPath = result.WrongPath,
+					} 
+					: new QueryResult()
+					{
+						IsTrue = false,
+						WrongPath = result.WrongPath,
+					};
+			}
+
+			Console.WriteLine("reachable states = " + String.Join(", ", result.ReachableStates));
 			Logger.Log("reachable states = " + String.Join(", ", result.ReachableStates));
+			//Console.WriteLine("reachable states = " + String.Join(", ", result.ReachableStates));
 			foreach (State reachableState in result.ReachableStates)
 			{
 				if (Effect.CheckForState(reachableState.FluentValues))

@@ -1,13 +1,6 @@
 ﻿namespace RW_backend.Models.Clauses.LogicClauses
 {
-
-	public enum FluentValue
-	{
-		Positive,
-		Negated,
-	}
-
-    /// <summary>
+	/// <summary>
     /// Dowolna formuła logiczna
     /// (tak naprawdę nie musi dotyczyć fluentów i stanów)
     /// (mogłaby być równie dobra dla formuł agentowych)

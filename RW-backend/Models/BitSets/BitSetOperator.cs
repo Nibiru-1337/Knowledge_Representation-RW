@@ -3,7 +3,7 @@
 	/// <summary>
 	/// operacje na bitach
 	/// </summary>
-	public class BitValueOperator
+	public class BitSetOperator
 	{
 		public int SetFluent(int bitValue, int bitIndex)
 		{

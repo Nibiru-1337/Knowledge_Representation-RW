@@ -1,7 +1,9 @@
 ﻿//#define EXTENDED_DEBUG
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
+using RW_backend.Logic.Queries;
 using RW_backend.Models.BitSets;
 using RW_backend.Models.Clauses;
 using RW_backend.Models.Clauses.LogicClauses;
@@ -28,56 +30,68 @@ namespace RW_backend.Models.World
         //connections b/w states are represented with a chain of dictonaries
         // [int(ActionId)] [State(starting state)] -> List<AgentSetChecker>
         public Dictionary<int, Dictionary<State, IList<AgentSetChecker>>> Connections { get; private set; }
-		public IList<State> InitialStates { get; private set; } 
+		public List<State> InitialStates { get; private set; } 
 		public BitSet NonInertialFluents { get; private set; }
 		public Dictionary<int, Dictionary<State, List<ReleasesWithAgentsSet>>> ReleasedFluents { get; private set; }
+	    public bool Inconsistent { get; private set; } = false;
 
-        public World(int fluentsesCount, IList<LogicClause> alwaysList, IList<LogicClause> initiallyList, 
-			BitSet nonInertialFluents)
+
+        public World(int fluentsCount, IList<LogicClause> alwaysList, IList<LogicClause> initiallyList, 
+			BitSet nonInertialFluents, IList<Causes> causesList, IList<Releases> releasesList, IList<After> afterList, int actionsCount)
         {
-	        NonInertialFluents = nonInertialFluents;
-	        FluentsCount = fluentsesCount;
-	        if (fluentsesCount > MaxFluentCount)
-				throw new ArgumentException("max fluent count = " + MaxFluentCount);
-
-            int totalNodes = (int)1<<fluentsesCount;
-            Connections = new Dictionary<int, Dictionary<State, IList<AgentSetChecker>>>();
-            States = new List<State>(totalNodes);
-            ActionIds = new List<int>();
-
-            for (int i = 0; i < totalNodes; i++)
-            {
-                if (alwaysList != null && alwaysList.Count > 0)
-                {
-                    bool goodToGo = true;
-                    foreach (var always in alwaysList)
-                    {
-                        if (!always.CheckForState(i))
-                        {
-                            goodToGo = false;
-                            break;
-                        }
-                    }
-                    if (goodToGo) States.Add(new State(i));
-                }
-                else
-                {
-                    States.Add(new State(i));
-                }
-            }
-	        if (initiallyList != null)
-	        {
-		        InitialStates =
-			        States.Where(
-				        state =>
-					        initiallyList.All(initially => initially.CheckForState(state.FluentValues)))
-				        .ToList();
-	        }
-	        else InitialStates = States.ToList();
+	        Initialize(fluentsCount, alwaysList, initiallyList, nonInertialFluents);
+			AddCauses(causesList, actionsCount);
+			AddReleases(releasesList, actionsCount);
+			AddAfters(afterList);
         }
 
+	    private void Initialize(int fluentsesCount, IList<LogicClause> alwaysList,
+		    IList<LogicClause> initiallyList,
+		    BitSet nonInertialFluents)
+	    {
+			NonInertialFluents = nonInertialFluents;
+			FluentsCount = fluentsesCount;
+			if (fluentsesCount > MaxFluentCount)
+				throw new ArgumentException("max fluent count = " + MaxFluentCount);
+
+			int totalNodes = (int)1 << fluentsesCount;
+			Connections = new Dictionary<int, Dictionary<State, IList<AgentSetChecker>>>();
+			States = new List<State>(totalNodes);
+			ActionIds = new List<int>();
+
+			for (int i = 0; i < totalNodes; i++)
+			{
+				if (alwaysList != null && alwaysList.Count > 0)
+				{
+					bool goodToGo = true;
+					foreach (var always in alwaysList)
+					{
+						if (!always.CheckForState(i))
+						{
+							goodToGo = false;
+							break;
+						}
+					}
+					if (goodToGo) States.Add(new State(i));
+				}
+				else
+				{
+					States.Add(new State(i));
+				}
+			}
+			if (initiallyList != null)
+			{
+				InitialStates =
+					States.Where(
+						state =>
+							initiallyList.All(initially => initially.CheckForState(state.FluentValues)))
+						.ToList();
+			}
+			else InitialStates = States.ToList();
+		}
+
         //add the edges concerning a particular causes action
-        public void AddCauses(IList<Causes> causesList, int actionCount)
+        private void AddCauses(IList<Causes> causesList, int actionCount)
         {
             //for every unique ActionID
             for (int i = 0; i < actionCount; i++)
@@ -147,7 +161,7 @@ namespace RW_backend.Models.World
             }
         }
 
-	    public void AddReleases(IList<Releases> releasesList, int actionCount)
+	    private void AddReleases(IList<Releases> releasesList, int actionCount)
 	    {
 			
 
@@ -201,5 +215,44 @@ namespace RW_backend.Models.World
 
 
 		}
+
+	    private void AddAfters(IList<After> afterList)
+	    {
+			//BitSetFactory factory = new BitSetFactory();
+		    if (afterList == null)
+			    return;
+		    var factory = new LogicClausesFactory();
+			foreach (After after in afterList)
+		    {
+			    if (after.Always)
+			    {
+					List<State> toDelete = new List<State>(InitialStates.Count);
+				    foreach (State initialState in InitialStates)
+				    {
+					    AfterQuery query = new AfterQuery(after.Program, factory.CreateOnlyOneStateEnabledClause(initialState.FluentValues), 
+							true, after.Effect);
+					    var result = query.Evaluate(this);
+					    if (!result.IsTrue)
+					    {
+						    toDelete.Add(initialState);
+					    }
+				    }
+				    foreach (State state in toDelete)
+				    {
+					    InitialStates.Remove(state);
+				    }
+			    }
+			    else
+			    {
+				    AfterQuery possibly = new AfterQuery(after.Program, null, false, after.Effect);
+				    var result = possibly.Evaluate(this);
+				    if (!result.IsTrue)
+				    {
+					    Inconsistent = true; // sprzeczność
+					    return; // nie ma po co dalej się męczyć
+				    }
+			    }
+		    }
+	    }
     }
 }

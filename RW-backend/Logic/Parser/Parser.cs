@@ -70,7 +70,7 @@ namespace RW_backend.Logic.Parser
                     }
                     if(!Fluents.ContainsKey(alts[j]))
                         throw new ArgumentException($"There is no defined fluent: {alts[j]}");
-                    alt.AddFluent(Fluents[alts[j]], isNegation);
+                    alt.AddFluent(Fluents[alts[j]], isNegation ? FluentSign.Negated : FluentSign.Positive);
                 }
                 lc.AddAlternative(alt);
             }
@@ -95,7 +95,7 @@ namespace RW_backend.Logic.Parser
                     }
                     if (!Fluents.ContainsKey(conjs[j]))
                         throw new ArgumentException($"There is no defined fluent: {conjs[j]}");
-                    conj.AddFluent(Fluents[conjs[j]], isNegation);
+                    conj.AddFluent(Fluents[conjs[j]], isNegation ? FluentSign.Negated : FluentSign.Positive);
                 }
                 lc.AddConjunction(conj);
             }

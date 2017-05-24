@@ -30,7 +30,7 @@ namespace RW_tests.BuildingOfWorldTests
 			// 2. shoot by bob causes !loaded
 			// 3. load by bob causes loaded
 			var world = new SimpleYaleScenerioWorldGenerator().GenerateYaleWorld(true);
-			Console.WriteLine(WriteOutWorld(world));
+			Console.WriteLine(TestUtilities.WriteOutWorld(world));
 			Assert.AreEqual(4, world.States.Count, "wrong number of states");
 			Assert.AreEqual(1, world.InitialStates.Count, "wrong number of intial states");
 			CheckConnections(world);
@@ -44,8 +44,8 @@ namespace RW_tests.BuildingOfWorldTests
 			Model model = new SimpleYaleScenerioWorldGenerator().GenerateModel();
 			LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
 			
-			var causes1 = new Causes(logicClausesFactory.CreateSingleFluentClause(YaleScenerio.Loaded, false),
-				logicClausesFactory.CreateSingleFluentClause(YaleScenerio.Alive, true), YaleScenerio.Shoot, 
+			var causes1 = new Causes(logicClausesFactory.CreateSingleFluentClause(YaleScenerio.Loaded, FluentSign.Positive),
+				logicClausesFactory.CreateSingleFluentClause(YaleScenerio.Alive, FluentSign.Negated), YaleScenerio.Shoot, 
 				new SimpleYaleScenerioWorldGenerator().SingleAgent(YaleScenerio.Bob));
 			model.CausesStatements= new List<Causes>()
 			{
@@ -55,8 +55,8 @@ namespace RW_tests.BuildingOfWorldTests
 
 			Query query =
 				new AfterQuery(new ActionAgentsPair[] {new ActionAgentsPair(YaleScenerio.Shoot, YaleScenerio.BobSet)},
-					logicClausesFactory.CreateSingleFluentClause(YaleScenerio.Alive, false), true,
-					logicClausesFactory.CreateSingleFluentClause(YaleScenerio.Alive, true));
+					logicClausesFactory.CreateSingleFluentClause(YaleScenerio.Alive, FluentSign.Positive), true,
+					logicClausesFactory.CreateSingleFluentClause(YaleScenerio.Alive, FluentSign.Negated));
 			Assert.AreEqual(false, query.Evaluate(world).IsTrue, "wrong result of query");
 		}
 
@@ -75,33 +75,7 @@ namespace RW_tests.BuildingOfWorldTests
 			Assert.AreEqual(4, dict.Count, "should be 4 states for load");
 		}
 
-		private string WriteOutWorld(World world)
-		{
-			StringBuilder sb = new StringBuilder();
-			foreach (KeyValuePair<int, Dictionary<State, IList<AgentSetChecker>>> connection in world.Connections)
-			{
-				sb.Append("for action = " + connection.Key).AppendLine();
-				foreach (KeyValuePair<State, IList<AgentSetChecker>> pair in connection.Value)
-				{
-					sb.Append("\tfor state = ").Append(pair.Key).AppendLine();
-					foreach (AgentSetChecker setChecker in pair.Value)
-					{
-						sb.Append("\t\tfor agents set = ").Append(setChecker.AgentsSet).AppendLine();
-						foreach (State state in setChecker.Edges)
-						{
-							sb.Append("\t\t\tcan go to state ").Append(state).AppendLine();
-						}
-					}
-
-				}
-
-
-			}
-
-
-			return sb.ToString();
-
-		}
+		
 
 		
 	}
