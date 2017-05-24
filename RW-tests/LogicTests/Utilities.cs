@@ -12,18 +12,19 @@ namespace RW_tests.LogicTests
 {
 	class Utilities
 	{
-		public void SetFluents(List<int> fluents, bool negated, UniformLogicClause clause)
+
+		public void SetFluents(List<int> fluents, FluentSign sign, UniformLogicClause clause)
 		{
 			foreach (int fluent in fluents)
 			{
-				clause.AddFluent(fluent, negated);
+				clause.AddFluent(fluent, sign);
 			}
 		}
 
 		public State GetState(List<int> fs)
 		{
 			int state = 0;
-			BitValueOperator bop = new BitValueOperator();
+			BitSetOperator bop = new BitSetOperator();
 			foreach (int f in fs)
 			{
 				state = bop.SetFluent(state, f);
@@ -33,7 +34,7 @@ namespace RW_tests.LogicTests
 
 		public void WriteOutBitValue(int value)
 		{
-			BitValueOperator bop = new BitValueOperator();
+			BitSetOperator bop = new BitSetOperator();
 			for (int i = 0; i < sizeof(int) * 8; i++)
 			{
 				Console.Write((bop.GetValue(value, i) ? "1" : "0"));
@@ -43,7 +44,7 @@ namespace RW_tests.LogicTests
 
 		public string BitValueToString(int value)
 		{
-			BitValueOperator bop = new BitValueOperator();
+			BitSetOperator bop = new BitSetOperator();
 			StringBuilder sb = new StringBuilder();
 			for (int i = 0; i < sizeof(int) * 8; i++)
 			{
@@ -60,12 +61,12 @@ namespace RW_tests.LogicTests
 			//  0   1      1    3     4   5   6    7
 			Utilities utilities = new Utilities();
 			first = new UniformConjunction();
-			utilities.SetFluents(new List<int>() { 0, 1 }, false, first);
+			utilities.SetFluents(new List<int>() { 0, 1 }, FluentSign.Positive, first);
 			second = new UniformConjunction();
-			utilities.SetFluents(new List<int>() { 1, 3 }, true, second);
+			utilities.SetFluents(new List<int>() { 1, 3 }, FluentSign.Negated, second);
 			third = new UniformConjunction();
-			utilities.SetFluents(new List<int>() { 4, 5, 6 }, false, third);
-			utilities.SetFluents(new List<int>() { 7 }, true, third);
+			utilities.SetFluents(new List<int>() { 4, 5, 6 }, FluentSign.Positive, third);
+			utilities.SetFluents(new List<int>() { 7 }, FluentSign.Negated, third);
 		}
 
 		public AlternativeOfConjunctions GetAlternativeOfConjunctions()
@@ -85,12 +86,12 @@ namespace RW_tests.LogicTests
 			//  0   1      1    3     4   5   6    7
 			Utilities utilities = new Utilities();
 			first = new UniformAlternative();
-			utilities.SetFluents(new List<int>() { 0, 1 }, false, first);
+			utilities.SetFluents(new List<int>() { 0, 1 }, FluentSign.Positive, first);
 			second = new UniformAlternative();
-			utilities.SetFluents(new List<int>() { 1, 3 }, true, second);
+			utilities.SetFluents(new List<int>() { 1, 3 }, FluentSign.Negated, second);
 			third = new UniformAlternative();
-			utilities.SetFluents(new List<int>() { 4, 5, 6 }, false, third);
-			utilities.SetFluents(new List<int>() { 7 }, true, third);
+			utilities.SetFluents(new List<int>() { 4, 5, 6 }, FluentSign.Positive, third);
+			utilities.SetFluents(new List<int>() { 7 }, FluentSign.Negated, third);
 		}
 
 		public ConjunctionOfAlternatives GetConjunctionOfAlternatives()

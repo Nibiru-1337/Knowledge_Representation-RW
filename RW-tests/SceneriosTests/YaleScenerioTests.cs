@@ -3,6 +3,7 @@ using RW_backend.Logic;
 using RW_backend.Logic.Queries;
 using RW_backend.Models;
 using RW_backend.Models.Clauses;
+using RW_backend.Models.Clauses.LogicClauses;
 using RW_backend.Models.Factories;
 using RW_backend.Models.GraphModels;
 using RW_backend.Models.World;
@@ -22,7 +23,7 @@ namespace RW_tests.SceneriosTests
 			ExecutableQuery query = new ExecutableQuery(new ActionAgentsPair[]
 			{
 				new ActionAgentsPair(YaleScenerio.Shoot, YaleScenerio.BobSet),
-			}, logicClausesFactory.CreateSingleFluentClause(YaleScenerio.Alive, false), false);
+			}, logicClausesFactory.CreateSingleFluentClause(YaleScenerio.Alive, FluentSign.Positive), false);
 			Assert.AreEqual(true, query.Evaluate(world).IsTrue, "Bob should be able to shoot");
 		}
 
@@ -34,8 +35,8 @@ namespace RW_tests.SceneriosTests
 			AfterQuery query = new AfterQuery(new ActionAgentsPair[]
 			{
 				new ActionAgentsPair(YaleScenerio.Shoot, YaleScenerio.BobSet),
-			}, logicClausesFactory.CreateSingleFluentClause(YaleScenerio.Alive, false), false,
-				logicClausesFactory.CreateSingleFluentClause(YaleScenerio.Alive, true));
+			}, logicClausesFactory.CreateSingleFluentClause(YaleScenerio.Alive, FluentSign.Positive), false,
+				logicClausesFactory.CreateSingleFluentClause(YaleScenerio.Alive, FluentSign.Negated));
 			Assert.AreEqual(true, query.Evaluate(world).IsTrue, "Bob should be able to kill Fredek if loaded");
 		}
 
@@ -47,7 +48,7 @@ namespace RW_tests.SceneriosTests
 			ExecutableQuery query = new ExecutableQuery(new ActionAgentsPair[]
 			{
 				new ActionAgentsPair(YaleScenerio.Shoot, YaleScenerio.BobSet),
-			}, logicClausesFactory.CreateSingleFluentClause(YaleScenerio.Alive, false), true);
+			}, logicClausesFactory.CreateSingleFluentClause(YaleScenerio.Alive, FluentSign.Positive), true);
 			Assert.AreEqual(true, query.Evaluate(world).IsTrue, "Bob should be able to shoot");
 		}
 
@@ -59,8 +60,8 @@ namespace RW_tests.SceneriosTests
 			AfterQuery query = new AfterQuery(new ActionAgentsPair[]
 			{
 				new ActionAgentsPair(YaleScenerio.Shoot, YaleScenerio.BobSet),
-			}, logicClausesFactory.CreateSingleFluentClause(YaleScenerio.Alive, false), true,
-				logicClausesFactory.CreateSingleFluentClause(YaleScenerio.Alive, true));
+			}, logicClausesFactory.CreateSingleFluentClause(YaleScenerio.Alive, FluentSign.Positive), true,
+				logicClausesFactory.CreateSingleFluentClause(YaleScenerio.Alive, FluentSign.Negated));
 			Assert.AreEqual(false, query.Evaluate(world).IsTrue, "Bob should not be able to kill Fredek if ~loaded");
 		}
 
@@ -83,8 +84,8 @@ namespace RW_tests.SceneriosTests
 			AfterQuery query = new AfterQuery(new ActionAgentsPair[]
 			{
 				new ActionAgentsPair(YaleScenerio.Shoot, YaleScenerio.BobSet),
-			}, logicClausesFactory.CreateSingleFluentClause(YaleScenerio.Alive, false), false,
-				logicClausesFactory.CreateSingleFluentClause(YaleScenerio.Alive, true));
+			}, logicClausesFactory.CreateSingleFluentClause(YaleScenerio.Alive, FluentSign.Positive), false,
+				logicClausesFactory.CreateSingleFluentClause(YaleScenerio.Alive, FluentSign.Negated));
 
 			Assert.AreEqual(false, query.Evaluate(world).IsTrue, "Bob should not be able to kill Fredek anytime");
 		}

@@ -45,7 +45,7 @@ namespace RW_tests.BuildingOfWorldTests
 			model.FluentsCount = 2;
 			LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
 			var causes1 = new Causes(logicClausesFactory.CreateSingleFluentClause(YaleScenerio.Loaded, false),
-				logicClausesFactory.CreateSingleFluentClause(YaleScenerio.Alive, true), YaleScenerio.Shoot, SingleAgent(YaleScenerio.Bob));
+				logicClausesFactory.CreateSingleFluentClause(YaleScenerio.Alive, FluentSign.Negated), YaleScenerio.Shoot, SingleAgent(YaleScenerio.Bob));
 			var causes2 = new Causes(logicClausesFactory.CreateEmptyLogicClause(),
 				logicClausesFactory.CreateSingleFluentClause(YaleScenerio.Loaded, true), YaleScenerio.Shoot, SingleAgent(YaleScenerio.Bob));
 			var causes3 = new Causes(logicClausesFactory.CreateEmptyLogicClause(),
@@ -55,7 +55,7 @@ namespace RW_tests.BuildingOfWorldTests
 			if (initialStates)
 				model.InitiallyStatements = new List<LogicClause>()
 			{
-				logicClausesFactory.CreateSingleFluentClause(YaleScenerio.Alive, false),
+				logicClausesFactory.CreateSingleFluentClause(YaleScenerio.Alive, FluentSign.Positive),
 				logicClausesFactory.CreateSingleFluentClause(YaleScenerio.Loaded, false)
 			};
 			return model;
@@ -68,7 +68,7 @@ namespace RW_tests.BuildingOfWorldTests
 
 		public AgentsSet SingleAgent(int agentId)
 		{
-			BitValueOperator bop = new BitValueOperator();
+			BitSetOperator bop = new BitSetOperator();
 			return new AgentsSet(bop.SetFluent(0, agentId));
 		}
 	}

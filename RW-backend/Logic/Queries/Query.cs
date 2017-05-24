@@ -61,10 +61,11 @@ namespace RW_backend.Logic.Queries
 				Logger.Log("=> " + string.Join(", ", states));
 #endif
 
-                if (!world.Connections.ContainsKey(Program[i].ActionId))
+				if (!world.Connections.ContainsKey(Program[i].ActionId))
 				{
 					//TODO: wrong actionID? exception?
 					result.Executable = Executable.Never;
+					throw new ArgumentException("wrong action id");
 					return result;
 				}
 
@@ -190,7 +191,7 @@ namespace RW_backend.Logic.Queries
 			}
 
 		    int set = 0;
-			BitValueOperator bop = new BitValueOperator();
+			BitSetOperator bop = new BitSetOperator();
 			foreach (ReleasesWithAgentsSet release in releases)
 			{
 				if (ActionCanBeExecutedByThoseAgents(release, Program[step].AgentsSet.AgentSet,
@@ -232,11 +233,7 @@ namespace RW_backend.Logic.Queries
 			return checker.CanBeExecutedByAgentsSet(agentsAvailable)
 					&& !checker.UsesAgentFromSet(notEngagedAgents);
 	    }
-
-		public static Query Create(string queryString)
-		{
-			throw new NotImplementedException();
-		}
+		
 
 		public enum QueryType
 		{

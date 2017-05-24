@@ -5,7 +5,7 @@ namespace RW_backend.Models.Factories
 {
 	public class BitSetFactory
 	{
-		BitValueOperator _bitValueOperator = new BitValueOperator();
+		BitSetOperator _bitValueOperator = new BitSetOperator();
 		
 		public int CreateBitSetValueFrom(List<int> elements)
 		{
@@ -22,6 +22,7 @@ namespace RW_backend.Models.Factories
 			return _bitValueOperator.SetFluent(0, element);
 		}
 
+		
 		
 	}
 }

@@ -149,7 +149,7 @@ namespace RW_tests.LogicTests
 
 		private BitSet CreateBitsetFrom(int[] elements)
 		{
-			BitValueOperator bop = new BitValueOperator();
+			BitSetOperator bop = new BitSetOperator();
 			int set = elements.Aggregate(0, (current, element) => bop.SetFluent(current, element));
 			return new BitSet(set);
 		}

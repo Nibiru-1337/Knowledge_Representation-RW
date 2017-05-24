@@ -20,11 +20,31 @@ namespace RW_backend.Models.Factories
 				return UniformAlternative.CreateFrom(new List<int>() { fluent }, new List<int>() { });
 			}
 		}
+		
+
+
+		public LogicClause CreateSingleFluentClause(int fluent, FluentSign negatedOrNot)
+		{
+			if (negatedOrNot == FluentSign.Negated)
+				return UniformAlternative.CreateFrom(new List<int>() { }, new List<int>() { fluent });
+			else
+			{
+				return UniformAlternative.CreateFrom(new List<int>() { fluent }, new List<int>() { });
+			}
+		}
+
 
 
 		public LogicClause CreateContradictingClause(int fluent = 0)
 		{
 			return UniformConjunction.CreateFrom(new List<int>() {fluent}, new List<int>() {fluent});
+		}
+
+		public LogicClause CreateOnlyOneStateEnabledClause(int state)
+		{
+			var response = new UniformConjunction();
+			response.SetFluents(state, ~state);
+			return response;
 		}
 
 	}

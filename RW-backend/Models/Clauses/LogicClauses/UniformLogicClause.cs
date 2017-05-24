@@ -19,9 +19,9 @@ namespace RW_backend.Models.Clauses.LogicClauses
 			NegatedFluents = 0;
 		}
 
-		public void AddFluent(int fluentId, bool negated)
+		public void AddFluent(int fluentId, FluentSign sign)
 		{
-			if (negated)
+			if (sign == FluentSign.Negated)
 			{
 				NegatedFluents = NegatedFluents | (1 << fluentId);
 			}
@@ -31,9 +31,9 @@ namespace RW_backend.Models.Clauses.LogicClauses
 			}
 		}
 
-		public void DeleteFluent(int fluentId, bool negated)
+		public void DeleteFluent(int fluentId, FluentSign sign)
 		{
-			if (negated)
+			if (sign == FluentSign.Negated)
 			{
 				NegatedFluents = NegatedFluents & (~(1 << fluentId));
 			}
@@ -45,14 +45,22 @@ namespace RW_backend.Models.Clauses.LogicClauses
 
 		public void SetFluents(List<int> positive, List<int> negated)
 		{
+			PositiveFluents = 0;
+			NegatedFluents = 0;
 			foreach (int i in positive)
 			{
-				AddFluent(i, false);
+				AddFluent(i, FluentSign.Positive);
 			}
 			foreach (int i in negated)
 			{
-				AddFluent(i, true);
+				AddFluent(i, FluentSign.Negated);
 			}
+		}
+
+		public void SetFluents(int positive, int negated)
+		{
+			PositiveFluents = positive;
+			NegatedFluents = negated;
 		}
 	}
 }
