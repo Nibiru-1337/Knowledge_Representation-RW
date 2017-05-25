@@ -56,6 +56,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="BuildingOfWorldTests\TestWorldGenerator.cs" />
     <Compile Include="BuildingOfWorldTests\GeneratingWorldTests.cs" />
     <Compile Include="BuildingOfWorldTests\MinimiserTests.cs" />
     <Compile Include="BuildingOfWorldTests\PerformanceTests.cs" />

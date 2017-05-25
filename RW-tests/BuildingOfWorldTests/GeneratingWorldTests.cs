@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RW_backend.Logic;
@@ -71,8 +72,32 @@ namespace RW_tests.BuildingOfWorldTests
 			Assert.AreEqual(4, dict.Count, "should be 4 states for load");
 		}
 
-		
+        [TestMethod]
+        public void ActionWithReleasesWithoutCausesTest()
+        {
+            const int fluentsCount = 1;
+            const int actionsCount = 1, action = 0;
+            State state0 = new State(0), state1 = new State(1);
+            var world = new TestWorldGenerator().GenerateWorldWithReleasingAction(fluentsCount, actionsCount);
 
+            Assert.IsNotNull(world);
+            Assert.AreEqual(actionsCount, world.ActionIds.Count);
+            Assert.IsTrue(world.Connections[action][state0].Any(asc=>asc.Edges.Contains(state1)));
+            Assert.IsTrue(world.Connections[action][state1].Any(asc=>asc.Edges.Contains(state0)));
+        }
 		
+        [TestMethod]
+        public void ActionInvertingFluentTest()
+        {
+            const int fluentsCount = 1;
+            const int actionsCount = 1, action = 0;
+            State state0 = new State(0), state1 = new State(1);
+            var world = new TestWorldGenerator().GenerateWorldWithInvertingAction(fluentsCount, actionsCount);
+
+            Assert.IsNotNull(world);
+            Assert.AreEqual(actionsCount, world.ActionIds.Count);
+            Assert.IsTrue(world.Connections[action][state0].Any(asc=>asc.Edges.Contains(state1)));
+            Assert.IsTrue(world.Connections[action][state1].Any(asc=>asc.Edges.Contains(state0)));
+        }
 	}
 }
