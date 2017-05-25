@@ -85,7 +85,7 @@ namespace RW_tests.BuildingOfWorldTests
             Assert.IsTrue(world.Connections[action][state0].Any(asc=>asc.Edges.Contains(state1)));
             Assert.IsTrue(world.Connections[action][state1].Any(asc=>asc.Edges.Contains(state0)));
         }
-		
+
         [TestMethod]
         public void ActionInvertingFluentTest()
         {

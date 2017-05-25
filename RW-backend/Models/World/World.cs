@@ -32,7 +32,7 @@ namespace RW_backend.Models.World
         public Dictionary<int, Dictionary<State, IList<AgentSetChecker>>> Connections { get; private set; }
 		public List<State> InitialStates { get; private set; } 
 		public BitSet NonInertialFluents { get; private set; }
-		public Dictionary<int, Dictionary<State, List<ReleasesWithAgentsSet>>> ReleasedFluents { get; private set; }
+		public Dictionary<int, Dictionary<State, IList<ReleasesWithAgentsSet>>> ReleasedFluents { get; private set; }
 	    public bool Inconsistent { get; private set; } = false;
 
 
@@ -163,24 +163,22 @@ namespace RW_backend.Models.World
 
 	    private void AddReleases(IList<Releases> releasesList, int actionCount)
 	    {
-			
-
 			BitSetFactory bitSetFactory = new BitSetFactory();
-			ReleasedFluents = new Dictionary<int, Dictionary<State, List<ReleasesWithAgentsSet>>>(ActionIds.Count);
+			ReleasedFluents = new Dictionary<int, Dictionary<State, IList<ReleasesWithAgentsSet>>>(ActionIds.Count);
 
 		    if (releasesList == null || releasesList.Count == 0)
 			    return;
-
 
 			//for every unique ActionID
 			for (int i = 0; i < actionCount; i++)
 			{
 				Logger.Log("<ACTION> " + i);
 
-				var stateToReleasesWithAgentsSet = new Dictionary<State, List<ReleasesWithAgentsSet>>();
+				var stateToReleasesWithAgentsSet = new Dictionary<State, IList<ReleasesWithAgentsSet>>();
+			    var stateToAgentSetCheckers = Connections[i];
 
-				//for every starting state
-				foreach (var startingState in States)
+                //for every starting state
+                foreach (var startingState in States)
 				{
 #if DEBUG
 					Logger.Log("state = " + startingState);
@@ -190,8 +188,9 @@ namespace RW_backend.Models.World
 					List<Releases> sameID = releasesList.Where(a => a.Action == i).ToList();
 
 					var ascList = new List<ReleasesWithAgentsSet>(sameID.Count);
-					//for each action with the same ActionID
-					foreach (var releaseClause in sameID)
+				    var ascList2 = stateToAgentSetCheckers[startingState];
+                    //for each action with the same ActionID
+                    foreach (var releaseClause in sameID)
 					{
 #if DEBUG
 						Logger.Log("releases nr " + releaseClause);
@@ -203,17 +202,36 @@ namespace RW_backend.Models.World
 #if DEBUG
 							Logger.Log("state satisfies condition");
 #endif
-							ascList.Add(new ReleasesWithAgentsSet(releaseClause.AgentsSet.AgentSet,
-								new BitSet(bitSetFactory.CreateFromOneElement(releaseClause.FluentReleased))));
-						}
+						    ascList.Add(new ReleasesWithAgentsSet(releaseClause.AgentsSet.AgentSet,
+						        new BitSet(bitSetFactory.CreateFromOneElement(releaseClause.FluentReleased))));
+
+						    List<State> endingStateses;
+                            if (ascList2.Count > 0)
+						        endingStateses = ascList2[releaseClause.Action].Edges;
+                            else
+                                endingStateses = new List<State>();
+
+						    var s1 = new State(bitSetFactory.CreateFromStateAndSetValue
+						        (0, releaseClause.FluentReleased, startingState.FluentValues));
+						    var s2 = new State(bitSetFactory.CreateFromStateAndSetValue
+						        (1, releaseClause.FluentReleased, startingState.FluentValues));
+                            endingStateses.Add(s1);
+                            endingStateses.Add(s2);
+
+                            if (ascList2.Count > 0)
+                                ascList2[releaseClause.Action] = new AgentSetChecker
+                                    (releaseClause.AgentsSet.AgentSet,endingStateses);
+                            else
+                                ascList2.Add(new AgentSetChecker(releaseClause.AgentsSet.AgentSet, endingStateses));
+                        }
 					}
 					stateToReleasesWithAgentsSet.Add(startingState, ascList);
-				}
+                    stateToAgentSetCheckers[startingState] =  ascList2;
+
+                }
 				ReleasedFluents.Add(i, stateToReleasesWithAgentsSet);
+                Connections[i] = stateToAgentSetCheckers;
 			}
-
-
-
 		}
 
 	    private void AddAfters(IList<After> afterList)
