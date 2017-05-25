@@ -53,10 +53,7 @@ namespace RW_backend.Logic.Queries
 						WrongPath = result.WrongPath,
 					};
 			}
-
-			Console.WriteLine("reachable states = " + String.Join(", ", result.ReachableStates));
-			Logger.Log("reachable states = " + String.Join(", ", result.ReachableStates));
-			//Console.WriteLine("reachable states = " + String.Join(", ", result.ReachableStates));
+			
 			foreach (State reachableState in result.ReachableStates)
 			{
 				if (Effect.CheckForState(reachableState.FluentValues))
@@ -68,7 +65,6 @@ namespace RW_backend.Logic.Queries
 					allOk = false;
 				}
 			}
-			Logger.Log("result = all ok ? " + allOk + ", one ok? " + oneOk);
 			return new QueryResult()
 			{
 				IsTrue = Always ? (allOk && result.Executable == Executable.Always) : oneOk,

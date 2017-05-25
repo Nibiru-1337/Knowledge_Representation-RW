@@ -98,7 +98,7 @@ namespace RW_backend.Models.World
             {
 				Logger.Log("<ACTION> " + i);
 
-                var stateToAgentSetCheckers = new Dictionary<State, IList<AgentSetChecker>>();
+                var stateToAgentSetCheckers = new Dictionary<State, IList<AgentSetChecker>>(States.Count);
                 //for every starting state
                 foreach (var startingState in States)
                 {
@@ -153,6 +153,9 @@ namespace RW_backend.Models.World
                             ascList.Add(new AgentSetChecker(causesClause.AgentsSet.AgentSet, result));
                         }
                     }
+					// TODO: jak będzie sprawiać kłopoty, to wywalić
+					// ...raczej sprawia kłopoty :(
+	                // ascList = CompressAgentsSetCheckers(ascList);
                     stateToAgentSetCheckers.Add(startingState, ascList);
                 }
                 Connections.Add(i, stateToAgentSetCheckers);
@@ -160,6 +163,56 @@ namespace RW_backend.Models.World
                 ActionIds.Add(i);
             }
         }
+
+	    private List<AgentSetChecker> CompressAgentsSetCheckers(List<AgentSetChecker> ascList)
+	    {
+			// O(liczba zdań causes^2 * )
+		    List<AgentSetChecker> compressed = new List<AgentSetChecker>(ascList.Count);
+			compressed.Add(ascList[0]);
+		    for (int indexAsc = 1; indexAsc < ascList.Count; indexAsc++) // teraz chcemy dodać i-ty zbiór
+		    {
+			    bool shouldBeInserted = true;
+
+				AgentSetChecker ascChecker = ascList[indexAsc];
+
+			    for (int indexCompressed = 0; indexCompressed < compressed.Count; indexCompressed++) // porównujemy z j-tym ze skompresowanego
+			    {
+
+				    AgentSetChecker compChecker = compressed[indexCompressed];
+
+				    if (ascChecker.AgentsSet.AgentSet == compChecker.AgentsSet.AgentSet)
+				    {
+					    // wywalamy z compressed[j] te, których nie ma w ascList[i]
+					    compChecker.Edges.RemoveAll(state => !ascChecker.Edges.Contains(state)); // O(liczba stanów)
+						// i nie wrzucamy do compressed, bo już mamy przecięcie i jest dobrze
+					    shouldBeInserted = false;
+					    break; // bo skoro już był tamten, to wszystko załatwił
+				    }
+					else if (ascChecker.AgentsSet.IsSubsetOf(compChecker.AgentsSet.AgentSet))
+					{
+						// nowy zbiór jest podzbiorem skompresowanego
+						// asc = {a, b}
+						// compressed = {a, b, c}
+						// czyli stany, do których dojdziemy z compressed[j], muszą też należeć do asc[i]
+						compChecker.Edges.RemoveAll(state => !ascChecker.Edges.Contains(state)); // O(liczba stanów)
+						// ale wciąż dorzucamy do zbioru
+					}
+					else if (ascChecker.AgentsSet.IsSupersetOf(compChecker.AgentsSet.AgentSet))
+					{
+						// teraz stany, do których dojdziemy z asc, muszą należeć do compressed
+						ascChecker.Edges.RemoveAll(state => !compChecker.Edges.Contains(state));
+					}
+			    }
+
+			    if (shouldBeInserted)
+			    {
+				    compressed.Add(ascChecker);
+			    }
+		    }
+
+		    return compressed;
+
+	    }
 
 	    private void AddReleases(IList<Releases> releasesList, int actionCount)
 	    {

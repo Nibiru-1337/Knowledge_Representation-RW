@@ -129,7 +129,7 @@ namespace RW_backend.Logic.Queries
 							state,
 							step, notEngagedAgents);
 				}
-				else releasedFluents = new BitSet(0); // zero releases causes in that world
+				else releasedFluents = new BitSet(0); // zero releases clauses in that world
 				newStates.AddRange(minimiser.MinimaliseChanges(state, newStatesForThatState, releasedFluents.Set, world.NonInertialFluents.Set));
 			}
 
