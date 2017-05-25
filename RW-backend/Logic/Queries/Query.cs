@@ -42,6 +42,7 @@ namespace RW_backend.Logic.Queries
 					    .ToList();
 	    }
 
+		// top (0) level of execution
 		protected internal ProgramExecutionResult ExecuteProgram(World world, MinimiserOfChanges minimiser, 
 			List<State> initialStates, int notEngagedAgents = 0)
 	    {
@@ -103,7 +104,7 @@ namespace RW_backend.Logic.Queries
 	    }
 		
 
-
+		// inner (1) level of execution
 	    List<State> TakeNextTimeStep(int step, List<State> states, World world, int notEngagedAgents, 
 			MinimiserOfChanges minimiser, ref bool executableAlways)
 	    {
@@ -116,9 +117,10 @@ namespace RW_backend.Logic.Queries
 #if DEBUG
 				Logger.Log("~* state = " + state);
 #endif
+				bool emptyAction = false;
 				newStatesForThatState =
 					GoFurtherFromThatState(world.Connections[Program[step].ActionId][state], notEngagedAgents,
-						state, step, ref executableAlways);
+						state, step, ref executableAlways, out emptyAction);
 
 				// get released
 				BitSet releasedFluents;
@@ -130,26 +132,25 @@ namespace RW_backend.Logic.Queries
 							step, notEngagedAgents);
 				}
 				else releasedFluents = new BitSet(0); // zero releases clauses in that world
-				newStates.AddRange(minimiser.MinimaliseChanges(state, newStatesForThatState, releasedFluents.Set, world.NonInertialFluents.Set));
+				UpdateNewStates(newStates, emptyAction, releasedFluents, state, world, minimiser, newStatesForThatState);
 			}
 
 		    return newStates;
 	    }
 
-
-
-
+		// inner (2) level od execution
 	    private List<State> GoFurtherFromThatState(IList<AgentSetChecker> setCheckers, int notEngagedAgents, State state, 
-			int step, ref bool executableAlways)
+			int step, ref bool executableAlways, out bool emptyAction)
 	    {
 		    int howManyStateAvailable = 0;
 			Dictionary<State, int> intersectedStatesSet = new Dictionary<State, int>();
 
-		    if (setCheckers.Count == 0) // empty action
+			emptyAction = true; // jeśli będzie jakiś setChecker, to zmienimy
+			if (setCheckers.Count == 0) // empty action
 		    {
-				return  new List<State>() {state};
+				return  new List<State>() {state}; // chyba że releases
 		    }
-
+			
 		    foreach (AgentSetChecker setChecker in setCheckers)
 		    {
 #if DEBUG
@@ -165,6 +166,7 @@ namespace RW_backend.Logic.Queries
 #if DEBUG
 				    Logger.Log("pass, states here = " + string.Join(", ", setChecker.Edges));
 #endif
+				    emptyAction = false; // nie, ponieważ istnieje taki zbiór agentów, który prowadzi do czegoś, nawet jeśli do sprzeczności
 				    howManyStateAvailable++;
 				    if (setChecker.Edges.Count == 0) // impossible action in that state with those agents
 				    {
@@ -175,6 +177,9 @@ namespace RW_backend.Logic.Queries
 				    AddToIntersected(setChecker.Edges, intersectedStatesSet);
 			    }
 		    }
+			if(emptyAction)
+				return new List<State>() {state}; // żeby nie liczyć niepotrzebnie w sumie pustych rzeczy
+
 #if DEBUG
 			Logger.Log("intersecting here = "
 						+ string.Join(", ", intersectedStatesSet.Select(p => "(" + p.Value + ", " + p.Key + ")")));
@@ -182,9 +187,50 @@ namespace RW_backend.Logic.Queries
 		    return GetAvailableStatesFromIntersected(intersectedStatesSet, howManyStateAvailable);
 	    }
 
+		#region helpers methods
+		private void UpdateNewStates(List<State> newStates, bool emptyAction,
+		    BitSet releasedFluents, State state, World world, MinimiserOfChanges minimiser, List<State> newStatesForThatState)
+	    {
+			if (emptyAction)
+			{
+				if (Equals(releasedFluents, BitSet.EmptySet)) // nic się nie zmienia
+				{
+					// dodajemy ten stan i już
+					newStates.Add(state);
+				}
+				else
+				{
+					newStates.AddRange(GetReleasedStatesWhenEmptyAction(state, releasedFluents));
+				}
+			}
+			newStates.AddRange(minimiser.MinimaliseChanges(state, newStatesForThatState, releasedFluents.Set, 
+				world.NonInertialFluents.Set));
+		}
+
+	    private List<State> GetReleasedStatesWhenEmptyAction(State state,
+		    BitSet releasedFluents)
+	    {
+		    var released = releasedFluents.GetAllFromSet(); // na pewno distinct
+			var newStates = new List<State>((int)Math.Pow(released.Count, 2));
+			newStates.Add(state);
+			BitSetFactory bsfactory = new BitSetFactory();
+			foreach (var fluent in released)
+		    {
+				List<State> newSts = new List<State>(newStates.Count);
+			    foreach (State st in newStates) // podwajamy stany
+			    {
+				    if (st.FluentValue(fluent))
+					    newSts.Add(new State(bsfactory.CreateFromStateAndSetValue(0, fluent, st.FluentValues)));
+				    else newSts.Add(new State(bsfactory.CreateFromStateAndSetValue(1, fluent, st.FluentValues)));
+			    }
+				newStates.AddRange(newSts);
+		    }
+		    return newStates;
+	    } 
+
 	    private BitSet GetReleasedFluents(IList<ReleasesWithAgentsSet> releases, World world, State state, int step, int notEngagedAgents)
 	    {
-			if (releases.Count == 0) // empty action
+			if (releases.Count == 0) // empty action in terms of releases
 			{
 				return new BitSet(0);
 			}
@@ -232,13 +278,14 @@ namespace RW_backend.Logic.Queries
 			return checker.CanBeExecutedByAgentsSet(agentsAvailable)
 					&& !checker.UsesAgentFromSet(notEngagedAgents);
 	    }
-		
 
+		#endregion
 		public enum QueryType
 		{
 			Executable,
 			After,
-			Engaged
+			Engaged,
+			ExecutePath,
 		}
 
 	}

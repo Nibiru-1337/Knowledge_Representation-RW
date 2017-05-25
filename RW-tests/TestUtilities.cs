@@ -10,6 +10,18 @@ namespace RW_tests
 {
 	class TestUtilities
 	{
+		const int MaxNumberOfElementsSetInInt = sizeof (int)*8;
+		public static string WriteOutBitSet(int set)
+		{
+			BitSetOperator bop = new BitSetOperator();
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < MaxNumberOfElementsSetInInt; i++)
+			{
+				sb.Append(bop.GetValue(set, i) ? "1" : "0");
+			}
+			return sb.ToString();
+		}
+
 		public static string WriteOutWorld(World world)
 		{
 			StringBuilder sb = new StringBuilder();

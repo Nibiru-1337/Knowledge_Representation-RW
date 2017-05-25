@@ -56,23 +56,27 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="BuildingOfWorldTests\TestWorldGenerator.cs" />
-    <Compile Include="BuildingOfWorldTests\GeneratingWorldTests.cs" />
-    <Compile Include="BuildingOfWorldTests\MinimiserTests.cs" />
-    <Compile Include="BuildingOfWorldTests\PerformanceTests.cs" />
-    <Compile Include="BuildingOfWorldTests\SimpleYaleScenerioWorldGenerator.cs" />
-    <Compile Include="SceneriosTests\YaleScenerioTests.cs" />
-    <Compile Include="LogicTests\AlternativeOfConjunctionsTests.cs" />
-    <Compile Include="LogicTests\ConjunctionOfAlternativesTests.cs" />
-    <Compile Include="LogicTests\UniformLogicClausesTests.cs" />
-    <Compile Include="LogicTests\BitSetTests.cs" />
-    <Compile Include="LogicTests\Utilities.cs" />
-    <Compile Include="ParserTests\ParsingTests.cs" />
-    <Compile Include="SceneriosTests\FourAgentsYaleScenerio.cs" />
-    <Compile Include="SceneriosTests\TestsBackend.cs" />
+    <Compile Include="ManualTests\BuildingOfWorldTests\TestWorldGenerator.cs" />
+    <Compile Include="ManualTests\BuildingOfWorldTests\GeneratingWorldTests.cs" />
+    <Compile Include="ManualTests\BuildingOfWorldTests\MinimiserTests.cs" />
+    <Compile Include="ManualTests\BuildingOfWorldTests\PerformanceTests.cs" />
+    <Compile Include="ManualTests\BuildingOfWorldTests\SimpleYaleScenerioWorldGenerator.cs" />
+    <Compile Include="ManualTests\LogicTests\DictionaryTests.cs" />
+    <Compile Include="ManualTests\SceneriosTests\ReleasesYaleScenerioTests.cs" />
+    <Compile Include="ManualTests\SceneriosTests\YaleScenerioTests.cs" />
+    <Compile Include="ManualTests\LogicTests\AlternativeOfConjunctionsTests.cs" />
+    <Compile Include="ManualTests\LogicTests\ConjunctionOfAlternativesTests.cs" />
+    <Compile Include="ManualTests\LogicTests\UniformLogicClausesTests.cs" />
+    <Compile Include="ManualTests\LogicTests\BitSetTests.cs" />
+    <Compile Include="ManualTests\LogicTests\Utilities.cs" />
+    <Compile Include="ManualTests\ParserTests\ParsingTests.cs" />
+    <Compile Include="ManualTests\SceneriosTests\FourAgentsYaleScenerio.cs" />
+    <Compile Include="ManualTests\SceneriosTests\TestsBackend.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SceneriosTests\GoalFor_10_05_Test.cs" />
+    <Compile Include="ManualTests\SceneriosTests\GoalFor_10_05_Test.cs" />
     <Compile Include="TestUtilities.cs" />
+    <Compile Include="UltimateSystemTests\ExamSessionScenerioExecutableTests.cs" />
+    <Compile Include="UltimateSystemTests\PatriciaExamSessionScenerioGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RW-backend\RW-backend.csproj">
@@ -87,6 +91,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

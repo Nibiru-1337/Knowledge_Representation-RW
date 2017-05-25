@@ -47,13 +47,19 @@ namespace RW_backend.Models.Clauses.LogicClauses
 		{
 			PositiveFluents = 0;
 			NegatedFluents = 0;
-			foreach (int i in positive)
+			if (positive != null)
 			{
-				AddFluent(i, FluentSign.Positive);
+				foreach (int i in positive)
+				{
+					AddFluent(i, FluentSign.Positive);
+				}
 			}
-			foreach (int i in negated)
+			if (negated != null)
 			{
-				AddFluent(i, FluentSign.Negated);
+				foreach (int i in negated)
+				{
+					AddFluent(i, FluentSign.Negated);
+				}
 			}
 		}
 

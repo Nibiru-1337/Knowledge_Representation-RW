@@ -4,7 +4,7 @@ namespace RW_backend.Models.BitSets
 {
 	public class BitSet
 	{
-		private int MaxElementsCount = 32;
+		private int MaxElementsCount = sizeof(int)*8;
 		public int Set { get; }
 
 		public BitSet(int set)
@@ -12,6 +12,7 @@ namespace RW_backend.Models.BitSets
 			Set = set;
 		}
 
+		public static BitSet EmptySet => new BitSet(0);
 
 
 		public bool ElementValue(int elementNumber) => (Set & (1 << elementNumber)) > 0;
@@ -61,5 +62,7 @@ namespace RW_backend.Models.BitSets
 		{
 			return Set.ToString();
 		}
+
+		
 	}
 }

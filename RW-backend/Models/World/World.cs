@@ -30,10 +30,11 @@ namespace RW_backend.Models.World
         //connections b/w states are represented with a chain of dictonaries
         // [int(ActionId)] [State(starting state)] -> List<AgentSetChecker>
         public Dictionary<int, Dictionary<State, IList<AgentSetChecker>>> Connections { get; private set; }
-		public List<State> InitialStates { get; private set; } 
+		public List<State> InitialStates { get; private set; }
 		public BitSet NonInertialFluents { get; private set; }
 		public Dictionary<int, Dictionary<State, IList<ReleasesWithAgentsSet>>> ReleasedFluents { get; private set; }
 	    public bool Inconsistent { get; private set; } = false;
+		public IList<LogicClause> Always { get; private set; } 
 
 
         public World(int fluentsCount, IList<LogicClause> alwaysList, IList<LogicClause> initiallyList, 
@@ -43,6 +44,7 @@ namespace RW_backend.Models.World
 			AddCauses(causesList, actionsCount);
 			AddReleases(releasesList, actionsCount);
 			AddAfters(afterList);
+	        Always = alwaysList;
         }
 
 	    private void Initialize(int fluentsesCount, IList<LogicClause> alwaysList,
@@ -161,15 +163,18 @@ namespace RW_backend.Models.World
             }
         }
 
-	    
 
-	    private void AddReleases(IList<Releases> releasesList, int actionCount)
-	    {
+
+		private void AddReleases(IList<Releases> releasesList, int actionCount)
+		{
+
+
 			BitSetFactory bitSetFactory = new BitSetFactory();
 			ReleasedFluents = new Dictionary<int, Dictionary<State, IList<ReleasesWithAgentsSet>>>(ActionIds.Count);
 
-		    if (releasesList == null || releasesList.Count == 0)
-			    return;
+			if (releasesList == null || releasesList.Count == 0)
+				return;
+
 
 			//for every unique ActionID
 			for (int i = 0; i < actionCount; i++)
@@ -177,10 +182,9 @@ namespace RW_backend.Models.World
 				Logger.Log("<ACTION> " + i);
 
 				var stateToReleasesWithAgentsSet = new Dictionary<State, IList<ReleasesWithAgentsSet>>();
-			    var stateToAgentSetCheckers = Connections[i];
 
-                //for every starting state
-                foreach (var startingState in States)
+				//for every starting state
+				foreach (var startingState in States)
 				{
 #if DEBUG
 					Logger.Log("state = " + startingState);
@@ -190,9 +194,8 @@ namespace RW_backend.Models.World
 					List<Releases> sameID = releasesList.Where(a => a.Action == i).ToList();
 
 					var ascList = new List<ReleasesWithAgentsSet>(sameID.Count);
-				    var ascList2 = stateToAgentSetCheckers[startingState];
-                    //for each action with the same ActionID
-                    foreach (var releaseClause in sameID)
+					//for each action with the same ActionID
+					foreach (var releaseClause in sameID)
 					{
 #if DEBUG
 						Logger.Log("releases nr " + releaseClause);
@@ -204,39 +207,20 @@ namespace RW_backend.Models.World
 #if DEBUG
 							Logger.Log("state satisfies condition");
 #endif
-						    ascList.Add(new ReleasesWithAgentsSet(releaseClause.AgentsSet.AgentSet,
-						        new BitSet(bitSetFactory.CreateFromOneElement(releaseClause.FluentReleased))));
-
-						    List<State> endingStateses;
-                            if (ascList2.Count > releaseClause.Action)
-						        endingStateses = ascList2[releaseClause.Action].Edges;
-                            else
-                                endingStateses = new List<State>();
-
-						    var s1 = new State(bitSetFactory.CreateFromStateAndSetValue
-						        (0, releaseClause.FluentReleased, startingState.FluentValues));
-						    var s2 = new State(bitSetFactory.CreateFromStateAndSetValue
-						        (1, releaseClause.FluentReleased, startingState.FluentValues));
-                            endingStateses.Add(s1);
-                            endingStateses.Add(s2);
-
-                            if (ascList2.Count > releaseClause.Action)
-                                ascList2[releaseClause.Action] = new AgentSetChecker
-                                    (releaseClause.AgentsSet.AgentSet,endingStateses);
-                            else
-                                ascList2.Add(new AgentSetChecker(releaseClause.AgentsSet.AgentSet, endingStateses));
-                        }
+							ascList.Add(new ReleasesWithAgentsSet(releaseClause.AgentsSet.AgentSet,
+								new BitSet(bitSetFactory.CreateFromOneElement(releaseClause.FluentReleased))));
+						}
 					}
 					stateToReleasesWithAgentsSet.Add(startingState, ascList);
-                    stateToAgentSetCheckers[startingState] =  ascList2;
-
-                }
+				}
 				ReleasedFluents.Add(i, stateToReleasesWithAgentsSet);
-                Connections[i] = stateToAgentSetCheckers;
 			}
+
+
+
 		}
 
-	    private void AddAfters(IList<After> afterList)
+		private void AddAfters(IList<After> afterList)
 	    {
 			//BitSetFactory factory = new BitSetFactory();
 		    if (afterList == null)

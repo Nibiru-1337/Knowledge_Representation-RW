@@ -56,11 +56,6 @@ namespace RW_tests.BuildingOfWorldTests
 					logicClausesFactory.CreateSingleFluentClause(YaleScenerio.Alive, FluentSign.Negated));
 			Assert.AreEqual(false, query.Evaluate(world).IsTrue, "wrong result of query");
 		}
-
-
-       
-
-       
         
 
 		private void CheckConnections(World world)
@@ -80,11 +75,39 @@ namespace RW_tests.BuildingOfWorldTests
             State state0 = new State(0), state1 = new State(1);
             var world = new TestWorldGenerator().GenerateWorldWithReleasingAction(fluentsCount, actionsCount);
 
-            Assert.IsNotNull(world);
-            Assert.AreEqual(actionsCount, world.ActionIds.Count);
-            Assert.IsTrue(world.Connections[action][state0].Any(asc=>asc.Edges.Contains(state1)));
-            Assert.IsTrue(world.Connections[action][state1].Any(asc=>asc.Edges.Contains(state0)));
-        }
+            Assert.IsNotNull(world, "world is null");
+            Assert.AreEqual(actionsCount, world.ActionIds.Count, "wrong action count");
+            //Assert.IsTrue(world.Connections[action][state0].Any(asc=>asc.Edges.Contains(state1)), "no state1 in reachable states");
+            //Assert.IsTrue(world.Connections[action][state1].Any(asc=>asc.Edges.Contains(state0)), "no state0 in reachable states");
+			
+			// state0:
+			ReachableStatesQuery query0 = GetQueryForReleasesWithoutCausesTest(0, 0, 0, true);
+			// state1:
+			ReachableStatesQuery query1 = GetQueryForReleasesWithoutCausesTest(0, 0, 0, false);
+			CheckResultFromQueryInReleasesWithoutCausesTest(query0, world, state0, state1, action);
+			CheckResultFromQueryInReleasesWithoutCausesTest(query1, world, state0, state1, action);
+
+		}
+
+		private void CheckResultFromQueryInReleasesWithoutCausesTest(ReachableStatesQuery query,
+			World world, State state0, State state1, int action)
+		{
+			var result = query.RunQuery(world);
+			Assert.IsTrue(result.ReachableStates.Any(asc => Equals(asc, state1)), "no state1 in reachable states");
+			Assert.IsTrue(result.ReachableStates.Any(asc => Equals(asc, state0)), "no state0 in reachable states");
+		}
+
+		private ReachableStatesQuery GetQueryForReleasesWithoutCausesTest(int action, int agent, int fluent, bool ifState0)
+		{
+			List<int> positive = null, negated = null;
+			if (ifState0)
+				positive = new List<int>() {fluent};
+			else negated = new List<int>() {fluent};
+			return new ReachableStatesQuery(new ActionAgentsPair[]
+			{
+				new ActionAgentsPair(action, AgentsSet.CreateFromOneAgent(agent).AgentSet)
+			}, UniformConjunction.CreateFrom(positive, negated), false); // czyli ze stanu state1
+		}
 
         [TestMethod]
         public void ActionInvertingFluentTest()

@@ -42,6 +42,7 @@
     <Compile Include="Logger.cs" />
     <Compile Include="Logic\BackendLogic.cs" />
     <Compile Include="Logic\MinimiserOfChanges.cs" />
+    <Compile Include="Logic\Queries\ReachableStatesQuery.cs" />
     <Compile Include="Logic\Queries\Results\ProgramExecutionResult.cs" />
     <Compile Include="Logic\Queries\Results\QueryResult.cs" />
     <Compile Include="Models\BitSets\AgentsSet.cs" />
