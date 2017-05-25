@@ -46,7 +46,7 @@ namespace RW_tests.BuildingOfWorldTests
 
         public int AddAction(Model model, string actionName)
         {
-            var newActionId = model.ActionsCount;
+            var newActionId = model.ActionsCount-1;
             model.ActionsNames.Add(newActionId, actionName);
             return newActionId;
         }

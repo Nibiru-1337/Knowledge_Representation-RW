@@ -5,7 +5,7 @@
 	/// </summary>
 	public class BitSetOperator
 	{
-		public int SetFluent(int bitValue, int bitIndex)
+        public int SetFluent(int bitValue, int bitIndex)
 		{
 			return bitValue | (1 << bitIndex);
 		}

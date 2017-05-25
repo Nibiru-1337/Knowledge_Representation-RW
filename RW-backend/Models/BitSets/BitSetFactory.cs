@@ -22,7 +22,5 @@ namespace RW_backend.Models.Factories
 			return _bitValueOperator.SetFluent(0, element);
 		}
 
-		
-		
-	}
+    }
 }
