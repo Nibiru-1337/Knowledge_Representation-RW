@@ -206,7 +206,7 @@ namespace RW_backend.Models.World
 						        new BitSet(bitSetFactory.CreateFromOneElement(releaseClause.FluentReleased))));
 
 						    List<State> endingStateses;
-                            if (ascList2.Count > 0)
+                            if (ascList2.Count > releaseClause.Action)
 						        endingStateses = ascList2[releaseClause.Action].Edges;
                             else
                                 endingStateses = new List<State>();
@@ -218,7 +218,7 @@ namespace RW_backend.Models.World
                             endingStateses.Add(s1);
                             endingStateses.Add(s2);
 
-                            if (ascList2.Count > 0)
+                            if (ascList2.Count > releaseClause.Action)
                                 ascList2[releaseClause.Action] = new AgentSetChecker
                                     (releaseClause.AgentsSet.AgentSet,endingStateses);
                             else
