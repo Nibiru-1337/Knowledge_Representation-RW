@@ -22,7 +22,12 @@ namespace RW_backend.Models.Factories
 			return _bitValueOperator.SetFluent(0, element);
 		}
 
-		
-		
-	}
+        public int CreateFromStateAndSetValue(int bitValue, int bitIdx, int state)
+        {
+            if (bitValue == 0 && bitIdx == 0) //TODO: special case, maybe it should be considered in BitSetOperator?
+                return state & ~1;
+            else
+                return _bitValueOperator.SetFluent(bitValue, bitIdx) | state;
+        }
+    }
 }

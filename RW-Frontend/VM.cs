@@ -50,8 +50,8 @@ namespace RW_Frontend
         }
 
         internal static VM Create(string[] fluents, string[] actions, string[] agents,
-         string[] noninertial, string[] always, string[] initially,
-         string[] after, string[] causes, string[] releases)
+            string[] noninertial, string[] always, string[] initially,
+            string[] after, string[] causes, string[] releases)
         {
             //metoda na potrzeby automatyzacji testów
             return new VM
@@ -68,13 +68,14 @@ namespace RW_Frontend
                 ReleasesStatements = new ObservableCollection<string>(releases)
             };
         }
+
         public World World { get; private set; }
 
         #region Components Control
 
         private TextBox CreateFluentAgentActionTextBox()
         {
-            var textBox = new TextBox { Height = 25, FontSize = 14, Margin = new Thickness(5) };
+            var textBox = new TextBox {Height = 25, FontSize = 14, Margin = new Thickness(5)};
             textBox.BorderBrush = Brushes.Red;
             textBox.LostFocus += ValidateTextBox;
             return textBox;
@@ -82,7 +83,7 @@ namespace RW_Frontend
 
         private void ValidateTextBox(object sender, RoutedEventArgs e)
         {
-            var textBox = (TextBox)sender;
+            var textBox = (TextBox) sender;
             if (string.IsNullOrEmpty(textBox.Text) ||
                 (FluentsTextBoxes.Contains(textBox) &&
                  FluentsTextBoxes.Select(_ => _.Text).Count(_ => _.Equals(textBox.Text)) > 1)
@@ -205,12 +206,20 @@ namespace RW_Frontend
 
         private ComboBox CreateActionsComboBox()
         {
-            var comboBox = new ComboBox { Name = "ActionsComboBox", Margin = new Thickness(5), Height = 25, Width = 150, VerticalAlignment = VerticalAlignment.Center };
+            var comboBox = new ComboBox
+            {
+                Name = "ActionsComboBox",
+                Margin = new Thickness(5),
+                Height = 25,
+                Width = 150,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            comboBox.ItemsSource = new List<string>() {string.Empty};
             comboBox.SelectedItem = string.Empty;
             comboBox.MouseEnter += (s, e) =>
             {
                 var actions = ActionsTextBoxes.Select(_ => _.Text).Where(_ => _ != string.Empty);
-                actions = actions.Concat(new List<string> { string.Empty });
+                actions = actions.Concat(new List<string> {string.Empty});
                 comboBox.ItemsSource = actions;
             };
             return comboBox;
@@ -218,31 +227,48 @@ namespace RW_Frontend
 
         private ComboBox CreateFluentsComboBox()
         {
-            var comboBox = new ComboBox { Name = "FluentsComboBox", Margin = new Thickness(5), Height = 25, Width = 150, VerticalAlignment = VerticalAlignment.Center };
+            var comboBox = new ComboBox
+            {
+                Name = "FluentsComboBox",
+                Margin = new Thickness(5),
+                Height = 25,
+                Width = 150,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            comboBox.ItemsSource = new List<string>() {string.Empty};
             comboBox.SelectedItem = string.Empty;
             comboBox.MouseEnter += (s, e) =>
             {
                 var fluents = FluentsTextBoxes.Select(_ => _.Text).Where(_ => _ != string.Empty);
+                fluents = fluents.Concat(new List<string> {string.Empty});
                 comboBox.ItemsSource = fluents;
             };
             return comboBox;
         }
 
         internal const string AnyAgent = "ANY";
+
         private Expander CreateAgentsExpanderListBox()
         {
-            var ep = new Expander { Name = "AgentsExpanderListBox", Header = "Agents", VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(10) };
+            var ep = new Expander
+            {
+                Name = "AgentsExpanderListBox",
+                Header = "Agents",
+                VerticalAlignment = VerticalAlignment.Center,
+                Margin = new Thickness(10)
+            };
             var listBox = new ListBox
             {
                 Name = "AgentsListBox",
                 Margin = new Thickness(5),
-                SelectionMode = SelectionMode.Multiple
+                SelectionMode = SelectionMode.Multiple,
+                SelectedItem = string.Empty
             };
             ep.Content = listBox;
             ep.MouseEnter += (s, e) =>
             {
                 var actions = AgentsTextBoxes.Select(_ => _.Text).Where(_ => _ != string.Empty);
-                actions = actions.Concat(new List<string> { AnyAgent });
+                actions = actions.Concat(new List<string> {AnyAgent});
                 listBox.ItemsSource = actions;
             };
             return ep;
@@ -250,31 +276,60 @@ namespace RW_Frontend
 
         private Label CreateByLabel()
         {
-            var label = new Label { Margin = new Thickness(5), Content = "by", VerticalAlignment = VerticalAlignment.Center };
+            var label = new Label
+            {
+                Margin = new Thickness(5),
+                Content = "by",
+                VerticalAlignment = VerticalAlignment.Center
+            };
             return label;
         }
 
         private Label CreateWithLabel()
         {
-            var label = new Label { Margin = new Thickness(5), Content = "with", VerticalAlignment = VerticalAlignment.Center };
+            var label = new Label
+            {
+                Margin = new Thickness(5),
+                Content = "with",
+                VerticalAlignment = VerticalAlignment.Center
+            };
             return label;
         }
 
         private Label CreateIfLabel()
         {
-            var label = new Label { Margin = new Thickness(5), Content = "if", VerticalAlignment = VerticalAlignment.Center };
+            var label = new Label
+            {
+                Margin = new Thickness(5),
+                Content = "if",
+                VerticalAlignment = VerticalAlignment.Center
+            };
             return label;
         }
 
         private Label CreateFromLabel()
         {
-            var label = new Label { Margin = new Thickness(5), Content = "from", VerticalAlignment = VerticalAlignment.Center };
+            var label = new Label
+            {
+                Margin = new Thickness(5),
+                Content = "from",
+                VerticalAlignment = VerticalAlignment.Center
+            };
             return label;
         }
 
         private Label CreateQueryResultLabel()
         {
-            var label = new Label { Margin = new Thickness(10), Content = "T/N", VerticalAlignment = VerticalAlignment.Center, FontWeight = FontWeights.Bold, BorderBrush = Brushes.Gray, Foreground = Brushes.Gray, BorderThickness = new Thickness(2) };
+            var label = new Label
+            {
+                Margin = new Thickness(10),
+                Content = "T/N",
+                VerticalAlignment = VerticalAlignment.Center,
+                FontWeight = FontWeights.Bold,
+                BorderBrush = Brushes.Gray,
+                Foreground = Brushes.Gray,
+                BorderThickness = new Thickness(2)
+            };
             return label;
         }
 
@@ -293,11 +348,20 @@ namespace RW_Frontend
         }
 
         #region ActionByAgents control
+
         private StackPanel CreateActionByAgentsControlButtons(Expander expander)
         {
-            var stackPanel = new StackPanel { Orientation = Orientation.Horizontal };
+            var stackPanel = new StackPanel {Orientation = Orientation.Horizontal};
 
-            var addingButton = new Button { Content = "+", Height = 20, Width = 20, Margin = new Thickness(5), FontSize = 12, ToolTip = Settings.Default.AddScenario };
+            var addingButton = new Button
+            {
+                Content = "+",
+                Height = 20,
+                Width = 20,
+                Margin = new Thickness(5),
+                FontSize = 12,
+                ToolTip = Settings.Default.AddScenario
+            };
             addingButton.Click += (s, e) =>
             {
                 var expanderContent = expander.Content as StackPanel;
@@ -306,7 +370,15 @@ namespace RW_Frontend
                 expanderContent.Children.Add(CreateActionByAgentsStackPanel());
             };
 
-            var removingButton = new Button { Content = "x", Height = 20, Width = 20, Margin = new Thickness(5), FontSize = 12, ToolTip = Settings.Default.RemoveScenario };
+            var removingButton = new Button
+            {
+                Content = "x",
+                Height = 20,
+                Width = 20,
+                Margin = new Thickness(5),
+                FontSize = 12,
+                ToolTip = Settings.Default.RemoveScenario
+            };
             removingButton.Click += (s, e) =>
             {
                 var expanderContent = expander.Content as StackPanel;
@@ -323,7 +395,7 @@ namespace RW_Frontend
 
         private StackPanel CreateActionByAgentsStackPanel()
         {
-            var stackPanel = new StackPanel { Orientation = Orientation.Horizontal };
+            var stackPanel = new StackPanel {Orientation = Orientation.Horizontal};
             stackPanel.Children.Add(CreateActionsComboBox());
             stackPanel.Children.Add(CreateByLabel());
             stackPanel.Children.Add(CreateAgentsExpanderListBox());
@@ -332,7 +404,12 @@ namespace RW_Frontend
 
         private Expander CreateActionsByAgentsExpander()
         {
-            var expander = new Expander { Name = "ActionsByAgentsExpander", Header = "A by G", VerticalAlignment = VerticalAlignment.Center };
+            var expander = new Expander
+            {
+                Name = "ActionsByAgentsExpander",
+                Header = "A by G",
+                VerticalAlignment = VerticalAlignment.Center
+            };
             var stackPanel = new StackPanel();
             stackPanel.Children.Add(CreateActionByAgentsControlButtons(expander));
             stackPanel.Children.Add(CreateActionByAgentsStackPanel());
@@ -362,7 +439,7 @@ namespace RW_Frontend
 
         private void RemoveFluentButtonClick(object sender, RoutedEventArgs e)
         {
-            Button clickedButton = (Button)sender;
+            Button clickedButton = (Button) sender;
             int removingItemIdx = FluentsRemoveButtons.IndexOf(clickedButton);
             FluentsRemoveButtons.RemoveAt(removingItemIdx);
             FluentsTextBoxes.RemoveAt(removingItemIdx);
@@ -427,7 +504,7 @@ namespace RW_Frontend
 
         private void RemoveActionButtonClick(object sender, RoutedEventArgs e)
         {
-            Button clickedButton = (Button)sender;
+            Button clickedButton = (Button) sender;
             int removingItemIdx = ActionsRemoveButtons.IndexOf(clickedButton);
             ActionsRemoveButtons.RemoveAt(removingItemIdx);
             string removedValue = ActionsTextBoxes.ElementAt(removingItemIdx).Text;
@@ -510,7 +587,7 @@ namespace RW_Frontend
 
         private void RemoveAgentButtonClick(object sender, RoutedEventArgs e)
         {
-            Button clickedButton = (Button)sender;
+            Button clickedButton = (Button) sender;
             int removingItemIdx = AgentsRemoveButtons.IndexOf(clickedButton);
             AgentsRemoveButtons.RemoveAt(removingItemIdx);
             AgentsTextBoxes.RemoveAt(removingItemIdx);
@@ -574,8 +651,13 @@ namespace RW_Frontend
 
         private StackPanel CreateInitiallyClauseStackPanel()
         {
-            var stackPanel = new StackPanel { Orientation = Orientation.Horizontal };
-            stackPanel.Children.Add(new Label { Margin = new Thickness(5), Content = "initially", VerticalAlignment = VerticalAlignment.Center });
+            var stackPanel = new StackPanel {Orientation = Orientation.Horizontal};
+            stackPanel.Children.Add(new Label
+            {
+                Margin = new Thickness(5),
+                Content = "initially",
+                VerticalAlignment = VerticalAlignment.Center
+            });
             stackPanel.Children.Add(CreateLogicExpTextBox("alfaInitiallyExp"));
             stackPanel.Children.Add(CreateRemoveButton("Initially"));
             return stackPanel;
@@ -583,7 +665,7 @@ namespace RW_Frontend
 
         private void RemoveInitiallyClauseButtonClick(object sender, RoutedEventArgs e)
         {
-            Button clickedButton = (Button)sender;
+            Button clickedButton = (Button) sender;
             var removingStackPanel = InitiallyClausesStackPanels.First(_ => _.Children.Contains(clickedButton));
             int removingItemIdx = InitiallyClausesStackPanels.IndexOf(removingStackPanel);
             InitiallyClausesStackPanels.RemoveAt(removingItemIdx);
@@ -626,9 +708,14 @@ namespace RW_Frontend
 
         private StackPanel CreateAfterClauseStackPanel()
         {
-            var stackPanel = new StackPanel { Orientation = Orientation.Horizontal };
+            var stackPanel = new StackPanel {Orientation = Orientation.Horizontal};
             stackPanel.Children.Add(CreateLogicExpTextBox("alfaAfterExp"));
-            stackPanel.Children.Add(new Label { Margin = new Thickness(5), Content = "after", VerticalAlignment = VerticalAlignment.Center });
+            stackPanel.Children.Add(new Label
+            {
+                Margin = new Thickness(5),
+                Content = "after",
+                VerticalAlignment = VerticalAlignment.Center
+            });
             stackPanel.Children.Add(CreateActionsByAgentsExpander());
             stackPanel.Children.Add(CreateRemoveButton("After"));
             return stackPanel;
@@ -636,7 +723,7 @@ namespace RW_Frontend
 
         private void RemoveAfterClauseButtonClick(object sender, RoutedEventArgs e)
         {
-            Button clickedButton = (Button)sender;
+            Button clickedButton = (Button) sender;
             var removingStackPanel = AfterClausesStackPanels.First(_ => _.Children.Contains(clickedButton));
             int removingItemIdx = AfterClausesStackPanels.IndexOf(removingStackPanel);
             AfterClausesStackPanels.RemoveAt(removingItemIdx);
@@ -679,10 +766,20 @@ namespace RW_Frontend
 
         private StackPanel CreateObservableClauseStackPanel()
         {
-            var stackPanel = new StackPanel { Orientation = Orientation.Horizontal };
-            stackPanel.Children.Add(new Label { Margin = new Thickness(5), Content = "observable", VerticalAlignment = VerticalAlignment.Center });
+            var stackPanel = new StackPanel {Orientation = Orientation.Horizontal};
+            stackPanel.Children.Add(new Label
+            {
+                Margin = new Thickness(5),
+                Content = "observable",
+                VerticalAlignment = VerticalAlignment.Center
+            });
             stackPanel.Children.Add(CreateLogicExpTextBox("alfaObservableExp"));
-            stackPanel.Children.Add(new Label { Margin = new Thickness(5), Content = "after", VerticalAlignment = VerticalAlignment.Center });
+            stackPanel.Children.Add(new Label
+            {
+                Margin = new Thickness(5),
+                Content = "after",
+                VerticalAlignment = VerticalAlignment.Center
+            });
             stackPanel.Children.Add(CreateActionsByAgentsExpander());
             stackPanel.Children.Add(CreateRemoveButton("Observable"));
             return stackPanel;
@@ -690,7 +787,7 @@ namespace RW_Frontend
 
         private void RemoveObservableClauseButtonClick(object sender, RoutedEventArgs e)
         {
-            Button clickedButton = (Button)sender;
+            Button clickedButton = (Button) sender;
             var removingStackPanel = ObservableClausesStackPanels.First(_ => _.Children.Contains(clickedButton));
             int removingItemIdx = ObservableClausesStackPanels.IndexOf(removingStackPanel);
             ObservableClausesStackPanels.RemoveAt(removingItemIdx);
@@ -733,11 +830,16 @@ namespace RW_Frontend
 
         private StackPanel CreateCausesClauseStackPanel()
         {
-            var stackPanel = new StackPanel { Orientation = Orientation.Horizontal };
+            var stackPanel = new StackPanel {Orientation = Orientation.Horizontal};
             stackPanel.Children.Add(CreateActionsComboBox());
             stackPanel.Children.Add(CreateByLabel());
             stackPanel.Children.Add(CreateAgentsExpanderListBox());
-            stackPanel.Children.Add(new Label { Margin = new Thickness(5), Content = "causes", VerticalAlignment = VerticalAlignment.Center });
+            stackPanel.Children.Add(new Label
+            {
+                Margin = new Thickness(5),
+                Content = "causes",
+                VerticalAlignment = VerticalAlignment.Center
+            });
             stackPanel.Children.Add(CreateLogicExpTextBox("alfaCausesExp"));
             stackPanel.Children.Add(CreateIfLabel());
             stackPanel.Children.Add(CreateLogicExpTextBox("piCausesExp"));
@@ -747,7 +849,7 @@ namespace RW_Frontend
 
         private void RemoveCausesClauseButtonClick(object sender, RoutedEventArgs e)
         {
-            Button clickedButton = (Button)sender;
+            Button clickedButton = (Button) sender;
             var removingStackPanel = CausesClausesStackPanels.First(_ => _.Children.Contains(clickedButton));
             int removingItemIdx = CausesClausesStackPanels.IndexOf(removingStackPanel);
             CausesClausesStackPanels.RemoveAt(removingItemIdx);
@@ -790,8 +892,13 @@ namespace RW_Frontend
 
         private StackPanel CreateImpossibleClauseStackPanel()
         {
-            var stackPanel = new StackPanel { Orientation = Orientation.Horizontal };
-            stackPanel.Children.Add(new Label { Margin = new Thickness(5), Content = "impossible", VerticalAlignment = VerticalAlignment.Center });
+            var stackPanel = new StackPanel {Orientation = Orientation.Horizontal};
+            stackPanel.Children.Add(new Label
+            {
+                Margin = new Thickness(5),
+                Content = "impossible",
+                VerticalAlignment = VerticalAlignment.Center
+            });
             stackPanel.Children.Add(CreateActionsComboBox());
             stackPanel.Children.Add(CreateWithLabel());
             stackPanel.Children.Add(CreateAgentsExpanderListBox());
@@ -803,7 +910,7 @@ namespace RW_Frontend
 
         private void RemoveImpossibleClauseButtonClick(object sender, RoutedEventArgs e)
         {
-            Button clickedButton = (Button)sender;
+            Button clickedButton = (Button) sender;
             var removingStackPanel = ImpossibleClausesStackPanels.First(_ => _.Children.Contains(clickedButton));
             int removingItemIdx = ImpossibleClausesStackPanels.IndexOf(removingStackPanel);
             ImpossibleClausesStackPanels.RemoveAt(removingItemIdx);
@@ -846,11 +953,16 @@ namespace RW_Frontend
 
         private StackPanel CreateReleasesClauseStackPanel()
         {
-            var stackPanel = new StackPanel { Orientation = Orientation.Horizontal };
+            var stackPanel = new StackPanel {Orientation = Orientation.Horizontal};
             stackPanel.Children.Add(CreateActionsComboBox());
             stackPanel.Children.Add(CreateByLabel());
             stackPanel.Children.Add(CreateAgentsExpanderListBox());
-            stackPanel.Children.Add(new Label { Margin = new Thickness(5), Content = "releases", VerticalAlignment = VerticalAlignment.Center });
+            stackPanel.Children.Add(new Label
+            {
+                Margin = new Thickness(5),
+                Content = "releases",
+                VerticalAlignment = VerticalAlignment.Center
+            });
             stackPanel.Children.Add(CreateFluentsComboBox());
             stackPanel.Children.Add(CreateIfLabel());
             stackPanel.Children.Add(CreateLogicExpTextBox("piReleasesExp"));
@@ -860,7 +972,7 @@ namespace RW_Frontend
 
         private void RemoveReleasesClauseButtonClick(object sender, RoutedEventArgs e)
         {
-            Button clickedButton = (Button)sender;
+            Button clickedButton = (Button) sender;
             var removingStackPanel = ReleasesClausesStackPanels.First(_ => _.Children.Contains(clickedButton));
             int removingItemIdx = ReleasesClausesStackPanels.IndexOf(removingStackPanel);
             ReleasesClausesStackPanels.RemoveAt(removingItemIdx);
@@ -903,8 +1015,13 @@ namespace RW_Frontend
 
         private StackPanel CreateAlwaysClauseStackPanel()
         {
-            var stackPanel = new StackPanel { Orientation = Orientation.Horizontal };
-            stackPanel.Children.Add(new Label { Margin = new Thickness(5), Content = "always", VerticalAlignment = VerticalAlignment.Center });
+            var stackPanel = new StackPanel {Orientation = Orientation.Horizontal};
+            stackPanel.Children.Add(new Label
+            {
+                Margin = new Thickness(5),
+                Content = "always",
+                VerticalAlignment = VerticalAlignment.Center
+            });
             stackPanel.Children.Add(CreateLogicExpTextBox("alfaAlwaysExp"));
             stackPanel.Children.Add(CreateRemoveButton("Always"));
             return stackPanel;
@@ -912,7 +1029,7 @@ namespace RW_Frontend
 
         private void RemoveAlwaysClauseButtonClick(object sender, RoutedEventArgs e)
         {
-            Button clickedButton = (Button)sender;
+            Button clickedButton = (Button) sender;
             var removingStackPanel = AlwaysClausesStackPanels.First(_ => _.Children.Contains(clickedButton));
             int removingItemIdx = AlwaysClausesStackPanels.IndexOf(removingStackPanel);
             AlwaysClausesStackPanels.RemoveAt(removingItemIdx);
@@ -955,8 +1072,13 @@ namespace RW_Frontend
 
         private StackPanel CreateNoninertialClauseStackPanel()
         {
-            var stackPanel = new StackPanel { Orientation = Orientation.Horizontal };
-            stackPanel.Children.Add(new Label { Margin = new Thickness(5), Content = "noninertial", VerticalAlignment = VerticalAlignment.Center });
+            var stackPanel = new StackPanel {Orientation = Orientation.Horizontal};
+            stackPanel.Children.Add(new Label
+            {
+                Margin = new Thickness(5),
+                Content = "noninertial",
+                VerticalAlignment = VerticalAlignment.Center
+            });
             stackPanel.Children.Add(CreateFluentsComboBox());
             stackPanel.Children.Add(CreateRemoveButton("Noninertial"));
             return stackPanel;
@@ -964,7 +1086,7 @@ namespace RW_Frontend
 
         private void RemoveNoninertialClauseButtonClick(object sender, RoutedEventArgs e)
         {
-            Button clickedButton = (Button)sender;
+            Button clickedButton = (Button) sender;
             var removingStackPanel = NoninertialClausesStackPanels.First(_ => _.Children.Contains(clickedButton));
             int removingItemIdx = NoninertialClausesStackPanels.IndexOf(removingStackPanel);
             NoninertialClausesStackPanels.RemoveAt(removingItemIdx);
@@ -994,6 +1116,7 @@ namespace RW_Frontend
         #endregion
 
         #region ExecutableQuery
+
         public ICommand AddExecutableQueryCommand
         {
             get { return new RelayCommand(AddExecutableQuery, CanDo); }
@@ -1006,9 +1129,22 @@ namespace RW_Frontend
 
         private StackPanel CreateExecutableQueryStackPanel()
         {
-            var stackPanel = new StackPanel { Orientation = Orientation.Horizontal };
-            stackPanel.Children.Add(new ComboBox { Margin = new Thickness(10), Height = 25, Width = 150, VerticalAlignment = VerticalAlignment.Center, ItemsSource = new List<string> { "always", string.Empty }, SelectedItem = "always" });
-            stackPanel.Children.Add(new Label { Margin = new Thickness(5), Content = "executable", VerticalAlignment = VerticalAlignment.Center });
+            var stackPanel = new StackPanel {Orientation = Orientation.Horizontal};
+            stackPanel.Children.Add(new ComboBox
+            {
+                Margin = new Thickness(10),
+                Height = 25,
+                Width = 150,
+                VerticalAlignment = VerticalAlignment.Center,
+                ItemsSource = new List<string> {"always", string.Empty},
+                SelectedItem = "always"
+            });
+            stackPanel.Children.Add(new Label
+            {
+                Margin = new Thickness(5),
+                Content = "executable",
+                VerticalAlignment = VerticalAlignment.Center
+            });
             stackPanel.Children.Add(CreateActionsByAgentsExpander());
             stackPanel.Children.Add(CreateFromLabel());
             stackPanel.Children.Add(CreateLogicExpTextBox("piExecutableQueryExp"));
@@ -1021,7 +1157,7 @@ namespace RW_Frontend
 
         private void RemoveExecutableQueryButtonClick(object sender, RoutedEventArgs e)
         {
-            var removingItemIdx = FindExecutableQueryIndexByButton((Button)sender);
+            var removingItemIdx = FindExecutableQueryIndexByButton((Button) sender);
             ExecutableQueryStackPanels.RemoveAt(removingItemIdx);
         }
 
@@ -1050,11 +1186,13 @@ namespace RW_Frontend
                 return _executableQueryStackPanels;
             }
         }
+
         #endregion
 
         #endregion
 
         #region AfterQuery
+
         public ICommand AddAfterQueryCommand
         {
             get { return new RelayCommand(AddAfterQuery, CanDo); }
@@ -1067,10 +1205,23 @@ namespace RW_Frontend
 
         private StackPanel CreateAfterQueryStackPanel()
         {
-            var stackPanel = new StackPanel { Orientation = Orientation.Horizontal };
-            stackPanel.Children.Add(new ComboBox { Margin = new Thickness(10), Height = 25, Width = 150, VerticalAlignment = VerticalAlignment.Center, ItemsSource = new List<string> { "possibly", "necessary" }, SelectedItem = "possibly" });
+            var stackPanel = new StackPanel {Orientation = Orientation.Horizontal};
+            stackPanel.Children.Add(new ComboBox
+            {
+                Margin = new Thickness(10),
+                Height = 25,
+                Width = 150,
+                VerticalAlignment = VerticalAlignment.Center,
+                ItemsSource = new List<string> {"possibly", "necessary"},
+                SelectedItem = "possibly"
+            });
             stackPanel.Children.Add(CreateLogicExpTextBox("alfaAfterQueryExp"));
-            stackPanel.Children.Add(new Label { Margin = new Thickness(5), Content = "after", VerticalAlignment = VerticalAlignment.Center });
+            stackPanel.Children.Add(new Label
+            {
+                Margin = new Thickness(5),
+                Content = "after",
+                VerticalAlignment = VerticalAlignment.Center
+            });
             stackPanel.Children.Add(CreateActionsByAgentsExpander());
             stackPanel.Children.Add(CreateFromLabel());
             stackPanel.Children.Add(CreateLogicExpTextBox("piAfterQueryExp"));
@@ -1082,7 +1233,7 @@ namespace RW_Frontend
 
         private void RemoveAfterQueryButtonClick(object sender, RoutedEventArgs e)
         {
-            var removingItemIdx = FindAfterQueryIndexByButton((Button)sender);
+            var removingItemIdx = FindAfterQueryIndexByButton((Button) sender);
             AfterQueryStackPanels.RemoveAt(removingItemIdx);
         }
 
@@ -1111,11 +1262,13 @@ namespace RW_Frontend
                 return _afterQueryStackPanels;
             }
         }
+
         #endregion
 
         #endregion
 
         #region EngagedQuery
+
         public ICommand AddEngagedQueryCommand
         {
             get { return new RelayCommand(AddEngagedQuery, CanDo); }
@@ -1128,7 +1281,7 @@ namespace RW_Frontend
 
         private StackPanel CreateEngagedQueryStackPanel()
         {
-            var stackPanel = new StackPanel { Orientation = Orientation.Horizontal };
+            var stackPanel = new StackPanel {Orientation = Orientation.Horizontal};
             stackPanel.Children.Add(CreateAgentsExpanderListBox());
             stackPanel.Children.Add(new ComboBox
             {
@@ -1136,10 +1289,15 @@ namespace RW_Frontend
                 Height = 25,
                 Width = 150,
                 VerticalAlignment = VerticalAlignment.Center,
-                ItemsSource = new List<string> { "always", string.Empty },
+                ItemsSource = new List<string> {"always", string.Empty},
                 SelectedItem = "always"
             });
-            stackPanel.Children.Add(new Label { Margin = new Thickness(5), Content = "engaged in", VerticalAlignment = VerticalAlignment.Center });
+            stackPanel.Children.Add(new Label
+            {
+                Margin = new Thickness(5),
+                Content = "engaged in",
+                VerticalAlignment = VerticalAlignment.Center
+            });
             stackPanel.Children.Add(CreateActionsByAgentsExpander());
             stackPanel.Children.Add(CreateFromLabel());
             stackPanel.Children.Add(CreateLogicExpTextBox("piEngagedQueryExp"));
@@ -1152,7 +1310,7 @@ namespace RW_Frontend
 
         private void RemoveEngagedQueryButtonClick(object sender, RoutedEventArgs e)
         {
-            var removingItemIdx = FindEngagedQueryIndexByButton((Button)sender);
+            var removingItemIdx = FindEngagedQueryIndexByButton((Button) sender);
             EngagedQueryStackPanels.RemoveAt(removingItemIdx);
         }
 
@@ -1181,6 +1339,7 @@ namespace RW_Frontend
                 return _engagedQueryStackPanels;
             }
         }
+
         #endregion
 
         #endregion
@@ -1199,16 +1358,13 @@ namespace RW_Frontend
 
         #endregion
 
-
         #region Queries control
 
         public ICommand GenerateModelCommand
         {
-            get
-            {
-                return new RelayCommand(GenerateModel, CanDo);
-            }
+            get { return new RelayCommand(GenerateModel, CanDo); }
         }
+
         private void GenerateModel()
         {
             try
@@ -1224,7 +1380,7 @@ namespace RW_Frontend
 
         private void CheckModelGenerated()
         {
-            if(World == null)
+            if (World == null)
                 throw new ApplicationException("Nie wygenerowano modelu");
         }
 
@@ -1235,10 +1391,11 @@ namespace RW_Frontend
                 CheckModelGenerated();
                 InputAggregator.PopulateViewModels(this);
                 var executableQueriesViewModels = InputAggregator.ExecutableQueriesViewModels;
-                var executableQueryIndex = FindExecutableQueryIndexByButton((Button)sender);
+                var executableQueryIndex = FindExecutableQueryIndexByButton((Button) sender);
                 var queryVM = executableQueriesViewModels[executableQueryIndex];
 
-                new FrontendLogic().CalculateExecutableQuery(this, queryVM, ExecutableQueryStackPanels[executableQueryIndex]);
+                new FrontendLogic().CalculateExecutableQuery(this, queryVM,
+                    ExecutableQueryStackPanels[executableQueryIndex]);
             }
             catch (Exception exception)
             {
@@ -1274,7 +1431,7 @@ namespace RW_Frontend
                 CheckModelGenerated();
                 InputAggregator.PopulateViewModels(this);
                 var engagedQueriesViewModels = InputAggregator.EngagedQueriesViewModels;
-                var engagedQueryIndex = FindEngagedQueryIndexByButton((Button)sender);
+                var engagedQueryIndex = FindEngagedQueryIndexByButton((Button) sender);
                 var queryVM = engagedQueriesViewModels[engagedQueryIndex];
                 new FrontendLogic().CalculateEngagedQuery(this, queryVM, EngagedQueryStackPanels[engagedQueryIndex]);
             }
@@ -1284,6 +1441,7 @@ namespace RW_Frontend
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
         #endregion
     }
 }

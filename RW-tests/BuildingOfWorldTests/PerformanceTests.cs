@@ -17,7 +17,7 @@ namespace RW_tests.BuildingOfWorldTests
 	[TestClass]
 	public class PerformanceTests
 	{
-		[DotMemoryUnit(CollectAllocations = true)]
+		[DotMemoryUnit(CollectAllocations = true, FailIfRunWithoutSupport = false)]
 		[TestMethod]
 		public void YaleScenerioBobShootExecutableAlways10FluentsTest()
 		{

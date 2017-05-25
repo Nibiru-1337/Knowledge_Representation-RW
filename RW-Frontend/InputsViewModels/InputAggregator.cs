@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Windows;
 
 namespace RW_Frontend.InputsViewModels
 {
@@ -45,21 +48,24 @@ namespace RW_Frontend.InputsViewModels
         private static List<FluentViewModel> PopulateFluents(VM viewModel)
         {
             var fluents = new List<FluentViewModel>();
-            fluents.AddRange(viewModel.FluentsTextBoxes.Select(_ => new FluentViewModel(_.Text)));
+            fluents.AddRange(
+                viewModel.FluentsTextBoxes.Where(_ => _.Text != string.Empty).Select(_ => new FluentViewModel(_.Text)));
             return fluents;
         }
 
         private static List<ActionViewModel> PopulateActions(VM viewModel)
         {
             var actions = new List<ActionViewModel>();
-            actions.AddRange(viewModel.ActionsTextBoxes.Select(_ => new ActionViewModel(_.Text)));
+            actions.AddRange(
+                viewModel.ActionsTextBoxes.Where(_ => _.Text != string.Empty).Select(_ => new ActionViewModel(_.Text)));
             return actions;
         }
 
         private static List<AgentViewModel> PopulateAgents(VM viewModel)
         {
             var agents = new List<AgentViewModel>();
-            agents.AddRange(viewModel.AgentsTextBoxes.Select(_ => new AgentViewModel(_.Text)));
+            agents.AddRange(
+                viewModel.AgentsTextBoxes.Where(_ => _.Text != string.Empty).Select(_ => new AgentViewModel(_.Text)));
             return agents;
         }
 
@@ -69,7 +75,8 @@ namespace RW_Frontend.InputsViewModels
             foreach (var stackPanel in viewModel.InitiallyClausesStackPanels)
             {
                 var alfaLogicExp = InitiallyClauseViewModel.GetAlfaLogicExpFromView(stackPanel);
-                initiallyClauses.Add(new InitiallyClauseViewModel(alfaLogicExp));
+                if (alfaLogicExp != string.Empty)
+                    initiallyClauses.Add(new InitiallyClauseViewModel(alfaLogicExp));
             }
             return initiallyClauses;
         }
@@ -80,8 +87,11 @@ namespace RW_Frontend.InputsViewModels
             foreach (var stackPanel in viewModel.AfterClausesStackPanels)
             {
                 var alfaLogicExp = AfterClauseViewModel.GetAlfaLogicExpFromView(stackPanel);
-                var actionsByAgents = AfterClauseViewModel.GetActionsByAgentsFromView(stackPanel);
-                afterClauses.Add(new AfterClauseViewModel(alfaLogicExp, actionsByAgents));
+                var actionsByAgents =
+                    AfterClauseViewModel.GetActionsByAgentsFromView(stackPanel)
+                        .Where(_ => ValidateActionByAgents(_) == true).ToList();
+                if (alfaLogicExp != string.Empty || actionsByAgents.Any())
+                    afterClauses.Add(new AfterClauseViewModel(alfaLogicExp, actionsByAgents));
             }
             return afterClauses;
         }
@@ -92,8 +102,12 @@ namespace RW_Frontend.InputsViewModels
             foreach (var stackPanel in viewModel.ObservableClausesStackPanels)
             {
                 var alfaLogicExp = ObservableClauseViewModel.GetAlfaLogicExpFromView(stackPanel);
-                var actionsByAgents = ObservableClauseViewModel.GetActionsByAgentsFromView(stackPanel);
-                observableClauses.Add(new ObservableClauseViewModel(alfaLogicExp, actionsByAgents));
+                var actionsByAgents =
+                    ObservableClauseViewModel.GetActionsByAgentsFromView(stackPanel)
+                        .Where(_ => ValidateActionByAgents(_))
+                        .ToList();
+                if (alfaLogicExp != string.Empty || actionsByAgents.Any())
+                    observableClauses.Add(new ObservableClauseViewModel(alfaLogicExp, actionsByAgents));
             }
             return observableClauses;
         }
@@ -104,11 +118,12 @@ namespace RW_Frontend.InputsViewModels
             foreach (var stackPanel in viewModel.CausesClausesStackPanels)
             {
                 var action = CausesClauseViewModel.GetActionFromView(stackPanel);
-                var agents = CausesClauseViewModel.GetAgentsFromView(stackPanel);
+                var agents = CausesClauseViewModel.GetAgentsFromView(stackPanel).Where(_ => _ != string.Empty).ToList();
                 var alfaLogicExp = CausesClauseViewModel.GetAlfaLogicExpFromView(stackPanel);
                 var piLogicExp = CausesClauseViewModel.GetPiLogicExpFromView(stackPanel);
 
-                causesClauses.Add(new CausesClauseViewModel(action, agents, alfaLogicExp, piLogicExp));
+                if (action != string.Empty || agents.Any() || alfaLogicExp != string.Empty || piLogicExp != string.Empty)
+                    causesClauses.Add(new CausesClauseViewModel(action, agents, alfaLogicExp, piLogicExp));
             }
             return causesClauses;
         }
@@ -119,10 +134,12 @@ namespace RW_Frontend.InputsViewModels
             foreach (var stackPanel in viewModel.ImpossibleClausesStackPanels)
             {
                 var action = ImpossibleClauseViewModel.GetActionFromView(stackPanel);
-                var agents = ImpossibleClauseViewModel.GetAgentsFromView(stackPanel);
+                var agents =
+                    ImpossibleClauseViewModel.GetAgentsFromView(stackPanel).Where(_ => _ != string.Empty).ToList();
                 var piLogicExp = ImpossibleClauseViewModel.GetPiLogicExpFromView(stackPanel);
 
-                impossibleClauses.Add(new ImpossibleClauseViewModel(action, agents, piLogicExp));
+                if (action != string.Empty || agents.Any() || piLogicExp != string.Empty)
+                    impossibleClauses.Add(new ImpossibleClauseViewModel(action, agents, piLogicExp));
             }
             return impossibleClauses;
         }
@@ -133,11 +150,13 @@ namespace RW_Frontend.InputsViewModels
             foreach (var stackPanel in viewModel.ReleasesClausesStackPanels)
             {
                 var action = ReleasesClauseViewModel.GetActionFromView(stackPanel);
-                var agents = ReleasesClauseViewModel.GetAgentsFromView(stackPanel);
+                var agents =
+                    ReleasesClauseViewModel.GetAgentsFromView(stackPanel).Where(_ => _ != string.Empty).ToList();
                 var fluent = ReleasesClauseViewModel.GetFluentFromView(stackPanel);
                 var piLogicExp = ReleasesClauseViewModel.GetPiLogicExpFromView(stackPanel);
 
-                releasesClauses.Add(new ReleasesClauseViewModel(action, agents, fluent, piLogicExp));
+                if (action != string.Empty || agents.Any() || fluent != string.Empty || piLogicExp != string.Empty)
+                    releasesClauses.Add(new ReleasesClauseViewModel(action, agents, fluent, piLogicExp));
             }
             return releasesClauses;
         }
@@ -148,7 +167,8 @@ namespace RW_Frontend.InputsViewModels
             foreach (var stackPanel in viewModel.AlwaysClausesStackPanels)
             {
                 var alfaLogicExp = AlwaysClauseViewModel.GetAlfaLogicExpFromView(stackPanel);
-                alwaysClauses.Add(new AlwaysClauseViewModel(alfaLogicExp));
+                if (alfaLogicExp != string.Empty)
+                    alwaysClauses.Add(new AlwaysClauseViewModel(alfaLogicExp));
             }
             return alwaysClauses;
         }
@@ -159,7 +179,8 @@ namespace RW_Frontend.InputsViewModels
             foreach (var stackPanel in viewModel.NoninertialClausesStackPanels)
             {
                 var fluent = NoninertialClauseViewModel.GetFluentFromView(stackPanel);
-                noninertialClauses.Add(new NoninertialClauseViewModel(fluent));
+                if (fluent != string.Empty)
+                    noninertialClauses.Add(new NoninertialClauseViewModel(fluent));
             }
             return noninertialClauses;
         }
@@ -170,10 +191,14 @@ namespace RW_Frontend.InputsViewModels
             foreach (var stackPanel in viewModel.ExecutableQueryStackPanels)
             {
                 var executableQueryType = ExecutableQueryViewModel.GetExecutableQueryTypeFromView(stackPanel);
-                var actionsByAgents = ExecutableQueryViewModel.GetActionsByAgentsFromView(stackPanel);
+                var actionsByAgents =
+                    ExecutableQueryViewModel.GetActionsByAgentsFromView(stackPanel)
+                        .Where(_ => ValidateActionByAgents(_))
+                        .ToList();
                 var piLogicExp = ExecutableQueryViewModel.GetPiLogicExpFromView(stackPanel);
 
-                executableQueries.Add(new ExecutableQueryViewModel(executableQueryType, actionsByAgents, piLogicExp));
+                if (actionsByAgents.Any() || piLogicExp != string.Empty)
+                    executableQueries.Add(new ExecutableQueryViewModel(executableQueryType, actionsByAgents, piLogicExp));
             }
             return executableQueries;
         }
@@ -186,9 +211,12 @@ namespace RW_Frontend.InputsViewModels
                 var afterQueryType = AfterQueryViewModel.GetAfterQueryTypeFromView(stackPanel);
                 var alfaLogicExp = AfterQueryViewModel.GetAlfaLogicExpFromView(stackPanel);
                 var piLogicExp = AfterQueryViewModel.GetPiLogicExpFromView(stackPanel);
-                var actionsByAgents = AfterQueryViewModel.GetActionsByAgentsFromView(stackPanel);
+                var actionsByAgents =
+                    AfterQueryViewModel.GetActionsByAgentsFromView(stackPanel).Where(_ => ValidateActionByAgents(_))
+                        .ToList();
 
-                afterQueries.Add(new AfterQueryViewModel(afterQueryType, alfaLogicExp, actionsByAgents, piLogicExp));
+                if (alfaLogicExp != string.Empty || piLogicExp != string.Empty || actionsByAgents.Any())
+                    afterQueries.Add(new AfterQueryViewModel(afterQueryType, alfaLogicExp, actionsByAgents, piLogicExp));
             }
             return afterQueries;
         }
@@ -198,14 +226,24 @@ namespace RW_Frontend.InputsViewModels
             var engagedQueries = new List<EngagedQueryViewModel>();
             foreach (var stackPanel in viewModel.EngagedQueryStackPanels)
             {
-                var agents = EngagedQueryViewModel.GetAgentsFromView(stackPanel);
+                var agents = EngagedQueryViewModel.GetAgentsFromView(stackPanel).Where(_ => _ != string.Empty).ToList();
                 var engagedQueryType = EngagedQueryViewModel.GetEngagedQueryTypeFromView(stackPanel);
-                var actionsByAgents = EngagedQueryViewModel.GetActionsByAgentsFromView(stackPanel);
+                var actionsByAgents =
+                    EngagedQueryViewModel.GetActionsByAgentsFromView(stackPanel).Where(_ => ValidateActionByAgents(_))
+                        .ToList();
                 var piLogicExp = EngagedQueryViewModel.GetPiLogicExpFromView(stackPanel);
 
-                engagedQueries.Add(new EngagedQueryViewModel(agents, engagedQueryType, actionsByAgents, piLogicExp));
+                if (agents.Any() || actionsByAgents.Any() || piLogicExp != string.Empty)
+                    engagedQueries.Add(new EngagedQueryViewModel(agents, engagedQueryType, actionsByAgents, piLogicExp));
             }
             return engagedQueries;
+        }
+
+        private static bool ValidateActionByAgents(Tuple<string, List<string>> actionByAgents)
+        {
+            if (actionByAgents.Item1 == string.Empty && actionByAgents.Item2.All(_ => _ == string.Empty))
+                return false;
+            return true;
         }
     }
 }
