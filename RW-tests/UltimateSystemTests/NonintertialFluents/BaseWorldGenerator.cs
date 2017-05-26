@@ -11,7 +11,7 @@ using RW_backend.Models.Factories;
 
 namespace RW_tests.UltimateSystemTests.NonintertialFluents
 {
-    public class BaseWorldGenerator
+    public static class ScenarioConsts
     {
         /*Tom i Bob grają w grę ruszając rękami.Jeśli obaj je uniosą bądź obaj je opuszczą, to zdobywają punkt.
 
@@ -23,51 +23,54 @@ always Point <=> (TomRaised <=> BobRaised)
 nonintertial Point*/
 
         // agents
-        public static int Bob = 0;
-        public static int Tom = 1;
+        public const int Bob = 0;
+        public const int Tom = 1;
         // fluents
-        public static int BobRaised = 0;
-        public static int TomRaised = 1;
-        public static int Point = 2;
+        public const int BobRaised = 0;
+        public const int TomRaised = 1;
+        public const int Point = 2;
         // actions
-        public static int Move = 0;
+        public const int Move = 0;
         //// states
         //public const int TBP = 0; //TomRaised, BobRaised, Point
         //public const int NTNBP = 1; // ~TomRaised, ~BobRaised, Point
         //public const int TNBNP = 2; // TomRaised, ~BobRaised, ~Point
         //public const int NTBNP = 3; // ~TomRaised, BobRaised, ~Point
+    }
+    public class BaseWorldGenerator
+    {
         public static Model GenerateWorld(bool withNonintertial)
         {
             LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
             Causes cause;
             List<Causes> causes = new List<Causes>();
-            cause = new Causes(logicClausesFactory.CreateSingleFluentClause(BobRaised, FluentSign.Positive),
-                logicClausesFactory.CreateSingleFluentClause(BobRaised, FluentSign.Negated), Move, AgentsSet.CreateFromOneAgent(Bob));
+            cause = new Causes(logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.BobRaised, FluentSign.Positive),
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.BobRaised, FluentSign.Negated), ScenarioConsts.Move, AgentsSet.CreateFromOneAgent(ScenarioConsts.Bob));
             causes.Add(cause);
 
-            cause = new Causes(logicClausesFactory.CreateSingleFluentClause(BobRaised, FluentSign.Negated),
-                logicClausesFactory.CreateSingleFluentClause(BobRaised, FluentSign.Positive), Move, AgentsSet.CreateFromOneAgent(Bob));
+            cause = new Causes(logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.BobRaised, FluentSign.Negated),
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.BobRaised, FluentSign.Positive), ScenarioConsts.Move, AgentsSet.CreateFromOneAgent(ScenarioConsts.Bob));
             causes.Add(cause);
 
-            cause = new Causes(logicClausesFactory.CreateSingleFluentClause(TomRaised, FluentSign.Positive),
-                logicClausesFactory.CreateSingleFluentClause(TomRaised, FluentSign.Negated), Move, AgentsSet.CreateFromOneAgent(Tom));
+            cause = new Causes(logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.TomRaised, FluentSign.Positive),
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.TomRaised, FluentSign.Negated), ScenarioConsts.Move, AgentsSet.CreateFromOneAgent(ScenarioConsts.Tom));
             causes.Add(cause);
 
-            cause = new Causes(logicClausesFactory.CreateSingleFluentClause(TomRaised, FluentSign.Negated),
-                logicClausesFactory.CreateSingleFluentClause(TomRaised, FluentSign.Positive), Move, AgentsSet.CreateFromOneAgent(Tom));
+            cause = new Causes(logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.TomRaised, FluentSign.Negated),
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.TomRaised, FluentSign.Positive), ScenarioConsts.Move, AgentsSet.CreateFromOneAgent(ScenarioConsts.Tom));
             causes.Add(cause);
 
-            HashSet<int> nonintertials = withNonintertial ? new HashSet<int>() {Point} : new HashSet<int>() ;
+            HashSet<int> nonintertials = withNonintertial ? new HashSet<int>() {ScenarioConsts.Point} : new HashSet<int>() ;
 
             List<LogicClause> alwayses = new List<LogicClause>();
             AlternativeOfConjunctions always = new AlternativeOfConjunctions();
-            UniformConjunction uc = UniformConjunction.CreateFrom(new List<int>() { Point }, new List<int>() {TomRaised, BobRaised});
+            UniformConjunction uc = UniformConjunction.CreateFrom(new List<int>() {ScenarioConsts.Point }, new List<int>() {ScenarioConsts.TomRaised, ScenarioConsts.BobRaised});
             always.AddConjunction(uc);
-            uc = UniformConjunction.CreateFrom(new List<int>() { BobRaised }, new List<int>() { TomRaised, Point });
+            uc = UniformConjunction.CreateFrom(new List<int>() {ScenarioConsts.BobRaised }, new List<int>() {ScenarioConsts.TomRaised, ScenarioConsts.Point });
             always.AddConjunction(uc);
-            uc = UniformConjunction.CreateFrom(new List<int>() { TomRaised }, new List<int>() { BobRaised, Point });
+            uc = UniformConjunction.CreateFrom(new List<int>() {ScenarioConsts.TomRaised }, new List<int>() {ScenarioConsts.BobRaised, ScenarioConsts.Point });
             always.AddConjunction(uc);
-            uc = UniformConjunction.CreateFrom(new List<int>() { TomRaised, BobRaised, Point }, new List<int>());
+            uc = UniformConjunction.CreateFrom(new List<int>() {ScenarioConsts.TomRaised, ScenarioConsts.BobRaised, ScenarioConsts.Point }, new List<int>());
             always.AddConjunction(uc);
             alwayses.Add(always);
 
