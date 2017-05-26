@@ -26,7 +26,7 @@ namespace RW_backend.Logic
 				return new BitSet(0);
 		    foreach (int fluent in model.NoninertialFluents)
 		    {
-			    bop.SetFluent(set, fluent);
+			    set = bop.SetFluent(set, fluent);
 		    }
 			return new BitSet(set);
 	    }

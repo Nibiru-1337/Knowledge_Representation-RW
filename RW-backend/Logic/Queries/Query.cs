@@ -203,8 +203,9 @@ namespace RW_backend.Logic.Queries
 					newStates.AddRange(GetReleasedStatesWhenEmptyAction(state, releasedFluents));
 				}
 			}
-			newStates.AddRange(minimiser.MinimaliseChanges(state, newStatesForThatState, releasedFluents.Set, 
-				world.NonInertialFluents.Set));
+			else
+				newStates.AddRange(minimiser.MinimaliseChanges(state, newStatesForThatState, releasedFluents.Set, 
+					world.NonInertialFluents.Set));
 		}
 
 	    private List<State> GetReleasedStatesWhenEmptyAction(State state,

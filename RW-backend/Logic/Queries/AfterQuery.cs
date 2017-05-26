@@ -67,7 +67,7 @@ namespace RW_backend.Logic.Queries
 			}
 			return new QueryResult()
 			{
-				IsTrue = Always ? (allOk && result.Executable == Executable.Always) : oneOk,
+				IsTrue = Always ? (allOk) : oneOk, // 
 				SuccessfulPath = result.SuccessfulPath,
 				WrongPath = result.WrongPath
 			};
