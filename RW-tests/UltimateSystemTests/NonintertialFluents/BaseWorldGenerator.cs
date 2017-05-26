@@ -23,20 +23,20 @@ always Point <=> (TomRaised <=> BobRaised)
 nonintertial Point*/
 
         // agents
-        public const int Bob = 0;
-        public const int Tom = 1;
+        public static int Bob = 0;
+        public static int Tom = 1;
         // fluents
-        public const int BobRaised = 0;
-        public const int TomRaised = 1;
-        public const int Point = 2;
+        public static int BobRaised = 0;
+        public static int TomRaised = 1;
+        public static int Point = 2;
         // actions
-        public const int Move = 0;
+        public static int Move = 0;
         //// states
         //public const int TBP = 0; //TomRaised, BobRaised, Point
         //public const int NTNBP = 1; // ~TomRaised, ~BobRaised, Point
         //public const int TNBNP = 2; // TomRaised, ~BobRaised, ~Point
         //public const int NTBNP = 3; // ~TomRaised, BobRaised, ~Point
-        public Model GenerateWorld(bool withNonintertial)
+        public static Model GenerateWorld(bool withNonintertial)
         {
             LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
             Causes cause;
