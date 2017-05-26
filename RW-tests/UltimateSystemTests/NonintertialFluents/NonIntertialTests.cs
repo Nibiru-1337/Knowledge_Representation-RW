@@ -88,5 +88,113 @@ namespace RW_tests.UltimateSystemTests.NonintertialFluents
                 logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.TomRaised, FluentSign.Positive));
             Assert.AreEqual(true, query.Evaluate(world).IsTrue);
         }
+
+        [TestMethod]
+        public void CheckForInertialNoReleaseManyConditionsFrom()
+        {
+            Model model = BaseWorldGenerator.GenerateWorld(false);
+            World world = new BackendLogic().CalculateWorld(model);
+            LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
+            ActionAgentsPair[] program = new ActionAgentsPair[] { new ActionAgentsPair(ScenarioConsts.Move, ScenarioConsts.Tom) };
+
+            UniformConjunction fromConds = new UniformConjunction();
+            fromConds.AddFluent(ScenarioConsts.TomRaised, FluentSign.Negated);
+            fromConds.AddFluent(ScenarioConsts.BobRaised, FluentSign.Negated);
+
+            //always BobRaised after MOVE by Tom from ~TomRaised ^ ~BobRaised
+            AfterQuery query = new AfterQuery(program, fromConds, true,
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.BobRaised, FluentSign.Positive));
+            Assert.AreEqual(false, query.Evaluate(world).IsTrue);
+
+            //possibly BobRaised after MOVE by Tom from ~TomRaised ^ ~BobRaised
+            logicClausesFactory = new LogicClausesFactory();
+            query = new AfterQuery(program, fromConds, false,
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.BobRaised, FluentSign.Positive));
+            Assert.AreEqual(true, query.Evaluate(world).IsTrue);
+
+            //possibly Point after MOVE by Tom from ~TomRaised
+            logicClausesFactory = new LogicClausesFactory();
+            query = new AfterQuery(program, fromConds, false,
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Point, FluentSign.Positive));
+            Assert.AreEqual(true, query.Evaluate(world).IsTrue);
+
+            //always Point after MOVE by Tom from ~TomRaised ^ ~BobRaised
+            logicClausesFactory = new LogicClausesFactory();
+            query = new AfterQuery(program, fromConds, true,
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Point, FluentSign.Positive));
+            Assert.AreEqual(false, query.Evaluate(world).IsTrue);
+        }
+
+        [TestMethod]
+        public void CheckForNoninertialNoReleaseManyConditionsFrom()
+        {
+            Model model = BaseWorldGenerator.GenerateWorld(true);
+            World world = new BackendLogic().CalculateWorld(model);
+            LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
+            ActionAgentsPair[] program = new ActionAgentsPair[] { new ActionAgentsPair(ScenarioConsts.Move, ScenarioConsts.Tom) };
+
+            UniformConjunction fromConds = new UniformConjunction();
+            fromConds.AddFluent(ScenarioConsts.TomRaised, FluentSign.Negated);
+            fromConds.AddFluent(ScenarioConsts.BobRaised, FluentSign.Negated);
+
+            //always BobRaised after MOVE by Tom from ~TomRaised ^ ~BobRaised
+            AfterQuery query = new AfterQuery(program, fromConds, true,
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.BobRaised, FluentSign.Positive));
+            Assert.AreEqual(false, query.Evaluate(world).IsTrue);
+
+            //possibly BobRaised after MOVE by Tom from ~TomRaised ^ ~BobRaised
+            logicClausesFactory = new LogicClausesFactory();
+            query = new AfterQuery(program, fromConds, false,
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.BobRaised, FluentSign.Positive));
+            Assert.AreEqual(false, query.Evaluate(world).IsTrue);
+
+            //possibly Point after MOVE by Tom from ~TomRaised
+            logicClausesFactory = new LogicClausesFactory();
+            query = new AfterQuery(program, fromConds, false,
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Point, FluentSign.Positive));
+            Assert.AreEqual(false, query.Evaluate(world).IsTrue);
+
+            //always Point after MOVE by Tom from ~TomRaised ^ ~BobRaised
+            logicClausesFactory = new LogicClausesFactory();
+            query = new AfterQuery(program, fromConds, true,
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Point, FluentSign.Positive));
+            Assert.AreEqual(false, query.Evaluate(world).IsTrue);
+        }
+
+        [TestMethod]
+        public void CheckForNoninertialRelease()
+        {
+            Model model = BaseWorldGenerator.GenerateWorld(true, true);
+            World world = new BackendLogic().CalculateWorld(model);
+            LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
+            ActionAgentsPair[] program = new ActionAgentsPair[] { new ActionAgentsPair(ScenarioConsts.Move, ScenarioConsts.Tom) };
+
+            UniformConjunction fromConds = new UniformConjunction();
+            fromConds.AddFluent(ScenarioConsts.TomRaised, FluentSign.Negated);
+            fromConds.AddFluent(ScenarioConsts.BobRaised, FluentSign.Negated);
+
+            //always BobRaised after MOVE by Tom from ~TomRaised ^ ~BobRaised
+            AfterQuery query = new AfterQuery(program, fromConds, true,
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.BobRaised, FluentSign.Positive));
+            Assert.AreEqual(false, query.Evaluate(world).IsTrue);
+
+            //possibly BobRaised after MOVE by Tom from ~TomRaised ^ ~BobRaised
+            logicClausesFactory = new LogicClausesFactory();
+            query = new AfterQuery(program, fromConds, false,
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.BobRaised, FluentSign.Positive));
+            Assert.AreEqual(true, query.Evaluate(world).IsTrue);
+
+            //possibly Point after MOVE by Tom from ~TomRaised
+            logicClausesFactory = new LogicClausesFactory();
+            query = new AfterQuery(program, fromConds, false,
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Point, FluentSign.Positive));
+            Assert.AreEqual(true, query.Evaluate(world).IsTrue);
+
+            //always Point after MOVE by Tom from ~TomRaised ^ ~BobRaised
+            logicClausesFactory = new LogicClausesFactory();
+            query = new AfterQuery(program, fromConds, true,
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Point, FluentSign.Positive));
+            Assert.AreEqual(false, query.Evaluate(world).IsTrue);
+        }
     }
 }

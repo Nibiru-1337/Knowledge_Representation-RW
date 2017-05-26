@@ -39,7 +39,7 @@ nonintertial Point*/
     }
     public class BaseWorldGenerator
     {
-        public static Model GenerateWorld(bool withNonintertial)
+        public static Model GenerateWorld(bool withNoninertial, bool withReleases = false)
         {
             LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
             Causes cause;
@@ -60,7 +60,7 @@ nonintertial Point*/
                 logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.TomRaised, FluentSign.Positive), ScenarioConsts.Move, AgentsSet.CreateFromOneAgent(ScenarioConsts.Tom));
             causes.Add(cause);
 
-            HashSet<int> nonintertials = withNonintertial ? new HashSet<int>() {ScenarioConsts.Point} : new HashSet<int>() ;
+            HashSet<int> nonintertials = withNoninertial ? new HashSet<int>() {ScenarioConsts.Point} : new HashSet<int>() ;
 
             List<LogicClause> alwayses = new List<LogicClause>();
             AlternativeOfConjunctions always = new AlternativeOfConjunctions();
@@ -73,6 +73,11 @@ nonintertial Point*/
             uc = UniformConjunction.CreateFrom(new List<int>() {ScenarioConsts.TomRaised, ScenarioConsts.BobRaised, ScenarioConsts.Point }, new List<int>());
             always.AddConjunction(uc);
             alwayses.Add(always);
+
+            List<Releases> releases = withReleases 
+                ? new List<Releases>() {new Releases(new UniformAlternative(), ScenarioConsts.Point, ScenarioConsts.Move, AgentsSet.CreateFromOneAgent(ScenarioConsts.Tom))} 
+                : new List<Releases>();
+
 
             var model = new Model
             {
@@ -87,7 +92,7 @@ nonintertial Point*/
                 AlwaysStatements = alwayses,
                 CausesStatements = causes,
                 AfterStatements = new List<After>(),
-                ReleasesStatements = new List<Releases>()
+                ReleasesStatements = releases
             };
 
             return model;
