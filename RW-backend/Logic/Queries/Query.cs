@@ -33,7 +33,14 @@ namespace RW_backend.Logic.Queries
 			InitialStateCondition = initialStateCondition;
 		}
 
-	    protected internal List<State> GetInitialStates(IList<State> initialStatesInSystem, IList<State> allStates)
+		public ProgramExecutionResult GetDetailsFromExecution(World world)
+		{
+			MinimiserOfChanges minimiser = new MinimiserOfChanges();
+			var initial = GetInitialStates(world.InitialStates, world.States);
+			return ExecuteProgram(world, minimiser, initial);
+		}
+
+		protected internal List<State> GetInitialStates(IList<State> initialStatesInSystem, IList<State> allStates)
 	    {
 		    if (InitialStateCondition == null)
 			    return initialStatesInSystem.ToList();

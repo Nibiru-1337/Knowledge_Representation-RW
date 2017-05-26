@@ -16,10 +16,7 @@ namespace RW_backend.Logic.Queries
 
 		public override QueryResult Evaluate(World world)
 		{
-			MinimiserOfChanges minimiser = new MinimiserOfChanges();
-			var initial = GetInitialStates(world.InitialStates, world.States);
-			ProgramExecutionResult result = ExecuteProgram(world, minimiser, initial);
-
+			ProgramExecutionResult result = GetDetailsFromExecution(world);
 			return new QueryResult()
 			{
 				IsTrue =

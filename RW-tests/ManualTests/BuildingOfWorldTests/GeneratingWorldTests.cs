@@ -92,7 +92,7 @@ namespace RW_tests.BuildingOfWorldTests
 		private void CheckResultFromQueryInReleasesWithoutCausesTest(ReachableStatesQuery query,
 			World world, State state0, State state1, int action)
 		{
-			var result = query.RunQuery(world);
+			var result = query.GetDetailsFromExecution(world);
 			Assert.IsTrue(result.ReachableStates.Any(asc => Equals(asc, state1)), "no state1 in reachable states");
 			Assert.IsTrue(result.ReachableStates.Any(asc => Equals(asc, state0)), "no state0 in reachable states");
 		}

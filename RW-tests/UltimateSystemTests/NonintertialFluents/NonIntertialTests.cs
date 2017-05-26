@@ -191,19 +191,23 @@ namespace RW_tests.UltimateSystemTests.NonintertialFluents
             //always BobRaised after MOVE by Tom from ~TomRaised ^ ~BobRaised
             AfterQuery query = new AfterQuery(program, fromConds, true,
                 logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.BobRaised, FluentSign.Positive));
-            Assert.AreEqual(false, query.Evaluate(world).IsTrue, "always BobRaised after MOVE by Tom from ~TomRaised ^ ~BobRaised");
+			Assert.AreEqual(false, query.Evaluate(world).IsTrue, "always BobRaised after MOVE by Tom from ~TomRaised ^ ~BobRaised");
 
-            //possibly BobRaised after MOVE by Tom from ~TomRaised ^ ~BobRaised
-            logicClausesFactory = new LogicClausesFactory();
+			//possibly BobRaised after MOVE by Tom from ~TomRaised ^ ~BobRaised
+			// false, because of minimalisation of changes - Point is always (always in that case) treated as change,
+			// so when you change one other fluent and Point it is smaller change than changing two other fluents but not Point
+			logicClausesFactory = new LogicClausesFactory();
             query = new AfterQuery(program, fromConds, false,
                 logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.BobRaised, FluentSign.Positive));
-            Assert.AreEqual(true, query.Evaluate(world).IsTrue, "possibly BobRaised after MOVE by Tom from ~TomRaised ^ ~BobRaised");
+            Assert.AreEqual(false, query.Evaluate(world).IsTrue, "possibly BobRaised after MOVE by Tom from ~TomRaised ^ ~BobRaised");
 
             //possibly Point after MOVE by Tom from ~TomRaised
+			// false, because of minimalisation of changes - Point is always (always in that case) treated as change,
+			// so when you change one other fluent and Point it is smaller change than changing two other fluents but not Point
             logicClausesFactory = new LogicClausesFactory();
             query = new AfterQuery(program, fromConds, false,
                 logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Point, FluentSign.Positive));
-            Assert.AreEqual(true, query.Evaluate(world).IsTrue, "possibly Point after MOVE by Tom from ~TomRaised");
+            Assert.AreEqual(false, query.Evaluate(world).IsTrue, "possibly Point after MOVE by Tom from ~TomRaised");
 
             //always Point after MOVE by Tom from ~TomRaised ^ ~BobRaised
             logicClausesFactory = new LogicClausesFactory();

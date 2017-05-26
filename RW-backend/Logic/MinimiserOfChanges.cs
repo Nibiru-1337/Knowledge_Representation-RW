@@ -1,4 +1,6 @@
 ﻿//#define EXTENDED_DEBUG
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using RW_backend.Models.BitSets;
@@ -93,13 +95,14 @@ namespace RW_backend.Logic
 			List<KeyValuePair<BitSet, State>> changesSets =
 				new List<KeyValuePair<BitSet, State>>(reachableStates.Count);
 
+			Console.WriteLine("state before = " + initialState.FluentValues);
 			foreach (State reachableState in reachableStates)
 			{
-				int changes = (initialState.SetOfDifferentValuesThan(reachableState.FluentValues)
-								| releasedFluents) & ~noninertialFluents;
+				int changes = GetChanges(initialState, reachableState.FluentValues, releasedFluents, noninertialFluents);
 #if DEBUG && EXTENDED_DEBUG
                 Logger.Log("changes = " + changes);
 #endif
+
 				if (changesSets.Count == 0)
 				{
 					changesSets.Add(new KeyValuePair<BitSet, State>(new BitSet(changes), reachableState ));
@@ -158,8 +161,7 @@ namespace RW_backend.Logic
 
 			foreach (State reachableState in reachableStates)
 			{
-				int changes = (initialState.SetOfDifferentValuesThan(reachableState.FluentValues)
-								| releasedFluents) & ~noninertialFluents;
+				int changes = GetChanges(initialState, reachableState.FluentValues, releasedFluents, noninertialFluents);
 
 				for (int i = 0; i < changesSets.Count; i++)
 				{
@@ -175,7 +177,7 @@ namespace RW_backend.Logic
 
 		private int GetChanges(State initial, int reachable, int released, int noninertial)
 		{
-			return (initial.SetOfDifferentValuesThan(reachable) | released) & ~noninertial;
+			return ((initial.SetOfDifferentValuesThan(reachable) ) & ~noninertial ) | released;
 		}
 
 		private void DeleteAllWorseThan(int changes, List<KeyValuePair<BitSet, List<State>>> changesSet)

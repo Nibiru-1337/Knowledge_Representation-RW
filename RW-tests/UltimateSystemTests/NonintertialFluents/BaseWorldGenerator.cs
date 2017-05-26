@@ -20,7 +20,10 @@ MOVE by Tom causes ~TomRaised if TomRaised
 MOVE by Bob causes BobRaised if ~BobRaised
 MOVE by Bob causes ~BobRaised if BobRaised
 always Point <=> (TomRaised <=> BobRaised)
-nonintertial Point*/
+*nonintertial Point
+*MOVE by Tom releases ~Point
+
+		*/
 
         // agents
         public const int Bob = 0;

@@ -15,7 +15,7 @@ namespace RW_backend.Logic.Queries
 		public override QueryType Type => QueryType.ExecutePath;
 		public override QueryResult Evaluate(World world)
 		{
-			var result = RunQuery(world);
+			var result = GetDetailsFromExecution(world);
 			return new QueryResult()
 			{
 				IsTrue = Always 
@@ -24,11 +24,6 @@ namespace RW_backend.Logic.Queries
 			};
 		}
 
-		public ProgramExecutionResult RunQuery(World world)
-		{
-			MinimiserOfChanges minimiser = new MinimiserOfChanges();
-			var initial = GetInitialStates(world.InitialStates, world.States);
-			return ExecuteProgram(world, minimiser, initial);
-		}
+		
 	}
 }

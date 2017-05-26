@@ -43,7 +43,7 @@ namespace RW_tests.ManualTests.SceneriosTests
 			{
 				new ActionAgentsPair(0, AgentsSet.CreateFromOneAgent(0).AgentBitSet),
 			}, null, false);
-			var result = query.RunQuery(world);
+			var result = query.GetDetailsFromExecution(world);
 			const int n = 2;
 			foreach (State state in result.ReachableStates)
 			{
