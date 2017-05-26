@@ -75,7 +75,11 @@ nonintertial Point*/
             alwayses.Add(always);
 
             List<Releases> releases = withReleases 
-                ? new List<Releases>() {new Releases(new UniformAlternative(), ScenarioConsts.Point, ScenarioConsts.Move, AgentsSet.CreateFromOneAgent(ScenarioConsts.Tom))} 
+                ? new List<Releases>()
+                {
+	                new Releases(new UniformAlternative(), ScenarioConsts.Point, ScenarioConsts.Move, 
+						AgentsSet.CreateFromOneAgent(ScenarioConsts.Tom))
+                } 
                 : new List<Releases>();
 
 

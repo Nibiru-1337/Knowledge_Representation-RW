@@ -41,7 +41,7 @@ namespace RW_tests.ManualTests.SceneriosTests
 			World world = CreateWorld();
 			var query = new ReachableStatesQuery(new ActionAgentsPair[]
 			{
-				new ActionAgentsPair(0, AgentsSet.CreateFromOneAgent(0).AgentSet),
+				new ActionAgentsPair(0, AgentsSet.CreateFromOneAgent(0).AgentBitSet),
 			}, null, false);
 			var result = query.RunQuery(world);
 			const int n = 2;

@@ -19,7 +19,10 @@ namespace RW_tests.UltimateSystemTests.NonintertialFluents
         {
             Model model = BaseWorldGenerator.GenerateWorld(false);
             World world = new BackendLogic().CalculateWorld(model);
-            ActionAgentsPair[] program = new ActionAgentsPair[] { new ActionAgentsPair(ScenarioConsts.Move, ScenarioConsts.Tom)};
+            ActionAgentsPair[] program = new ActionAgentsPair[]
+            {
+	            new ActionAgentsPair(ScenarioConsts.Move, AgentsSet.CreateFromOneAgent(ScenarioConsts.Tom).AgentBitSet)
+            };
             //always BobRaised after MOVE by Tom
             LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
             AfterQuery query = new AfterQuery(program, new UniformAlternative(), true,
@@ -63,7 +66,10 @@ namespace RW_tests.UltimateSystemTests.NonintertialFluents
         {
             Model model = BaseWorldGenerator.GenerateWorld(true);
             World world = new BackendLogic().CalculateWorld(model);
-            ActionAgentsPair[] program = new ActionAgentsPair[] { new ActionAgentsPair(ScenarioConsts.Move, ScenarioConsts.Tom) };
+            ActionAgentsPair[] program = new ActionAgentsPair[]
+            {
+	            new ActionAgentsPair(ScenarioConsts.Move, AgentsSet.CreateFromOneAgent(ScenarioConsts.Tom).AgentBitSet)
+            };
             //always BobRaised after MOVE by Tom
             LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
             AfterQuery query = new AfterQuery(program, new UniformAlternative(), true,
@@ -95,7 +101,10 @@ namespace RW_tests.UltimateSystemTests.NonintertialFluents
             Model model = BaseWorldGenerator.GenerateWorld(false);
             World world = new BackendLogic().CalculateWorld(model);
             LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
-            ActionAgentsPair[] program = new ActionAgentsPair[] { new ActionAgentsPair(ScenarioConsts.Move, ScenarioConsts.Tom) };
+            ActionAgentsPair[] program = new ActionAgentsPair[]
+            {
+	            new ActionAgentsPair(ScenarioConsts.Move, AgentsSet.CreateFromOneAgent(ScenarioConsts.Tom).AgentBitSet)
+            };
 
             UniformConjunction fromConds = new UniformConjunction();
             fromConds.AddFluent(ScenarioConsts.TomRaised, FluentSign.Negated);
@@ -131,7 +140,10 @@ namespace RW_tests.UltimateSystemTests.NonintertialFluents
             Model model = BaseWorldGenerator.GenerateWorld(true);
             World world = new BackendLogic().CalculateWorld(model);
             LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
-            ActionAgentsPair[] program = new ActionAgentsPair[] { new ActionAgentsPair(ScenarioConsts.Move, ScenarioConsts.Tom) };
+            ActionAgentsPair[] program = new ActionAgentsPair[]
+            {
+	            new ActionAgentsPair(ScenarioConsts.Move, AgentsSet.CreateFromOneAgent(ScenarioConsts.Tom).AgentBitSet)
+            };
 
             UniformConjunction fromConds = new UniformConjunction();
             fromConds.AddFluent(ScenarioConsts.TomRaised, FluentSign.Negated);
@@ -167,7 +179,10 @@ namespace RW_tests.UltimateSystemTests.NonintertialFluents
             Model model = BaseWorldGenerator.GenerateWorld(true, true);
             World world = new BackendLogic().CalculateWorld(model);
             LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
-            ActionAgentsPair[] program = new ActionAgentsPair[] { new ActionAgentsPair(ScenarioConsts.Move, ScenarioConsts.Tom) };
+            ActionAgentsPair[] program = new ActionAgentsPair[]
+            {
+	            new ActionAgentsPair(ScenarioConsts.Move, AgentsSet.CreateFromOneAgent(ScenarioConsts.Tom).AgentBitSet)
+            };
 
             UniformConjunction fromConds = new UniformConjunction();
             fromConds.AddFluent(ScenarioConsts.TomRaised, FluentSign.Negated);

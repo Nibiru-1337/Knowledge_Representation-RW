@@ -49,7 +49,7 @@ namespace RW_tests.SceneriosTests
 			//Console.WriteLine(TestUtilities.WriteOutWorld(world));
 			ExecutableQuery query = new ExecutableQuery(new ActionAgentsPair[]
 			{
-				new ActionAgentsPair(Shoot, GetAgentsSet(new List<int>() {Bob, Tom, John}).AgentSet),
+				new ActionAgentsPair(Shoot, GetAgentsSet(new List<int>() {Bob, Tom, John}).AgentBitSet),
 			}, null, false);
 			Assert.AreEqual(true, query.Evaluate(world).IsTrue, "wrong result of query");
 		}
@@ -61,7 +61,7 @@ namespace RW_tests.SceneriosTests
 			//Console.WriteLine(TestUtilities.WriteOutWorld(world));
 			AfterQuery query = new AfterQuery(new ActionAgentsPair[]
 			{
-				new ActionAgentsPair(Shoot, GetAgentsSet(new List<int>() {Bob, Tom}).AgentSet),
+				new ActionAgentsPair(Shoot, GetAgentsSet(new List<int>() {Bob, Tom}).AgentBitSet),
 			}, null, false, new LogicClausesFactory().CreateSingleFluentClause(Alive, true));
 			Assert.AreEqual(true, query.Evaluate(world).IsTrue, "wrong result of query");
 
@@ -74,7 +74,7 @@ namespace RW_tests.SceneriosTests
 			//Console.WriteLine(TestUtilities.WriteOutWorld(world));
 			AfterQuery query = new AfterQuery(new ActionAgentsPair[]
 			{
-				new ActionAgentsPair(Shoot, GetAgentsSet(new List<int>() {Bob, Tom}).AgentSet),
+				new ActionAgentsPair(Shoot, GetAgentsSet(new List<int>() {Bob, Tom}).AgentBitSet),
 			}, null, true, new LogicClausesFactory().CreateSingleFluentClause(Alive, true));
 			Assert.AreEqual(false, query.Evaluate(world).IsTrue, "wrong result of query");
 		}
@@ -86,7 +86,7 @@ namespace RW_tests.SceneriosTests
 			Console.WriteLine(TestUtilities.WriteOutWorldFomInitiallyOnly(world, FluentsNames, AgentsNames, ActionsNames));
 			AfterQuery query = new AfterQuery(new ActionAgentsPair[]
 			{
-				new ActionAgentsPair(Shoot, GetAgentsSet(new List<int>() {Bob, Tom, John}).AgentSet),
+				new ActionAgentsPair(Shoot, GetAgentsSet(new List<int>() {Bob, Tom, John}).AgentBitSet),
 			}, null, true, new LogicClausesFactory().CreateSingleFluentClause(Alive, FluentSign.Negated));
 			var result = query.Evaluate(world);
 			//Console.WriteLine(string.Join(",", result.StatePath));
@@ -100,7 +100,7 @@ namespace RW_tests.SceneriosTests
 			Console.WriteLine(TestUtilities.WriteOutWorldFomInitiallyOnly(world, FluentsNames, AgentsNames, ActionsNames));
 			AfterQuery query = new AfterQuery(new ActionAgentsPair[]
 			{
-				new ActionAgentsPair(Shoot, GetAgentsSet(new List<int>() {Bob, Tom, John, Jack}).AgentSet),
+				new ActionAgentsPair(Shoot, GetAgentsSet(new List<int>() {Bob, Tom, John, Jack}).AgentBitSet),
 			}, null, true, new LogicClausesFactory().CreateSingleFluentClause(Alive, FluentSign.Positive));
 			var result = query.Evaluate(world);
 			//Console.WriteLine(string.Join(",", result.StatePath));
@@ -114,7 +114,7 @@ namespace RW_tests.SceneriosTests
 			//Console.WriteLine(TestUtilities.WriteOutWorld(world));
 			EngagedQuery query = new EngagedQuery(new ActionAgentsPair[]
 			{
-				new ActionAgentsPair(Shoot, GetAgentsSet(new List<int>() {Bob, Tom, John}).AgentSet),
+				new ActionAgentsPair(Shoot, GetAgentsSet(new List<int>() {Bob, Tom, John}).AgentBitSet),
 			}, null, true, GetAgentsSet(new List<int>() {Bob}));
 			Assert.AreEqual(true, query.Evaluate(world).IsTrue, "wrong result of query");
 		}

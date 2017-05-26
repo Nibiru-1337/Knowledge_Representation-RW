@@ -70,7 +70,7 @@ namespace RW_tests
 					sb.Append("\tfor state = ").Append(GetFluentsFromSet(pair.Key.FluentValues, fluentsNames)).AppendLine();
 					foreach (AgentSetChecker setChecker in pair.Value)
 					{
-						sb.Append("\t\tfor agents set = ").Append(GetAgentsFromSet(setChecker.AgentsSet.AgentSet, agentsNames)).AppendLine();
+						sb.Append("\t\tfor agents set = ").Append(GetAgentsFromSet(setChecker.AgentsSet.AgentBitSet, agentsNames)).AppendLine();
 						foreach (State state in setChecker.Edges)
 						{
 							sb.Append("\t\t\tcan go to state ").Append(GetFluentsFromSet(state.FluentValues, fluentsNames)).AppendLine();
@@ -99,7 +99,7 @@ namespace RW_tests
 					sb.Append("\tfor state = ").Append(GetFluentsFromSet(pair.Key.FluentValues, fluentsNames)).AppendLine();
 					foreach (AgentSetChecker setChecker in pair.Value)
 					{
-						sb.Append("\t\tfor agents set = ").Append(GetAgentsFromSet(setChecker.AgentsSet.AgentSet, agentsNames)).AppendLine();
+						sb.Append("\t\tfor agents set = ").Append(GetAgentsFromSet(setChecker.AgentsSet.AgentBitSet, agentsNames)).AppendLine();
 						foreach (State state in setChecker.Edges)
 						{
 							sb.Append("\t\t\tcan go to state ").Append(GetFluentsFromSet(state.FluentValues, fluentsNames)).AppendLine();

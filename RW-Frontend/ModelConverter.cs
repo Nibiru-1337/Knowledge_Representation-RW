@@ -182,7 +182,7 @@ namespace RW_Frontend
             {
                 var actionId = reverseActionDict[actionByAgent.Item1];
                 var agentSet = ConvertAgentsSet(reverseAgentDict, actionByAgent.Item2);
-                actions.Add(new ActionAgentsPair(actionId, agentSet.AgentSet));
+                actions.Add(new ActionAgentsPair(actionId, agentSet.AgentBitSet));
             }
             return actions;
         }

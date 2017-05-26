@@ -105,7 +105,7 @@ namespace RW_tests.BuildingOfWorldTests
 			else negated = new List<int>() {fluent};
 			return new ReachableStatesQuery(new ActionAgentsPair[]
 			{
-				new ActionAgentsPair(action, AgentsSet.CreateFromOneAgent(agent).AgentSet)
+				new ActionAgentsPair(action, AgentsSet.CreateFromOneAgent(agent).AgentBitSet)
 			}, UniformConjunction.CreateFrom(positive, negated), false); // czyli ze stanu state1
 		}
 

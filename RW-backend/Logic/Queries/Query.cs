@@ -156,11 +156,11 @@ namespace RW_backend.Logic.Queries
 #if DEBUG
 			    Logger.Log("checking for " + setChecker.AgentsSet);
 			    Logger.Log("can be executed = "
-							+ setChecker.CanBeExecutedByAgentsSet(Program[step].AgentsSet.AgentSet));
+							+ setChecker.CanBeExecutedByAgentsSet(Program[step].AgentsSet.AgentBitSet));
 			    Logger.Log("eng = " + !setChecker.UsesAgentFromSet(notEngagedAgents));
 #endif
 
-			    if (ActionCanBeExecutedByThoseAgents(setChecker, Program[step].AgentsSet.AgentSet,
+			    if (ActionCanBeExecutedByThoseAgents(setChecker, Program[step].AgentsSet.AgentBitSet,
 				    notEngagedAgents)) //
 			    {
 #if DEBUG
@@ -240,7 +240,7 @@ namespace RW_backend.Logic.Queries
 			BitSetOperator bop = new BitSetOperator();
 			foreach (ReleasesWithAgentsSet release in releases)
 			{
-				if (ActionCanBeExecutedByThoseAgents(release, Program[step].AgentsSet.AgentSet,
+				if (ActionCanBeExecutedByThoseAgents(release, Program[step].AgentsSet.AgentBitSet,
 					notEngagedAgents)) //
 				{
 					set = bop.GetSumOfSets(set, release.FluentsReleased.Set);

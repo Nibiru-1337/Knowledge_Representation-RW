@@ -152,7 +152,7 @@ namespace RW_backend.Models.World
 							// SHOOT by Bob causes !alive if loaded
 							// SHOOT by Bob causes !loaded
 	                        var result = possibleResults;
-                            ascList.Add(new AgentSetChecker(causesClause.AgentsSet.AgentSet, result));
+                            ascList.Add(new AgentSetChecker(causesClause.AgentsSet.AgentBitSet, result));
                         }
                     }
                     stateToAgentSetCheckers.Add(startingState, ascList);
@@ -207,7 +207,7 @@ namespace RW_backend.Models.World
 #if DEBUG
 							Logger.Log("state satisfies condition");
 #endif
-							ascList.Add(new ReleasesWithAgentsSet(releaseClause.AgentsSet.AgentSet,
+							ascList.Add(new ReleasesWithAgentsSet(releaseClause.AgentsSet.AgentBitSet,
 								new BitSet(bitSetFactory.CreateFromOneElement(releaseClause.FluentReleased))));
 						}
 					}

@@ -23,7 +23,7 @@ namespace RW_backend.Logic.Queries
 			var initialStates = GetInitialStates(world.InitialStates, world.States);
 			MinimiserOfChanges minimiser = new MinimiserOfChanges();
 			var resultWith = ExecuteProgram(world, minimiser, initialStates.ToList(), 0);
-			var resultWithout = ExecuteProgram(world, minimiser, initialStates, AgentsSet.AgentSet);
+			var resultWithout = ExecuteProgram(world, minimiser, initialStates, AgentsSet.AgentBitSet);
 			bool setsTheSame;
 			bool setsExactlyDifferent;
 
