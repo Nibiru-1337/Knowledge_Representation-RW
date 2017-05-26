@@ -64,6 +64,13 @@ always Drunk -> ~Physics ^ ~Math*/
                 ScenarioConsts.Drink, AgentsSet.CreateFromOneAgent(ScenarioConsts.Tom));
             causes.Add(cause);
 
+            cause =
+                Causes.CreateImpossible(
+                    logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.HasToy, FluentSign.Negated),
+                    ScenarioConsts.Learn,
+                    AgentsSet.CreateFromOneAgent(ScenarioConsts.Jack));
+            causes.Add(cause);
+
             List<LogicClause> alwayses = new List<LogicClause>();
             AlternativeOfConjunctions always = new AlternativeOfConjunctions();
             UniformConjunction uc = UniformConjunction.CreateFrom(new List<int>(), new List<int>() { ScenarioConsts.Physics, ScenarioConsts.Math, ScenarioConsts.Drunk });
