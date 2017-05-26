@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RW_backend.Logic;
 using RW_backend.Logic.Queries;
@@ -14,7 +15,7 @@ namespace RW_tests.UltimateSystemTests.NonintertialFluents
     public class NonIntertialTests
     {
         [TestMethod]
-        public void CheckForInertialNoReleaseNoFrom()
+        public void CheckForInertialNoReleaseNoOrOneConditionFrom()
         {
             Model model = BaseWorldGenerator.GenerateWorld(false);
             World world = new BackendLogic().CalculateWorld(model);
@@ -59,6 +60,26 @@ namespace RW_tests.UltimateSystemTests.NonintertialFluents
             new UniformAlternative(), true,
                 logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.TomRaised, FluentSign.Positive));
             Assert.AreEqual(false, query.Evaluate(world).IsTrue);
+
+            //possibly TomRaised after MOVE by Tom from ~TomRaised
+            logicClausesFactory = new LogicClausesFactory();
+            query = new AfterQuery(new ActionAgentsPair[]
+            {
+                new ActionAgentsPair(ScenarioConsts.Move, ScenarioConsts.Tom),
+            },
+            UniformAlternative.CreateFrom(new List<int>(), new List<int>() { ScenarioConsts.TomRaised }), false,
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.TomRaised, FluentSign.Positive));
+            Assert.AreEqual(true, query.Evaluate(world).IsTrue);
+
+            //always TomRaised after MOVE by Tom from ~TomRaised
+            logicClausesFactory = new LogicClausesFactory();
+            query = new AfterQuery(new ActionAgentsPair[]
+            {
+                new ActionAgentsPair(ScenarioConsts.Move, ScenarioConsts.Tom),
+            },
+            UniformAlternative.CreateFrom(new List<int>(), new List<int>() { ScenarioConsts.TomRaised }), true,
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.TomRaised, FluentSign.Positive));
+            Assert.AreEqual(true, query.Evaluate(world).IsTrue);
         }
     }
 }
