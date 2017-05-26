@@ -112,7 +112,7 @@ namespace RW_tests.UltimateSystemTests.NonintertialFluents
                 logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.BobRaised, FluentSign.Positive));
             Assert.AreEqual(true, query.Evaluate(world).IsTrue);
 
-            //possibly Point after MOVE by Tom from ~TomRaised
+            //possibly Point after MOVE by Tom from ~TomRaised ^ ~BobRaised
             logicClausesFactory = new LogicClausesFactory();
             query = new AfterQuery(program, fromConds, false,
                 logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Point, FluentSign.Positive));

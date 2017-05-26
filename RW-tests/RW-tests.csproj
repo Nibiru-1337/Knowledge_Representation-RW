@@ -76,6 +76,7 @@
     <Compile Include="ManualTests\SceneriosTests\GoalFor_10_05_Test.cs" />
     <Compile Include="TestUtilities.cs" />
     <Compile Include="UltimateSystemTests\ExamSessionScenerioExecutableTests.cs" />
+    <Compile Include="UltimateSystemTests\InertialFluents\BaseWorldGenerator.cs" />
     <Compile Include="UltimateSystemTests\NonintertialFluents\BaseWorldGenerator.cs" />
     <Compile Include="UltimateSystemTests\NonintertialFluents\NonIntertialTests.cs" />
     <Compile Include="UltimateSystemTests\PatriciaExamSessionScenerioGenerator.cs" />
@@ -93,9 +94,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UltimateSystemTests\InertialFluents\" />
-  </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
