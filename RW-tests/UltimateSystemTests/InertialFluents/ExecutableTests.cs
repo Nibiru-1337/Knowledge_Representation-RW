@@ -35,7 +35,7 @@ namespace RW_tests.UltimateSystemTests.InertialFluents
             
             //possibly executable LEARN by Bob, Jack from ~HasToy
             query = new ExecutableQuery(program,
-                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.HasToy, FluentSign.Negated), true);
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.HasToy, FluentSign.Negated), false);
             Assert.AreEqual(false, query.Evaluate(world).IsTrue, "possibly executable LEARN by Bob, Jack from ~HasToy");
 
             //always executable LEARN by Bob, Jack
@@ -45,7 +45,7 @@ namespace RW_tests.UltimateSystemTests.InertialFluents
 
             //possibly executable LEARN by Bob, Jack
             query = new ExecutableQuery(program,
-                logicClausesFactory.CreateEmptyLogicClause(), true);
+                logicClausesFactory.CreateEmptyLogicClause(), false);
             Assert.AreEqual(true, query.Evaluate(world).IsTrue, "possibly executable LEARN by Bob, Jack");
 
         }
