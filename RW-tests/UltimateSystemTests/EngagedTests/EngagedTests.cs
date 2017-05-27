@@ -163,5 +163,47 @@ namespace RW_tests.UltimateSystemTests.EngagedTests
             Assert.AreEqual(true, query.Evaluate(world).IsTrue, "Alice possibly engaged in (LEARN by Alice , LEARN by Jack, Bob) from ~HasToy^~Math");
 
         }
+
+        [TestMethod]
+        public void JackEngaged()
+        {
+            Model model = PatriciaExamSessionScenratioGenerator.GenerateWorld();
+            World world = new BackendLogic().CalculateWorld(model);
+            BitSetFactory bitSetFactory = new BitSetFactory();
+            LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
+            List<ActionAgentsPair> program = new List<ActionAgentsPair>();
+            ActionAgentsPair aap;
+            aap = new ActionAgentsPair(ScenarioConsts.Learn,
+                bitSetFactory.CreateBitSetValueFrom(new List<int>() { ScenarioConsts.Jack, ScenarioConsts.Bob }));
+            program.Add(aap);
+
+            EngagedQuery query;
+            AgentsSet whoisEngaged = new AgentsSet(bitSetFactory.CreateBitSetValueFrom(new List<int> { ScenarioConsts.Jack }));
+
+            //Jack always engaged in LEARN by Jack, Bob
+            query = new EngagedQuery(program, new UniformAlternative(), true, whoisEngaged);
+            Assert.AreEqual(false, query.Evaluate(world).IsTrue, "Jack always engaged in LEARN by Jack, Bob");
+            //Jack possibly engaged in LEARN by Jack, Bob
+            query = new EngagedQuery(program, new UniformAlternative(), false, whoisEngaged);
+            Assert.AreEqual(true, query.Evaluate(world).IsTrue, "Jack possibly engaged in LEARN by Jack, Bob");
+
+            //Jack always engaged in LEARN by Jack, Bob from HasToy
+            query = new EngagedQuery(program, 
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.HasToy, FluentSign.Positive), true, whoisEngaged);
+            Assert.AreEqual(false, query.Evaluate(world).IsTrue, "Jack always engaged in LEARN by Jack, Bob from HasToy");
+            //Jack possibly engaged in LEARN by Jack, Bob from HasToy
+            query = new EngagedQuery(program,
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.HasToy, FluentSign.Positive), false, whoisEngaged);
+            Assert.AreEqual(false, query.Evaluate(world).IsTrue, "Jack always engaged in LEARN by Jack, Bob from HasToy");
+
+            //Jack always engaged in LEARN by Jack, Bob from ~HasToy
+            query = new EngagedQuery(program,
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.HasToy, FluentSign.Negated), true, whoisEngaged);
+            Assert.AreEqual(false, query.Evaluate(world).IsTrue, "Jack always engaged in LEARN by Jack, Bob from ~HasToy");
+            //Jack possibly engaged in LEARN by Jack, Bob from ~HasToy
+            query = new EngagedQuery(program,
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.HasToy, FluentSign.Negated), false, whoisEngaged);
+            Assert.AreEqual(true, query.Evaluate(world).IsTrue, "Jack possibly engaged in LEARN by Jack, Bob from ~HasToy");
+        }
     }
 }
