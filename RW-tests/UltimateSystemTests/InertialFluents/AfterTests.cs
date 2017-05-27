@@ -8,7 +8,6 @@ using RW_backend.Models.BitSets;
 using RW_backend.Models.Clauses.LogicClauses;
 using RW_backend.Models.Factories;
 using RW_backend.Models.World;
-using RW_tests.UltimateSystemTests.IntertialFluents;
 
 namespace RW_tests.UltimateSystemTests.InertialFluents
 {
