@@ -194,5 +194,35 @@ namespace RW_tests.UltimateSystemTests.InertialFluents
             
         }
 
+        [TestMethod]
+        public void InitiallyHasToy()
+        {
+            Model model = BaseWorldGenerator.GenerateWorld();
+            UniformConjunction uc = UniformConjunction.CreateFrom(new List<int>() { ScenarioConsts.HasToy }, new List<int>() );
+            model.InitiallyStatements.Add(uc);
+
+            World world = new BackendLogic().CalculateWorld(model);
+            LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
+            BitSetFactory bitSetFactory = new BitSetFactory();
+            List<ActionAgentsPair> program = new List<ActionAgentsPair>();
+
+
+            ActionAgentsPair aap;
+            aap = new ActionAgentsPair(ScenarioConsts.Learn,
+                bitSetFactory.CreateBitSetValueFrom(new List<int>() { ScenarioConsts.Tom, ScenarioConsts.Jack }));
+            program.Add(aap);
+
+            //always executable LEARN by Tom, Jack
+            ExecutableQuery query = new ExecutableQuery(program,
+                logicClausesFactory.CreateEmptyLogicClause(), true);
+            Assert.AreEqual(true, query.Evaluate(world).IsTrue, "always executable LEARN by Tom, Jack");
+
+            //possibly executable LEARN by Tom, Jack
+            query = new ExecutableQuery(program,
+                logicClausesFactory.CreateEmptyLogicClause(), false);
+            Assert.AreEqual(true, query.Evaluate(world).IsTrue, "possibly executable LEARN by Tom, Jack");
+
+        }
+
     }
 }
