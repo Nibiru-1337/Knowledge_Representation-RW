@@ -8,6 +8,7 @@ using RW_backend.Models.BitSets;
 using RW_backend.Models.Clauses.LogicClauses;
 using RW_backend.Models.Factories;
 using RW_backend.Models.World;
+using RW_tests.UltimateSystemTests;
 
 namespace RW_tests.UltimateSystemTests.InertialFluents
 {
@@ -17,7 +18,7 @@ namespace RW_tests.UltimateSystemTests.InertialFluents
         [TestMethod]
         public void NoAddedClauses()
         {
-            Model model = BaseWorldGenerator.GenerateWorld();
+            Model model = PatriciaExamSessionScenratioGenerator.GenerateWorld();
             World world = new BackendLogic().CalculateWorld(model);
             LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
             BitSetFactory bitSetFactory = new BitSetFactory();

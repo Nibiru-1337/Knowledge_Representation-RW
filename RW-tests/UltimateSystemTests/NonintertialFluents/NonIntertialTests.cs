@@ -17,7 +17,7 @@ namespace RW_tests.UltimateSystemTests.NonintertialFluents
         [TestMethod]
         public void CheckForInertialNoReleaseNoOrOneConditionFrom()
         {
-            Model model = BaseWorldGenerator.GenerateWorld(false);
+            Model model = RaisedHandSecnarioGenerator.GenerateWorld(false);
             World world = new BackendLogic().CalculateWorld(model);
             ActionAgentsPair[] program = new ActionAgentsPair[]
             {
@@ -64,7 +64,7 @@ namespace RW_tests.UltimateSystemTests.NonintertialFluents
         [TestMethod]
         public void CheckForNoninertialNoReleaseNoOrOneConditionFrom()
         {
-            Model model = BaseWorldGenerator.GenerateWorld(true);
+            Model model = RaisedHandSecnarioGenerator.GenerateWorld(true);
             World world = new BackendLogic().CalculateWorld(model);
             ActionAgentsPair[] program = new ActionAgentsPair[]
             {
@@ -98,7 +98,7 @@ namespace RW_tests.UltimateSystemTests.NonintertialFluents
         [TestMethod]
         public void CheckForInertialNoReleaseManyConditionsFrom()
         {
-            Model model = BaseWorldGenerator.GenerateWorld(false);
+            Model model = RaisedHandSecnarioGenerator.GenerateWorld(false);
             World world = new BackendLogic().CalculateWorld(model);
             LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
             ActionAgentsPair[] program = new ActionAgentsPair[]
@@ -137,7 +137,7 @@ namespace RW_tests.UltimateSystemTests.NonintertialFluents
         [TestMethod]
         public void CheckForNoninertialNoReleaseManyConditionsFrom()
         {
-            Model model = BaseWorldGenerator.GenerateWorld(true);
+            Model model = RaisedHandSecnarioGenerator.GenerateWorld(true);
             World world = new BackendLogic().CalculateWorld(model);
             LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
             ActionAgentsPair[] program = new ActionAgentsPair[]
@@ -176,7 +176,7 @@ namespace RW_tests.UltimateSystemTests.NonintertialFluents
         [TestMethod]
         public void CheckForNoninertialRelease()
         {
-            Model model = BaseWorldGenerator.GenerateWorld(true, true);
+            Model model = RaisedHandSecnarioGenerator.GenerateWorld(true, true);
             World world = new BackendLogic().CalculateWorld(model);
             LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
             ActionAgentsPair[] program = new ActionAgentsPair[]

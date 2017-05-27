@@ -10,6 +10,7 @@ using RW_backend.Models.Clauses;
 using RW_backend.Models.Clauses.LogicClauses;
 using RW_backend.Models.Factories;
 using RW_backend.Models.World;
+using RW_tests.UltimateSystemTests;
 
 namespace RW_tests.UltimateSystemTests.InertialFluents
 {
@@ -19,7 +20,7 @@ namespace RW_tests.UltimateSystemTests.InertialFluents
         [TestMethod]
         public void NoAddedClauses()
         {
-            Model model = BaseWorldGenerator.GenerateWorld();
+            Model model = PatriciaExamSessionScenratioGenerator.GenerateWorld();
             World world = new BackendLogic().CalculateWorld(model);
             LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
             BitSetFactory bitSetFactory = new BitSetFactory();
@@ -140,7 +141,7 @@ namespace RW_tests.UltimateSystemTests.InertialFluents
         [TestMethod]
         public void AlwaysNotHasToy()
         {
-            Model model = BaseWorldGenerator.GenerateWorld();
+            Model model = PatriciaExamSessionScenratioGenerator.GenerateWorld();
             UniformConjunction uc = UniformConjunction.CreateFrom(new List<int>(), new List<int>() { ScenarioConsts.HasToy });
             model.AlwaysStatements.Add(uc);
             
@@ -198,7 +199,7 @@ namespace RW_tests.UltimateSystemTests.InertialFluents
         [TestMethod]
         public void InitiallyHasToy()
         {
-            Model model = BaseWorldGenerator.GenerateWorld();
+            Model model = PatriciaExamSessionScenratioGenerator.GenerateWorld();
             UniformConjunction uc = UniformConjunction.CreateFrom(new List<int>() { ScenarioConsts.HasToy }, new List<int>() );
             model.InitiallyStatements.Add(uc);
 
@@ -219,11 +220,11 @@ namespace RW_tests.UltimateSystemTests.InertialFluents
 				logicClausesFactory.CreateEmptyLogicClause(), false);
 			Assert.AreEqual(true, query.Evaluate(world).IsTrue, "possibly executable LEARN by Tom, Jack");
 
-			//always executable LEARN by Tom, Jack
+            //always executable LEARN by Tom, Jack
 			query = new ExecutableQuery(program,
                 logicClausesFactory.CreateEmptyLogicClause(), true);
-			Assert.AreEqual(true, query.Evaluate(world).IsTrue, "always executable LEARN by Tom, Jack");
-            
+            Assert.AreEqual(true, query.Evaluate(world).IsTrue, "always executable LEARN by Tom, Jack");
+
         }
 
         [TestMethod]
@@ -231,7 +232,7 @@ namespace RW_tests.UltimateSystemTests.InertialFluents
         {
 
             LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
-            Model model = BaseWorldGenerator.GenerateWorld();
+            Model model = PatriciaExamSessionScenratioGenerator.GenerateWorld();
             Causes cause = new Causes(new UniformAlternative(), logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Math, FluentSign.Negated),
                 ScenarioConsts.Learn, AgentsSet.CreateFromOneAgent(ScenarioConsts.Alice));
             model.CausesStatements.Add(cause);

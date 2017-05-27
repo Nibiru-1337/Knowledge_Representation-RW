@@ -75,11 +75,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ManualTests\SceneriosTests\GoalFor_10_05_Test.cs" />
     <Compile Include="TestUtilities.cs" />
+    <Compile Include="UltimateSystemTests\EngagedTests\EngagedTests.cs" />
     <Compile Include="UltimateSystemTests\ExamSessionScenerioExecutableTests.cs" />
-    <Compile Include="UltimateSystemTests\InertialFluents\BaseWorldGenerator.cs" />
     <Compile Include="UltimateSystemTests\InertialFluents\ExecutableTests.cs" />
     <Compile Include="UltimateSystemTests\InertialFluents\AfterTests.cs" />
-    <Compile Include="UltimateSystemTests\NonintertialFluents\BaseWorldGenerator.cs" />
+    <Compile Include="UltimateSystemTests\NonintertialFluents\RaisedHandSecnarioGenerator.cs" />
     <Compile Include="UltimateSystemTests\NonintertialFluents\NonIntertialTests.cs" />
     <Compile Include="UltimateSystemTests\PatriciaExamSessionScenerioGenerator.cs" />
   </ItemGroup>
