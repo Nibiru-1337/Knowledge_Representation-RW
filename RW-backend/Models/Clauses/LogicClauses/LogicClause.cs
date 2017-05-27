@@ -10,5 +10,6 @@
     public abstract class LogicClause
     {
 	    public abstract bool CheckForState(int state);
+		public abstract bool IsEmpty();
     }
 }

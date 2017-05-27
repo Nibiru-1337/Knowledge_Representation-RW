@@ -42,7 +42,7 @@ namespace RW_backend.Logic.Queries
 
 		protected internal List<State> GetInitialStates(IList<State> initialStatesInSystem, IList<State> allStates)
 	    {
-		    if (InitialStateCondition == null)
+		    if (InitialStateCondition == null || InitialStateCondition.IsEmpty())
 			    return initialStatesInSystem.ToList();
 		    else
 			    return allStates.Where(state => InitialStateCondition.CheckForState(state.FluentValues))
@@ -115,7 +115,7 @@ namespace RW_backend.Logic.Queries
 	    List<State> TakeNextTimeStep(int step, List<State> states, World world, int notEngagedAgents, 
 			MinimiserOfChanges minimiser, ref bool executableAlways)
 	    {
-			List<State> newStatesForThatState = new List<State>();
+			List<State> newStatesForThatState = null;
 			List<State> newStates = new List<State>();
 			
 			for (int index = 0; index < states.Count; index++)
@@ -124,6 +124,8 @@ namespace RW_backend.Logic.Queries
 #if DEBUG
 				Logger.Log("~* state = " + state);
 #endif
+				
+
 				bool emptyAction = false;
 				newStatesForThatState =
 					GoFurtherFromThatState(world.Connections[Program[step].ActionId][state], notEngagedAgents,
@@ -211,7 +213,7 @@ namespace RW_backend.Logic.Queries
 				}
 			}
 			else
-				newStates.AddRange(minimiser.MinimaliseChanges(state, newStatesForThatState, releasedFluents.Set, 
+				newStates.AddRange(minimiser.MinimaliseChanges(state, newStatesForThatState, releasedFluents.Set,
 					world.NonInertialFluents.Set));
 		}
 

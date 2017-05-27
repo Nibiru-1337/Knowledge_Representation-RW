@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RW_backend.Logic;
 using RW_backend.Logic.Queries;
@@ -212,15 +213,17 @@ namespace RW_tests.UltimateSystemTests.InertialFluents
                 bitSetFactory.CreateBitSetValueFrom(new List<int>() { ScenarioConsts.Tom, ScenarioConsts.Jack }));
             program.Add(aap);
 
-            //always executable LEARN by Tom, Jack
-            ExecutableQuery query = new ExecutableQuery(program,
-                logicClausesFactory.CreateEmptyLogicClause(), true);
-            Assert.AreEqual(true, query.Evaluate(world).IsTrue, "always executable LEARN by Tom, Jack");
 
-            //possibly executable LEARN by Tom, Jack
-            query = new ExecutableQuery(program,
-                logicClausesFactory.CreateEmptyLogicClause(), false);
-            Assert.AreEqual(true, query.Evaluate(world).IsTrue, "possibly executable LEARN by Tom, Jack");
+			//possibly executable LEARN by Tom, Jack
+			ExecutableQuery query = new ExecutableQuery(program,
+				logicClausesFactory.CreateEmptyLogicClause(), false);
+			Assert.AreEqual(true, query.Evaluate(world).IsTrue, "possibly executable LEARN by Tom, Jack");
+
+			//always executable LEARN by Tom, Jack
+			query = new ExecutableQuery(program,
+                logicClausesFactory.CreateEmptyLogicClause(), true);
+			Assert.AreEqual(true, query.Evaluate(world).IsTrue, "always executable LEARN by Tom, Jack");
+            
         }
 
         [TestMethod]

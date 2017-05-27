@@ -68,5 +68,10 @@ namespace RW_backend.Models.Clauses.LogicClauses
 			PositiveFluents = positive;
 			NegatedFluents = negated;
 		}
+
+		public override bool IsEmpty()
+		{
+			return PositiveFluents == 0 && NegatedFluents == 0;
+		}
 	}
 }

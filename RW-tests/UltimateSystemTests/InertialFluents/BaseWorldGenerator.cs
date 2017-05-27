@@ -9,8 +9,18 @@ namespace RW_tests.UltimateSystemTests.InertialFluents
 {
     public static class ScenarioConsts
     {
-        /*"Zbliża się sesja i grupa znajomych postanowiła razem się pouczyć. Aby się czegoś nauczyć, musi być osoba, która dobrze zna dany temat. Bob i Tom są dobrzy z matematyki, a Alice z fizyki. Natomiast z fizyką u Toma jest różnie - czasem może kogoś jej nawet oduczyć. Alice ma młodszego brata, który często wpada niespodziewanie i jeśli nie ma zabawki, to nie można się przy nim uczyć, dlatego dziewczyna zawsze ma jakąś ze sobą.
-Aby uczcić zakończenie nauki (albo przed na zachętę) czasem idą do baru się czegoś napić. Tom jest taką osobą, że jeśli pójdzie, to wszyscy się upiją, u Boba zależy to od nastroju. Jeśli się upiją, to zapominają to czego się nauczyli."							
+        /*
+		
+		"Zbliża się sesja i grupa znajomych postanowiła razem się pouczyć. 
+		Aby się czegoś nauczyć, musi być osoba, która dobrze zna dany temat. 
+		Bob i Tom są dobrzy z matematyki, a Alice z fizyki. 
+		Natomiast z fizyką u Toma jest różnie - czasem może kogoś jej nawet oduczyć. 
+		Alice ma młodszego brata, który często wpada niespodziewanie i jeśli nie ma zabawki, 
+		to nie można się przy nim uczyć, dlatego dziewczyna zawsze ma jakąś ze sobą.
+		Aby uczcić zakończenie nauki (albo przed na zachętę) czasem idą do baru się czegoś napić. 
+		Tom jest taką osobą, że jeśli pójdzie, to wszyscy się upiją, u Boba zależy to od nastroju. 
+		Jeśli się upiją, to zapominają to czego się nauczyli."
+									
 LEARN by Tom causes Math
 LEARN by Bob causes Math
 LEARN by Alice causes Physics ^ HasToy

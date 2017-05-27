@@ -21,6 +21,11 @@ namespace RW_backend.Models.Clauses.LogicClauses
 			return _alternatives.All(conjunction => conjunction.CheckForState(state));
 		}
 
+		public override bool IsEmpty()
+		{
+			return _alternatives.All(conj => conj.IsEmpty());
+		}
+
 
 		public void AddAlternative(UniformAlternative alternative)
 		{

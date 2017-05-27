@@ -23,6 +23,11 @@ namespace RW_backend.Models.Clauses.LogicClauses
 			return _conjunctions.Any(conjunction => conjunction.CheckForState(state));
 		}
 
+		public override bool IsEmpty()
+		{
+			return _conjunctions.All(alt => alt.IsEmpty());
+		}
+
 		public void AddConjunction(UniformConjunction uniformConjunction)
 		{
 			_conjunctions.Add(uniformConjunction);
