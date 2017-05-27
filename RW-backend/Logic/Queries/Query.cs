@@ -61,12 +61,7 @@ namespace RW_backend.Logic.Queries
 			var result = new ProgramExecutionResult();
 			for (int i = 0; i < Program.Count; i++)
 		    {
-			    // wykonujemy program
-#if DEBUG
-                Logger.Log("~~~~");
-				Logger.Log("states available for i = " + i);
-				Logger.Log("=> " + string.Join(", ", states));
-#endif
+
 
 				if (!world.Connections.ContainsKey(Program[i].ActionId))
 				{
@@ -85,9 +80,7 @@ namespace RW_backend.Logic.Queries
 
 			    if (newStates.Count == 0)
 			    {
-#if DEBUG
-					Logger.Log("new states count = 0, so never executable");
-#endif
+
 					result.Executable = Executable.Never;
 				    return result;
 			    }
@@ -96,16 +89,12 @@ namespace RW_backend.Logic.Queries
 
 		    }
 
-#if DEBUG
-			Logger.Log("last states = " + string.Join(", ", states));
-#endif
+
 		    result.ReachableStates = states;
 		    result.Executable = states.Count == 0
 			    ? Executable.Never
 			    : (executableAlways ? Executable.Always : Executable.Sometimes);
-#if DEBUG
-			Logger.Log("executable = " + result.Executable);
-#endif
+			
 		    return result;
 
 	    }
@@ -121,10 +110,6 @@ namespace RW_backend.Logic.Queries
 			for (int index = 0; index < states.Count; index++)
 			{
 				var state = states[index];
-#if DEBUG
-				Logger.Log("~* state = " + state);
-#endif
-				
 
 				bool emptyAction = false;
 				newStatesForThatState =
@@ -162,19 +147,10 @@ namespace RW_backend.Logic.Queries
 			
 		    foreach (AgentSetChecker setChecker in setCheckers)
 		    {
-#if DEBUG
-			    Logger.Log("checking for " + setChecker.AgentsSet);
-			    Logger.Log("can be executed = "
-							+ setChecker.CanBeExecutedByAgentsSet(Program[step].AgentsSet.AgentBitSet));
-			    Logger.Log("eng = " + !setChecker.UsesAgentFromSet(notEngagedAgents));
-#endif
 
 			    if (ActionCanBeExecutedByThoseAgents(setChecker, Program[step].AgentsSet.AgentBitSet,
 				    notEngagedAgents)) //
 			    {
-#if DEBUG
-				    Logger.Log("pass, states here = " + string.Join(", ", setChecker.Edges));
-#endif
 				    emptyAction = false; // nie, ponieważ istnieje taki zbiór agentów, który prowadzi do czegoś, nawet jeśli do sprzeczności
 				    howManyStateAvailable++;
 				    if (setChecker.Edges.Count == 0) // impossible action in that state with those agents
@@ -188,11 +164,7 @@ namespace RW_backend.Logic.Queries
 		    }
 			if(emptyAction)
 				return new List<State>() {state}; // żeby nie liczyć niepotrzebnie w sumie pustych rzeczy
-
-#if DEBUG
-			Logger.Log("intersecting here = "
-						+ string.Join(", ", intersectedStatesSet.Select(p => "(" + p.Value + ", " + p.Key + ")")));
-#endif
+			
 		    return GetAvailableStatesFromIntersected(intersectedStatesSet, howManyStateAvailable);
 	    }
 

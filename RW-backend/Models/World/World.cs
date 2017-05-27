@@ -98,52 +98,28 @@ namespace RW_backend.Models.World
             //for every unique ActionID
             for (int i = 0; i < actionCount; i++)
             {
-				Logger.Log("<ACTION> " + i);
-
                 var stateToAgentSetCheckers = new Dictionary<State, IList<AgentSetChecker>>(States.Count);
                 //for every starting state
                 foreach (var startingState in States)
                 {
-#if DEBUG
-					Logger.Log("state = " + startingState);
-#endif
-
 					//TODO check assumption that actionCount is numer of unique ActionIDs, and that they are always sequential
 					List<Causes> sameID = causesList.Where(a => a.Action == i).ToList();
                     var ascList = new List<AgentSetChecker>(sameID.Count);
                     //for each action with the same ActionID
                     foreach (var causesClause in sameID)
                     {
-#if DEBUG
-						Logger.Log("causes nr " + causesClause);
-#endif
                         //if there is no conditions or state satisfies conditions
                         if (causesClause.InitialCondition == null 
 							|| causesClause.InitialCondition.CheckForState(startingState.FluentValues))
                         {
-#if DEBUG
-							Logger.Log("state satisfies condition");
-#endif
                             //get all states that have proper result fluents as caused by action
                             List<State> possibleResults = new List<State>();
 
                             foreach (var endingState in States)
                             {
-#if DEBUG && EXTENDED_DEBUG
-                                Logger.Log("checking for " + endingState + ", logic clause = " + causesClause.Effect);
-#endif
                                 if (causesClause.Effect.CheckForState(endingState.FluentValues))
                                 {
-#if DEBUG && EXTENDED_DEBUG
-									Logger.Log("(pass)");
-#endif
                                     possibleResults.Add(endingState);
-                                }
-                                else
-                                {
-#if DEBUG && EXTENDED_DEBUG
-	                                Logger.Log("(not)");
-#endif
                                 }
                             }
 
@@ -186,10 +162,6 @@ namespace RW_backend.Models.World
 				//for every starting state
 				foreach (var startingState in States)
 				{
-#if DEBUG
-					Logger.Log("state = " + startingState);
-#endif
-
 					//TODO check assumption that actionCount is numer of unique ActionIDs, and that they are always sequential
 					List<Releases> sameID = releasesList.Where(a => a.Action == i).ToList();
 
@@ -197,16 +169,10 @@ namespace RW_backend.Models.World
 					//for each action with the same ActionID
 					foreach (var releaseClause in sameID)
 					{
-#if DEBUG
-						Logger.Log("releases nr " + releaseClause);
-#endif
 						//if there is no conditions or state satisfies conditions
 						if (releaseClause.InitialCondition == null
 							|| releaseClause.InitialCondition.CheckForState(startingState.FluentValues))
 						{
-#if DEBUG
-							Logger.Log("state satisfies condition");
-#endif
 							ascList.Add(new ReleasesWithAgentsSet(releaseClause.AgentsSet.AgentBitSet,
 								new BitSet(bitSetFactory.CreateFromOneElement(releaseClause.FluentReleased))));
 						}
