@@ -5,6 +5,7 @@ using RW_backend.Logic;
 using RW_backend.Logic.Queries;
 using RW_backend.Models;
 using RW_backend.Models.BitSets;
+using RW_backend.Models.Clauses;
 using RW_backend.Models.Clauses.LogicClauses;
 using RW_backend.Models.Factories;
 using RW_backend.Models.World;
@@ -221,7 +222,57 @@ namespace RW_tests.UltimateSystemTests.InertialFluents
             query = new ExecutableQuery(program,
                 logicClausesFactory.CreateEmptyLogicClause(), false);
             Assert.AreEqual(true, query.Evaluate(world).IsTrue, "possibly executable LEARN by Tom, Jack");
+        }
 
+        [TestMethod]
+        public void ContradictingResults()
+        {
+
+            LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
+            Model model = BaseWorldGenerator.GenerateWorld();
+            Causes cause = new Causes(new UniformAlternative(), logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Math, FluentSign.Negated),
+                ScenarioConsts.Learn, AgentsSet.CreateFromOneAgent(ScenarioConsts.Alice));
+            model.CausesStatements.Add(cause);
+
+            World world = new BackendLogic().CalculateWorld(model);
+            BitSetFactory bitSetFactory = new BitSetFactory();
+            List<ActionAgentsPair> program = new List<ActionAgentsPair>();
+
+
+            ActionAgentsPair aap;
+            aap = new ActionAgentsPair(ScenarioConsts.Learn,
+                bitSetFactory.CreateBitSetValueFrom(new List<int>() { ScenarioConsts.Tom, ScenarioConsts.Alice }));
+            program.Add(aap);
+
+            //always executable LEARN by Alice, Tom
+            ExecutableQuery query = new ExecutableQuery(program,
+                logicClausesFactory.CreateEmptyLogicClause(), true);
+            Assert.AreEqual(false, query.Evaluate(world).IsTrue, "always executable LEARN by Alice, Tom");
+
+            //possibly executable LEARN by Alice, Tom
+            query = new ExecutableQuery(program,
+                logicClausesFactory.CreateEmptyLogicClause(), false);
+            Assert.AreEqual(false, query.Evaluate(world).IsTrue, "possibly executable LEARN by Alice, Tom");
+
+            program = new List<ActionAgentsPair>();
+            aap = new ActionAgentsPair(ScenarioConsts.Learn,AgentsSet.CreateFromOneAgent(ScenarioConsts.Alice).AgentBitSet);
+            program.Add(aap);
+
+            aap = new ActionAgentsPair(ScenarioConsts.Learn, AgentsSet.CreateFromOneAgent(ScenarioConsts.Tom).AgentBitSet);
+            program.Add(aap);
+
+
+            //always executable LEARN by Alice
+            //LEARN by Tom
+            query = new ExecutableQuery(program,
+                logicClausesFactory.CreateEmptyLogicClause(), true);
+            Assert.AreEqual(true, query.Evaluate(world).IsTrue, "always executable LEARN by Alice\n LEARN by Tom");
+
+            //possibly executable LEARN by Alice
+            //LEARN by Tom
+            query = new ExecutableQuery(program,
+                logicClausesFactory.CreateEmptyLogicClause(), false);
+            Assert.AreEqual(true, query.Evaluate(world).IsTrue, "possibly executable LEARN by Alice\n LEARN by Tom");
         }
 
     }
