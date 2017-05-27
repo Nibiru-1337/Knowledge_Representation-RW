@@ -40,7 +40,7 @@ always Point <=> (TomRaised <=> BobRaised)
         //public const int TNBNP = 2; // TomRaised, ~BobRaised, ~Point
         //public const int NTBNP = 3; // ~TomRaised, BobRaised, ~Point
     }
-    public class BaseWorldGenerator
+    public class RaisedHandSecnarioGenerator
     {
         public static Model GenerateWorld(bool withNoninertial, bool withReleases = false)
         {
