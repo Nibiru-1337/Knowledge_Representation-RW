@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using RW_backend.Models;
 using RW_backend.Models.BitSets;
 using RW_backend.Models.Clauses;
 using RW_backend.Models.Clauses.LogicClauses;
 using RW_backend.Models.Factories;
 
-namespace RW_tests.UltimateSystemTests.IntertialFluents
+namespace RW_tests.UltimateSystemTests.InertialFluents
 {
     public static class ScenarioConsts
     {
