@@ -42,23 +42,33 @@ namespace RW_backend.Logic.Queries
 		{
 			theSame = true;
 			int howManyDifferent = 0;
-			
-			if (with.Count != without.Count)
+
+			int withCount = with?.Count ?? 0;
+			int withoutCount = without?.Count ?? 0;
+
+			if (withCount != withoutCount)
 				theSame = false;
 
-			Dictionary<int, State> dictionary = with.ToDictionary(w => w.FluentValues);
-			foreach (State state in without)
+			Dictionary<int, State> dictionary = withCount == 0 
+				? new Dictionary<int, State>() 
+				: with.ToDictionary(w => w.FluentValues);
+
+			if (withoutCount != 0)
 			{
-				if (!dictionary.ContainsKey(state.FluentValues))
+				foreach (State state in without)
 				{
-					theSame = false;
-					howManyDifferent++;
+					if (!dictionary.ContainsKey(state.FluentValues))
+					{
+						theSame = false;
+						howManyDifferent++;
+					}
 				}
 			}
-			if (with.Count == 0 && without.Count == 0)
+			
+			if (withCount == 0 && withoutCount == 0)
 				exactlyDifferent = false;
 			else
-				exactlyDifferent = howManyDifferent == without.Count;
+				exactlyDifferent = howManyDifferent == withoutCount;
 		}
 
 	}

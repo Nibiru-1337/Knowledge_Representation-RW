@@ -79,7 +79,7 @@
     <Compile Include="UltimateSystemTests\ExamSessionScenerioExecutableTests.cs" />
     <Compile Include="UltimateSystemTests\InertialFluents\ExecutableTests.cs" />
     <Compile Include="UltimateSystemTests\InertialFluents\AfterTests.cs" />
-    <Compile Include="UltimateSystemTests\NonintertialFluents\RaisedHandSecnarioGenerator.cs" />
+    <Compile Include="UltimateSystemTests\NonintertialFluents\RaisedHandScenarioGenerator.cs" />
     <Compile Include="UltimateSystemTests\NonintertialFluents\NonIntertialTests.cs" />
     <Compile Include="UltimateSystemTests\PatriciaExamSessionScenerioGenerator.cs" />
   </ItemGroup>
