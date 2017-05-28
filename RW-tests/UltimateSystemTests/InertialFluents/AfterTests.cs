@@ -108,7 +108,7 @@ namespace RW_tests.UltimateSystemTests.InertialFluents
         {
             LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
             Model model = PatriciaExamSessionScenratioGenerator.GenerateWorld();
-            model.InitiallyStatements.Add(logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Physics,FluentSign.Negated));
+            model.InitiallyStatements.Add(logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Physics, FluentSign.Negated));
             World world = new BackendLogic().CalculateWorld(model);
             BitSetFactory bitSetFactory = new BitSetFactory();
             List<ActionAgentsPair> program = new List<ActionAgentsPair>();
@@ -153,7 +153,7 @@ namespace RW_tests.UltimateSystemTests.InertialFluents
             query = new AfterQuery(program, logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Physics, FluentSign.Positive), false,
                 logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Physics, FluentSign.Positive));
             Assert.AreEqual(true, query.Evaluate(world).IsTrue, "possible Physics after LEARN by Alice");
-            
+
         }
 
         [TestMethod]
@@ -167,7 +167,7 @@ namespace RW_tests.UltimateSystemTests.InertialFluents
             ActionAgentsPair aap;
             aap = new ActionAgentsPair(ScenarioConsts.Learn, AgentsSet.CreateFromOneAgent(ScenarioConsts.Tom).AgentBitSet);
             program.Add(aap);
-            aap = new ActionAgentsPair(ScenarioConsts.Learn, bitSetFactory.CreateBitSetValueFrom(new List<int>() {ScenarioConsts.Bob, ScenarioConsts.Jack}));
+            aap = new ActionAgentsPair(ScenarioConsts.Learn, bitSetFactory.CreateBitSetValueFrom(new List<int>() { ScenarioConsts.Bob, ScenarioConsts.Jack }));
             program.Add(aap);
 
             ExecutableQuery query1;
@@ -194,7 +194,74 @@ namespace RW_tests.UltimateSystemTests.InertialFluents
             query2 = new AfterQuery(program, new UniformAlternative(), false,
                 logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Math, FluentSign.Positive));
             Assert.AreEqual(true, query2.Evaluate(world).IsTrue, "possible Math after LEARN by Tom\nLEARN by Bob, Jack");
-            
+
+        }
+
+        [TestMethod]
+        public void DifferentOrderOfActions()
+        {
+            LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
+            Model model = PatriciaExamSessionScenratioGenerator.GenerateWorld();
+            World world = new BackendLogic().CalculateWorld(model);
+            BitSetFactory bitSetFactory = new BitSetFactory();
+            List<ActionAgentsPair> program = new List<ActionAgentsPair>();
+            ActionAgentsPair aap;
+            aap = new ActionAgentsPair(ScenarioConsts.Learn, AgentsSet.CreateFromOneAgent(ScenarioConsts.Bob).AgentBitSet);
+            program.Add(aap);
+            aap = new ActionAgentsPair(ScenarioConsts.Drink, AgentsSet.CreateFromOneAgent(ScenarioConsts.Bob).AgentBitSet);
+            program.Add(aap);
+
+            AfterQuery query;
+
+            //always Math after LEARN by Bob
+            //DRINK by Bob
+            query = new AfterQuery(program, new UniformAlternative(), true,
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Math, FluentSign.Positive));
+            Assert.AreEqual(false, query.Evaluate(world).IsTrue, "always Math after LEARN by Bob\nDRINK by Bob");
+
+            //possible Math after LEARN by Bob
+            //DRINK by Bob
+            query = new AfterQuery(program, new UniformAlternative(), false,
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Math, FluentSign.Positive));
+            Assert.AreEqual(true, query.Evaluate(world).IsTrue, "possible Math after LEARN by Bob\nDRINK by Bob");
+
+            program = new List<ActionAgentsPair>();
+            aap = new ActionAgentsPair(ScenarioConsts.Learn, AgentsSet.CreateFromOneAgent(ScenarioConsts.Bob).AgentBitSet);
+            program.Add(aap);
+            aap = new ActionAgentsPair(ScenarioConsts.Drink, AgentsSet.CreateFromOneAgent(ScenarioConsts.Tom).AgentBitSet);
+            program.Add(aap);
+
+            //always Math after LEARN by Bob
+            //DRINK by Tom
+            query = new AfterQuery(program, new UniformAlternative(), true,
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Math, FluentSign.Positive));
+            Assert.AreEqual(false, query.Evaluate(world).IsTrue, "always Math after LEARN by Bob\nDRINK by Tom");
+
+            //possible Math after LEARN by Bob
+            //DRINK by Tom
+            query = new AfterQuery(program, new UniformAlternative(), false,
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Math, FluentSign.Positive));
+            Assert.AreEqual(false, query.Evaluate(world).IsTrue, "possible Math after LEARN by Bob\nDRINK by Tom");
+
+
+            program = new List<ActionAgentsPair>();
+            aap = new ActionAgentsPair(ScenarioConsts.Drink, AgentsSet.CreateFromOneAgent(ScenarioConsts.Tom).AgentBitSet);
+            program.Add(aap);
+            aap = new ActionAgentsPair(ScenarioConsts.Learn, AgentsSet.CreateFromOneAgent(ScenarioConsts.Bob).AgentBitSet);
+            program.Add(aap);
+
+            //always DRINK by Tom 
+            //Math after LEARN by Bob
+            query = new AfterQuery(program, new UniformAlternative(), true,
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Math, FluentSign.Positive));
+            Assert.AreEqual(true, query.Evaluate(world).IsTrue, "always Math after DRINK by Tom\nLEARN by Bob");
+
+            //possible DRINK by Tom 
+            //Math after LEARN by Bob
+            query = new AfterQuery(program, new UniformAlternative(), false,
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Math, FluentSign.Positive));
+            Assert.AreEqual(true, query.Evaluate(world).IsTrue, "possible Math after DRINK by Tom\nLEARN by Bob");
+
         }
     }
 }
