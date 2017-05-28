@@ -155,5 +155,46 @@ namespace RW_tests.UltimateSystemTests.InertialFluents
             Assert.AreEqual(true, query.Evaluate(world).IsTrue, "possible Physics after LEARN by Alice");
             
         }
+
+        [TestMethod]
+        public void ExecutableVsAfter()
+        {
+            LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
+            Model model = PatriciaExamSessionScenratioGenerator.GenerateWorld();
+            World world = new BackendLogic().CalculateWorld(model);
+            BitSetFactory bitSetFactory = new BitSetFactory();
+            List<ActionAgentsPair> program = new List<ActionAgentsPair>();
+            ActionAgentsPair aap;
+            aap = new ActionAgentsPair(ScenarioConsts.Learn, AgentsSet.CreateFromOneAgent(ScenarioConsts.Tom).AgentBitSet);
+            program.Add(aap);
+            aap = new ActionAgentsPair(ScenarioConsts.Learn, bitSetFactory.CreateBitSetValueFrom(new List<int>() {ScenarioConsts.Bob, ScenarioConsts.Jack}));
+            program.Add(aap);
+
+            ExecutableQuery query1;
+
+            //always executable LEARN by Tom
+            //LEARN by Bob, Jack
+            query1 = new ExecutableQuery(program, new UniformAlternative(), true);
+            Assert.AreEqual(false, query1.Evaluate(world).IsTrue, "always executable LEARN by Tom \n LEARN by Bob, Jack");
+
+            //possible executable LEARN by Tom
+            //LEARN by Bob, Jack
+            query1 = new ExecutableQuery(program, new UniformAlternative(), false);
+            Assert.AreEqual(true, query1.Evaluate(world).IsTrue, "possible executable LEARN by Tom \n LEARN by Bob, Jack");
+
+            AfterQuery query2;
+            //always Math after LEARN by Tom
+            //LEARN by Bob, Jack
+            query2 = new AfterQuery(program, new UniformAlternative(), true,
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Math, FluentSign.Positive));
+            Assert.AreEqual(true, query2.Evaluate(world).IsTrue, "always Math after LEARN by Tom\nLEARN by Bob, Jack");
+
+            //possible Math after LEARN by Tom
+            //LEARN by Bob, Jack
+            query2 = new AfterQuery(program, new UniformAlternative(), false,
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Math, FluentSign.Positive));
+            Assert.AreEqual(true, query2.Evaluate(world).IsTrue, "possible Math after LEARN by Tom\nLEARN by Bob, Jack");
+            
+        }
     }
 }
