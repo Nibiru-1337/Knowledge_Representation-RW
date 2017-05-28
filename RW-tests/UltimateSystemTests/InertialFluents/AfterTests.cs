@@ -102,5 +102,58 @@ namespace RW_tests.UltimateSystemTests.InertialFluents
             Assert.AreEqual(true, query.Evaluate(world).IsTrue, "possible Physics after LEARN by Tom from ~Physics");
 
         }
+
+        [TestMethod]
+        public void InitiallyNotPhysics()
+        {
+            LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
+            Model model = PatriciaExamSessionScenratioGenerator.GenerateWorld();
+            model.InitiallyStatements.Add(logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Physics,FluentSign.Negated));
+            World world = new BackendLogic().CalculateWorld(model);
+            BitSetFactory bitSetFactory = new BitSetFactory();
+            List<ActionAgentsPair> program = new List<ActionAgentsPair>();
+            ActionAgentsPair aap;
+            aap = new ActionAgentsPair(ScenarioConsts.Learn, AgentsSet.CreateFromOneAgent(ScenarioConsts.Tom).AgentBitSet);
+            program.Add(aap);
+
+            AfterQuery query;
+
+            //always Physics after LEARN by Tom
+            query = new AfterQuery(program, new UniformAlternative(), true,
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Physics, FluentSign.Positive));
+            Assert.AreEqual(false, query.Evaluate(world).IsTrue, "always Physics after LEARN by Tom");
+
+            //possible Physics after LEARN by Tom
+            query = new AfterQuery(program, new UniformAlternative(), false,
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Physics, FluentSign.Positive));
+            Assert.AreEqual(true, query.Evaluate(world).IsTrue, "possible Physics after LEARN by Tom");
+
+            program = new List<ActionAgentsPair>();
+            aap = new ActionAgentsPair(ScenarioConsts.Learn, AgentsSet.CreateFromOneAgent(ScenarioConsts.Bob).AgentBitSet);
+            program.Add(aap);
+            //always Physics after LEARN by Bob
+            query = new AfterQuery(program, new UniformAlternative(), true,
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Physics, FluentSign.Positive));
+            Assert.AreEqual(false, query.Evaluate(world).IsTrue, "always Physics after LEARN by Bob");
+
+            //possible Physics after LEARN by Bob
+            query = new AfterQuery(program, new UniformAlternative(), false,
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Physics, FluentSign.Positive));
+            Assert.AreEqual(false, query.Evaluate(world).IsTrue, "possible Physics after LEARN by Bob");
+
+            program = new List<ActionAgentsPair>();
+            aap = new ActionAgentsPair(ScenarioConsts.Learn, AgentsSet.CreateFromOneAgent(ScenarioConsts.Alice).AgentBitSet);
+            program.Add(aap);
+            //always Physics after LEARN by Alice
+            query = new AfterQuery(program, logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Physics, FluentSign.Positive), true,
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Physics, FluentSign.Positive));
+            Assert.AreEqual(true, query.Evaluate(world).IsTrue, "always Physics after LEARN by Alice");
+
+            //possible Physics after LEARN by Alice
+            query = new AfterQuery(program, logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Physics, FluentSign.Positive), false,
+                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Physics, FluentSign.Positive));
+            Assert.AreEqual(true, query.Evaluate(world).IsTrue, "possible Physics after LEARN by Alice");
+            
+        }
     }
 }
