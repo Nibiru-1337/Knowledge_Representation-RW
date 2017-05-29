@@ -264,6 +264,7 @@ namespace RW_Frontend
                 SelectionMode = SelectionMode.Multiple,
                 SelectedItem = string.Empty
             };
+            listBox.SelectionChanged += new SelectionChangedEventHandler(OnAgentsListBoxChanged);
             ep.Content = listBox;
             ep.MouseEnter += (s, e) =>
             {
@@ -271,7 +272,24 @@ namespace RW_Frontend
                 actions = actions.Concat(new List<string> {AnyAgent});
                 listBox.ItemsSource = actions;
             };
+            
             return ep;
+        }
+
+        private void OnAgentsListBoxChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var listBox = sender as ListBox;
+            if (listBox == null)
+                return;
+            if (listBox.SelectedItems.Contains("ANY"))
+            {
+                listBox.SelectionMode= SelectionMode.Single;
+                listBox.SelectedIndex = listBox.Items.IndexOf("ANY");
+            }
+            else if (!listBox.SelectedItems.Contains("ANY"))
+            {
+                listBox.SelectionMode = SelectionMode.Multiple;
+            }
         }
 
         private Label CreateByLabel()
@@ -433,6 +451,8 @@ namespace RW_Frontend
 
         private void AddFluent()
         {
+            if (FluentsTextBoxes.Count >= 13)
+                return;
             FluentsTextBoxes.Add(CreateFluentAgentActionTextBox());
             FluentsRemoveButtons.Add(CreateRemoveButton("Fluent"));
         }
