@@ -433,6 +433,8 @@ namespace RW_Frontend
 
         private void AddFluent()
         {
+            if (FluentsTextBoxes.Count >= 13)
+                return;
             FluentsTextBoxes.Add(CreateFluentAgentActionTextBox());
             FluentsRemoveButtons.Add(CreateRemoveButton("Fluent"));
         }
