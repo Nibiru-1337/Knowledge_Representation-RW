@@ -264,7 +264,7 @@ namespace RW_Frontend
                 SelectionMode = SelectionMode.Multiple,
                 SelectedItem = string.Empty
             };
-            listBox.SelectionChanged += new SelectionChangedEventHandler(OnMyComboBoxChanged);
+            listBox.SelectionChanged += new SelectionChangedEventHandler(OnAgentsListBoxChanged);
             ep.Content = listBox;
             ep.MouseEnter += (s, e) =>
             {
@@ -276,7 +276,7 @@ namespace RW_Frontend
             return ep;
         }
 
-        private void OnMyComboBoxChanged(object sender, SelectionChangedEventArgs e)
+        private void OnAgentsListBoxChanged(object sender, SelectionChangedEventArgs e)
         {
             var listBox = sender as ListBox;
             if (listBox == null)
