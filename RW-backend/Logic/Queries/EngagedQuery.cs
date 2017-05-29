@@ -46,7 +46,13 @@ namespace RW_backend.Logic.Queries
 			int withCount = with?.Count ?? 0;
 			int withoutCount = without?.Count ?? 0;
 
-			if (withCount != withoutCount)
+		    if (withCount == 0 && withoutCount == 0)
+		    {
+		        exactlyDifferent = false;
+		        return;
+		    }
+
+		    if (withCount != withoutCount)
 				theSame = false;
 
 			Dictionary<int, State> dictionary = withCount == 0 
@@ -65,10 +71,7 @@ namespace RW_backend.Logic.Queries
 				}
 			}
 			
-			if (withCount == 0 && withoutCount == 0)
-				exactlyDifferent = false;
-			else
-				exactlyDifferent = howManyDifferent == withoutCount;
+			exactlyDifferent = howManyDifferent == withoutCount;
 		}
 
 	}

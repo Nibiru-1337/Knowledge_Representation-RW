@@ -199,7 +199,7 @@ namespace RW_tests.UltimateSystemTests.EngagedTests
             //Jack always engaged in LEARN by Jack, Bob from ~HasToy
             query = new EngagedQuery(program,
                 logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.HasToy, FluentSign.Negated), true, whoisEngaged);
-            Assert.AreEqual(false, query.Evaluate(world).IsTrue, "Jack always engaged in LEARN by Jack, Bob from ~HasToy");
+            Assert.AreEqual(true, query.Evaluate(world).IsTrue, "Jack always engaged in LEARN by Jack, Bob from ~HasToy");
             //Jack possibly engaged in LEARN by Jack, Bob from ~HasToy
             query = new EngagedQuery(program,
                 logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.HasToy, FluentSign.Negated), false, whoisEngaged);
