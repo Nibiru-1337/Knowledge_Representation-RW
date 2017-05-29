@@ -543,15 +543,54 @@ namespace RW_tests.UltimateSystemTests.InertialFluents
             var world = new BackendLogic().CalculateWorld(model);
 
             var queryFrom = logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.HasToy, FluentSign.Positive);
-            //possibly Physics after LEARN by Tom,Bob
+            //possibly Physics after LEARN by Tom,Bob,Jack from HasToy
             var possiblyQuery = new AfterQuery(queryProgram, queryFrom, false,
                 logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Physics, FluentSign.Positive));
-            Assert.AreEqual(true, possiblyQuery.Evaluate(world).IsTrue, "possibly Physics after LEARN by Tom,Bob");
+            Assert.AreEqual(true, possiblyQuery.Evaluate(world).IsTrue, "possibly Physics after LEARN by Tom,Bob,Jack from HasToy");
 
-            //always Physics after LEARN by Tom,Bob
+            //always Physics after LEARN by Tom,Bob,Jack from HasToy
             var alwaysQuery = new AfterQuery(queryProgram, queryFrom, true,
                 logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Physics, FluentSign.Positive));
-            Assert.AreEqual(true, alwaysQuery.Evaluate(world).IsTrue, "always Physics after LEARN by Tom,Bob");
+            Assert.AreEqual(true, alwaysQuery.Evaluate(world).IsTrue, "always Physics after LEARN by Tom,Bob,Jack from HasToy");
+        }
+
+        [TestMethod]
+        public void Case17ATestAlways()
+        {
+            var logicClausesFactory = new LogicClausesFactory();
+
+            var bitSetFactory = new BitSetFactory();
+            var afterProgram = new List<ActionAgentsPair> { new ActionAgentsPair(ScenarioConsts.Learn, bitSetFactory.CreateBitSetValueFrom(new List<int> { ScenarioConsts.Tom })) };
+            var queryProgram = new List<ActionAgentsPair> { new ActionAgentsPair(ScenarioConsts.Learn, bitSetFactory.CreateBitSetValueFrom(new List<int> { ScenarioConsts.Tom })) };
+            var model = PatriciaExamSessionScenratioGenerator.GenerateModel();
+            var after = new After(logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Physics, FluentSign.Positive), afterProgram, true);
+            model.AfterStatements.Add(after);
+            var alwaysNotPhysics = logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Physics, FluentSign.Negated);
+            model.AlwaysStatements.Add(alwaysNotPhysics);
+            var world = new BackendLogic().CalculateWorld(model);
+
+            var executableQuery = new ExecutableQuery(queryProgram, new UniformAlternative(), false);
+            Assert.AreEqual(false, executableQuery.Evaluate(world).IsTrue, "executable LEARN by Tom");
+
+            var alwaysExecutableQuery = new ExecutableQuery(queryProgram, new UniformAlternative(), true);
+            Assert.AreEqual(false, alwaysExecutableQuery.Evaluate(world).IsTrue, "always executable LEARN by Tom");
+        }
+
+        [TestMethod]
+        public void Case17BTestAlwaysInitially()
+        {
+            var logicClausesFactory = new LogicClausesFactory();
+
+            var bitSetFactory = new BitSetFactory();
+            var model = PatriciaExamSessionScenratioGenerator.GenerateModel();
+
+            var initiallyPhysics = logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Physics,FluentSign.Positive);
+            model.InitiallyStatements.Add(initiallyPhysics);
+            var alwaysNotPhysics = logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Physics, FluentSign.Negated);
+            model.AlwaysStatements.Add(alwaysNotPhysics);
+            var world = new BackendLogic().CalculateWorld(model);
+
+            Assert.IsTrue(world.Inconsistent, "world inconsistent - contradicting initially and always");
         }
     }
 }
