@@ -20,7 +20,7 @@ namespace RW_tests.UltimateSystemTests.InertialFluents
         [TestMethod]
         public void NoAddedClauses()
         {
-            Model model = PatriciaExamSessionScenratioGenerator.GenerateWorld();
+            Model model = PatriciaExamSessionScenratioGenerator.GenerateModel();
             World world = new BackendLogic().CalculateWorld(model);
             LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
             BitSetFactory bitSetFactory = new BitSetFactory();
@@ -141,7 +141,7 @@ namespace RW_tests.UltimateSystemTests.InertialFluents
         [TestMethod]
         public void AlwaysNotHasToy()
         {
-            Model model = PatriciaExamSessionScenratioGenerator.GenerateWorld();
+            Model model = PatriciaExamSessionScenratioGenerator.GenerateModel();
             UniformConjunction uc = UniformConjunction.CreateFrom(new List<int>(), new List<int>() { ScenarioConsts.HasToy });
             model.AlwaysStatements.Add(uc);
             
@@ -199,7 +199,7 @@ namespace RW_tests.UltimateSystemTests.InertialFluents
         [TestMethod]
         public void InitiallyHasToy()
         {
-            Model model = PatriciaExamSessionScenratioGenerator.GenerateWorld();
+            Model model = PatriciaExamSessionScenratioGenerator.GenerateModel();
             UniformConjunction uc = UniformConjunction.CreateFrom(new List<int>() { ScenarioConsts.HasToy }, new List<int>() );
             model.InitiallyStatements.Add(uc);
 
@@ -232,7 +232,7 @@ namespace RW_tests.UltimateSystemTests.InertialFluents
         {
 
             LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
-            Model model = PatriciaExamSessionScenratioGenerator.GenerateWorld();
+            Model model = PatriciaExamSessionScenratioGenerator.GenerateModel();
             Causes cause = new Causes(new UniformAlternative(), logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Math, FluentSign.Negated),
                 ScenarioConsts.Learn, AgentsSet.CreateFromOneAgent(ScenarioConsts.Alice));
             model.CausesStatements.Add(cause);

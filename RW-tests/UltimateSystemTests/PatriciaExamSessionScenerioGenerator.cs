@@ -39,7 +39,7 @@ always Drunk -> ~Physics ^ ~Math*/
     }
     public class PatriciaExamSessionScenratioGenerator
     {
-        public static Model GenerateWorld()
+        public static Model GenerateModel()
         {
             LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
             Causes cause;

@@ -18,7 +18,7 @@ namespace RW_tests.UltimateSystemTests.EngagedTests
         [TestMethod]
         public void EngagedBobTest()
         {
-            Model model = PatriciaExamSessionScenratioGenerator.GenerateWorld();
+            Model model = PatriciaExamSessionScenratioGenerator.GenerateModel();
             World world = new BackendLogic().CalculateWorld(model);
             BitSetFactory bitSetFactory = new BitSetFactory();
             LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
@@ -61,7 +61,7 @@ namespace RW_tests.UltimateSystemTests.EngagedTests
         [TestMethod]
         public void EngagedBobTomTest()
         {
-            Model model = PatriciaExamSessionScenratioGenerator.GenerateWorld();
+            Model model = PatriciaExamSessionScenratioGenerator.GenerateModel();
             World world = new BackendLogic().CalculateWorld(model);
             BitSetFactory bitSetFactory = new BitSetFactory();
             LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
@@ -127,7 +127,7 @@ namespace RW_tests.UltimateSystemTests.EngagedTests
         [TestMethod]
         public void EngagedAlice()
         {
-            Model model = PatriciaExamSessionScenratioGenerator.GenerateWorld();
+            Model model = PatriciaExamSessionScenratioGenerator.GenerateModel();
             World world = new BackendLogic().CalculateWorld(model);
             BitSetFactory bitSetFactory = new BitSetFactory();
             LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
@@ -167,7 +167,7 @@ namespace RW_tests.UltimateSystemTests.EngagedTests
         [TestMethod]
         public void JackEngaged()
         {
-            Model model = PatriciaExamSessionScenratioGenerator.GenerateWorld();
+            Model model = PatriciaExamSessionScenratioGenerator.GenerateModel();
             World world = new BackendLogic().CalculateWorld(model);
             BitSetFactory bitSetFactory = new BitSetFactory();
             LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
@@ -221,7 +221,7 @@ namespace RW_tests.UltimateSystemTests.EngagedTests
         [TestMethod]
         public void TomEngaged()
         {
-            Model model = PatriciaExamSessionScenratioGenerator.GenerateWorld();
+            Model model = PatriciaExamSessionScenratioGenerator.GenerateModel();
             World world = new BackendLogic().CalculateWorld(model);
             BitSetFactory bitSetFactory = new BitSetFactory();
             LogicClausesFactory logicClausesFactory = new LogicClausesFactory();

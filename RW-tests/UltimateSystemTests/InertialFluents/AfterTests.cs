@@ -19,7 +19,7 @@ namespace RW_tests.UltimateSystemTests.InertialFluents
         [TestMethod]
         public void NoAddedClauses()
         {
-            Model model = PatriciaExamSessionScenratioGenerator.GenerateWorld();
+            Model model = PatriciaExamSessionScenratioGenerator.GenerateModel();
             World world = new BackendLogic().CalculateWorld(model);
             LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
             BitSetFactory bitSetFactory = new BitSetFactory();
@@ -160,7 +160,7 @@ namespace RW_tests.UltimateSystemTests.InertialFluents
         public void InitiallyNotPhysics()
         {
             LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
-            Model model = PatriciaExamSessionScenratioGenerator.GenerateWorld();
+            Model model = PatriciaExamSessionScenratioGenerator.GenerateModel();
             model.InitiallyStatements.Add(logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Physics, FluentSign.Negated));
             World world = new BackendLogic().CalculateWorld(model);
             BitSetFactory bitSetFactory = new BitSetFactory();
@@ -213,7 +213,7 @@ namespace RW_tests.UltimateSystemTests.InertialFluents
         public void ExecutableVsAfter()
         {
             LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
-            Model model = PatriciaExamSessionScenratioGenerator.GenerateWorld();
+            Model model = PatriciaExamSessionScenratioGenerator.GenerateModel();
             World world = new BackendLogic().CalculateWorld(model);
             BitSetFactory bitSetFactory = new BitSetFactory();
             List<ActionAgentsPair> program = new List<ActionAgentsPair>();
@@ -254,7 +254,7 @@ namespace RW_tests.UltimateSystemTests.InertialFluents
         public void DifferentOrderOfActions()
         {
             LogicClausesFactory logicClausesFactory = new LogicClausesFactory();
-            Model model = PatriciaExamSessionScenratioGenerator.GenerateWorld();
+            Model model = PatriciaExamSessionScenratioGenerator.GenerateModel();
             World world = new BackendLogic().CalculateWorld(model);
             BitSetFactory bitSetFactory = new BitSetFactory();
             List<ActionAgentsPair> program = new List<ActionAgentsPair>();
@@ -330,7 +330,7 @@ namespace RW_tests.UltimateSystemTests.InertialFluents
             aap = new ActionAgentsPair(ScenarioConsts.Learn, AgentsSet.CreateFromOneAgent(ScenarioConsts.Tom).AgentBitSet);
             program.Add(aap);
 
-            Model model = PatriciaExamSessionScenratioGenerator.GenerateWorld();
+            Model model = PatriciaExamSessionScenratioGenerator.GenerateModel();
             After after = new After(logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Physics, FluentSign.Positive), program, true);
             model.AfterStatements.Add(after);
             World world = new BackendLogic().CalculateWorld(model);
@@ -381,7 +381,7 @@ namespace RW_tests.UltimateSystemTests.InertialFluents
             aap = new ActionAgentsPair(ScenarioConsts.Learn, AgentsSet.CreateFromOneAgent(ScenarioConsts.Bob).AgentBitSet);
             program.Add(aap);
 
-            Model model = PatriciaExamSessionScenratioGenerator.GenerateWorld();
+            Model model = PatriciaExamSessionScenratioGenerator.GenerateModel();
             After after =
                 new After(logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Physics, FluentSign.Positive), program, false);
             model.AfterStatements.Add(after);
@@ -413,7 +413,7 @@ namespace RW_tests.UltimateSystemTests.InertialFluents
             aap = new ActionAgentsPair(ScenarioConsts.Learn, AgentsSet.CreateFromOneAgent(ScenarioConsts.Bob).AgentBitSet);
             program.Add(aap);
 
-            Model model = PatriciaExamSessionScenratioGenerator.GenerateWorld();
+            Model model = PatriciaExamSessionScenratioGenerator.GenerateModel();
             After after = new After(logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Physics, FluentSign.Positive), program, true);
             model.AfterStatements.Add(after);
             World world = new BackendLogic().CalculateWorld(model);
@@ -487,7 +487,7 @@ namespace RW_tests.UltimateSystemTests.InertialFluents
                 new ActionAgentsPair(ScenarioConsts.Learn, bitSetFactory.CreateBitSetValueFrom(new List<int> {ScenarioConsts.Tom})),
                 new ActionAgentsPair(ScenarioConsts.Learn, bitSetFactory.CreateBitSetValueFrom(new List<int> {ScenarioConsts.Bob}))
             };
-            var model = PatriciaExamSessionScenratioGenerator.GenerateWorld();
+            var model = PatriciaExamSessionScenratioGenerator.GenerateModel();
             var after = new After(logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Physics, FluentSign.Positive), afterProgram, true);
             model.AfterStatements.Add(after);
             var world = new BackendLogic().CalculateWorld(model);
@@ -512,7 +512,7 @@ namespace RW_tests.UltimateSystemTests.InertialFluents
             var bitSetFactory = new BitSetFactory();
             var afterProgram = new List<ActionAgentsPair> { new ActionAgentsPair(ScenarioConsts.Learn, bitSetFactory.CreateBitSetValueFrom(new List<int> { ScenarioConsts.Bob, ScenarioConsts.Tom })) };
             var queryProgram = new List<ActionAgentsPair> { new ActionAgentsPair(ScenarioConsts.Learn, bitSetFactory.CreateBitSetValueFrom(new List<int> { ScenarioConsts.Tom, ScenarioConsts.Bob })) };
-            var model = PatriciaExamSessionScenratioGenerator.GenerateWorld();
+            var model = PatriciaExamSessionScenratioGenerator.GenerateModel();
             var after = new After(logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Physics, FluentSign.Positive), afterProgram, true);
             model.AfterStatements.Add(after);
             var world = new BackendLogic().CalculateWorld(model);
@@ -537,7 +537,7 @@ namespace RW_tests.UltimateSystemTests.InertialFluents
             var bitSetFactory = new BitSetFactory();
             var afterProgram = new List<ActionAgentsPair> { new ActionAgentsPair(ScenarioConsts.Learn, bitSetFactory.CreateBitSetValueFrom(new List<int> { ScenarioConsts.Bob, ScenarioConsts.Tom })) };
             var queryProgram = new List<ActionAgentsPair> { new ActionAgentsPair(ScenarioConsts.Learn, bitSetFactory.CreateBitSetValueFrom(new List<int> { ScenarioConsts.Tom, ScenarioConsts.Bob, ScenarioConsts.Jack })) };
-            var model = PatriciaExamSessionScenratioGenerator.GenerateWorld();
+            var model = PatriciaExamSessionScenratioGenerator.GenerateModel();
             var after = new After(logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Physics, FluentSign.Positive), afterProgram, true);
             model.AfterStatements.Add(after);
             var world = new BackendLogic().CalculateWorld(model);
