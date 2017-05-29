@@ -555,6 +555,26 @@ namespace RW_tests.UltimateSystemTests.InertialFluents
         }
 
         [TestMethod]
+        public void Case16TestInitiallyHatToyQueryFromNotHasToy()
+        {
+            var logicClausesFactory = new LogicClausesFactory();
+
+            var bitSetFactory = new BitSetFactory();
+            var queryProgram = new List<ActionAgentsPair> { new ActionAgentsPair(ScenarioConsts.Learn, bitSetFactory.CreateBitSetValueFrom(new List<int> { ScenarioConsts.Tom, ScenarioConsts.Jack })) };
+            var model = PatriciaExamSessionScenratioGenerator.GenerateModel();
+            var initiallyHasToy = logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.HasToy, FluentSign.Positive);
+            model.InitiallyStatements.Add(initiallyHasToy);
+            var world = new BackendLogic().CalculateWorld(model);
+
+            var fromNotHasToy = logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.HasToy, FluentSign.Negated);
+            var executableQuery = new ExecutableQuery(queryProgram, fromNotHasToy, false);
+            Assert.AreEqual(false, executableQuery.Evaluate(world).IsTrue, "executable LEARN by Tom,Jack from !HasToy");
+
+            var alwaysExecutableQuery = new ExecutableQuery(queryProgram, fromNotHasToy, true);
+            Assert.AreEqual(false, alwaysExecutableQuery.Evaluate(world).IsTrue, "always executable LEARN by Tom,Jack from !HasToy");
+        }
+
+        [TestMethod]
         public void Case17ATestAlways()
         {
             var logicClausesFactory = new LogicClausesFactory();
@@ -584,7 +604,7 @@ namespace RW_tests.UltimateSystemTests.InertialFluents
             var bitSetFactory = new BitSetFactory();
             var model = PatriciaExamSessionScenratioGenerator.GenerateModel();
 
-            var initiallyPhysics = logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Physics,FluentSign.Positive);
+            var initiallyPhysics = logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Physics, FluentSign.Positive);
             model.InitiallyStatements.Add(initiallyPhysics);
             var alwaysNotPhysics = logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Physics, FluentSign.Negated);
             model.AlwaysStatements.Add(alwaysNotPhysics);
