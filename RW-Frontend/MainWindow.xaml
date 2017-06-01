@@ -7,8 +7,9 @@
         xmlns:p="clr-namespace:RW_Frontend.Properties"
         mc:Ignorable="d"
         Initialized="MainWindow_OnInitialized"
-        Title="Realizacja programów działań w środowisku wieloagentowym" Height="900" Width="1500">
+        Title="Realizacja programów działań w środowisku wieloagentowym" Height="900" Width="1100" >
     <Grid>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto">
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel>
                 <Expander FontSize="14" Header="Fluents" BorderBrush="Black" BorderThickness="2" Margin="5"
@@ -316,6 +317,7 @@
                     </StackPanel>
                 </Expander>
             </StackPanel>
+        </ScrollViewer>
         </ScrollViewer>
     </Grid>
 </Window>

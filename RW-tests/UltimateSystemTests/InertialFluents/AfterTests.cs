@@ -124,36 +124,36 @@ namespace RW_tests.UltimateSystemTests.InertialFluents
             Assert.AreEqual(true, query.Evaluate(world).IsTrue, "possible Physics after LEARN by Bob (LEARN by Tom, LEARN by Bob)");
 
 
-            //always Physics after LEARN by Alice
-            //LEARN by Jack 
-            //DRINK by Tom
-            //LEARN by Bob
-            //LEARN by Tom
-            //LEARN by Bob
-            program = new List<ActionAgentsPair>();
-            aap = new ActionAgentsPair(ScenarioConsts.Learn, AgentsSet.CreateFromOneAgent(ScenarioConsts.Alice).AgentBitSet);
-            aap2 = new ActionAgentsPair(ScenarioConsts.Learn, bitSetFactory.CreateBitSetValueFrom(new List<int>() { ScenarioConsts.Jack }));
-            aap3 = new ActionAgentsPair(ScenarioConsts.Learn, bitSetFactory.CreateBitSetValueFrom(new List<int>() { ScenarioConsts.Tom }));
-            aap4 = new ActionAgentsPair(ScenarioConsts.Learn, bitSetFactory.CreateBitSetValueFrom(new List<int>() { ScenarioConsts.Bob }));
-            aap5 = new ActionAgentsPair(ScenarioConsts.Drink, bitSetFactory.CreateBitSetValueFrom(new List<int>() { ScenarioConsts.Tom }));
-            program.Add(aap);
-            program.Add(aap2);
-            program.Add(aap3);
-            program.Add(aap4);
-            program.Add(aap5);
-            query = new AfterQuery(program, logicClausesFactory.CreateEmptyLogicClause(), true,
-                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Physics, FluentSign.Positive));
-            Assert.AreEqual(true, query.Evaluate(world).IsTrue, "always Physics after LEARN by Alice (LEARN by Jack, DRINK by Tom, LEARN by Bob, LEARN by Tom, LEARN by Bob)");
+            ////always Physics after LEARN by Alice
+            ////LEARN by Jack 
+            ////DRINK by Tom
+            ////LEARN by Bob
+            ////LEARN by Tom
+            ////LEARN by Bob
+            //program = new List<ActionAgentsPair>();
+            //aap = new ActionAgentsPair(ScenarioConsts.Learn, AgentsSet.CreateFromOneAgent(ScenarioConsts.Alice).AgentBitSet);
+            //aap2 = new ActionAgentsPair(ScenarioConsts.Learn, bitSetFactory.CreateBitSetValueFrom(new List<int>() { ScenarioConsts.Jack }));
+            //aap3 = new ActionAgentsPair(ScenarioConsts.Learn, bitSetFactory.CreateBitSetValueFrom(new List<int>() { ScenarioConsts.Tom }));
+            //aap4 = new ActionAgentsPair(ScenarioConsts.Learn, bitSetFactory.CreateBitSetValueFrom(new List<int>() { ScenarioConsts.Bob }));
+            //aap5 = new ActionAgentsPair(ScenarioConsts.Drink, bitSetFactory.CreateBitSetValueFrom(new List<int>() { ScenarioConsts.Tom }));
+            //program.Add(aap);
+            //program.Add(aap2);
+            //program.Add(aap3);
+            //program.Add(aap4);
+            //program.Add(aap5);
+            //query = new AfterQuery(program, logicClausesFactory.CreateEmptyLogicClause(), true,
+            //    logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Physics, FluentSign.Positive));
+            //Assert.AreEqual(true, query.Evaluate(world).IsTrue, "always Physics after LEARN by Alice (LEARN by Jack, DRINK by Tom, LEARN by Bob, LEARN by Tom, LEARN by Bob)");
 
-            //possible Physics after LEARN by Alice
-            //LEARN by Jack 
-            //DRINK by Tom
-            //LEARN by Bob
-            //LEARN by Tom
-            //LEARN by Bob 
-            query = new AfterQuery(program, logicClausesFactory.CreateEmptyLogicClause(), false,
-                logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Physics, FluentSign.Positive));
-            Assert.AreEqual(true, query.Evaluate(world).IsTrue, "possible Physics after LEARN by Alice (LEARN by Jack, DRINK by Tom, LEARN by Bob, LEARN by Tom, LEARN by Bob)");
+            ////possible Physics after LEARN by Alice
+            ////LEARN by Jack 
+            ////DRINK by Tom
+            ////LEARN by Bob
+            ////LEARN by Tom
+            ////LEARN by Bob 
+            //query = new AfterQuery(program, logicClausesFactory.CreateEmptyLogicClause(), false,
+            //    logicClausesFactory.CreateSingleFluentClause(ScenarioConsts.Physics, FluentSign.Positive));
+            //Assert.AreEqual(true, query.Evaluate(world).IsTrue, "possible Physics after LEARN by Alice (LEARN by Jack, DRINK by Tom, LEARN by Bob, LEARN by Tom, LEARN by Bob)");
         }
 
         [TestMethod]
