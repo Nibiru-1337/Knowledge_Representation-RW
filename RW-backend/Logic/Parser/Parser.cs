@@ -52,16 +52,21 @@ namespace RW_backend.Logic.Parser
             }
             return GetDNF(text);
         }
+
         protected LogicClause GetCNF(string text)
         {
             ConjunctionOfAlternatives lc = new ConjunctionOfAlternatives();
             string[] conjs = text.Split(AndSymbol);
             for (int i = 0; i < conjs.Length; i++)
             {
+                if(conjs[i] == "")
+                    throw new ArgumentException($"Error in clause text: {text}\nMaybe you missed fluent name");
                 string[] alts = conjs[i].Split(OrSymbol);
                 UniformAlternative alt = new UniformAlternative();
                 for (int j = 0; j < alts.Length; j++)
                 {
+                    if (alts[j] == "")
+                        throw new ArgumentException($"Error in clause text: {text}\nMaybe you missed fluent name");
                     bool isNegation = false;
                     if (alts[j][0] == NotSymbol)
                     {
@@ -83,10 +88,14 @@ namespace RW_backend.Logic.Parser
             string[] alts = text.Split(OrSymbol);
             for (int i = 0; i < alts.Length; i++)
             {
+                if (alts[i] == "")
+                    throw new ArgumentException($"Error in clause text: {text}\nMaybe you missed fluent name");
                 string[] conjs = alts[i].Split(AndSymbol);
                 UniformConjunction conj = new UniformConjunction();
                 for (int j = 0; j < conjs.Length; j++)
                 {
+                    if(conjs[j] == "")
+                        throw new ArgumentException($"Error in clause text: {text}\nMaybe you missed fluent name");
                     bool isNegation = false;
                     if (conjs[j][0] == NotSymbol)
                     {

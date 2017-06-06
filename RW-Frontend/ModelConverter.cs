@@ -224,7 +224,14 @@ namespace RW_Frontend
             for (var i = 0; i < agents.Count; i++)
             {
                 agentDict.Add(i, agents[i].Agent);
-                revAgentDict.Add(agents[i].Agent, i);
+                try
+                {
+                    revAgentDict.Add(agents[i].Agent, i);
+                }
+                catch (ArgumentException e)
+                {
+                    throw new ArgumentException($"Duplicated agent name: {agents[i].Agent}", e);
+                }
             }
             return revAgentDict;
         }
@@ -245,7 +252,14 @@ namespace RW_Frontend
             for (var i = 0; i < actions.Count; i++)
             {
                 actionDict.Add(i, actions[i].Action);
-                revActionDict.Add(actions[i].Action, i);
+                try
+                {
+                    revActionDict.Add(actions[i].Action, i);
+                }
+                catch (ArgumentException e)
+                {
+                    throw new ArgumentException($"Duplicated action name: {actions[i].Action}", e);
+                }
             }
             return revActionDict;
         }
@@ -266,7 +280,14 @@ namespace RW_Frontend
             for (var i = 0; i < fluents.Count; i++)
             {
                 fluentDict.Add(i, fluents[i].Fluent);
-                revFluentDict.Add(fluents[i].Fluent, i);
+                try
+                {
+                    revFluentDict.Add(fluents[i].Fluent, i);
+                }
+                catch (ArgumentException e)
+                {
+                    throw new ArgumentException($"Duplicated fluent name: {fluents[i].Fluent}", e);
+                }
             }
             return revFluentDict;
         }
